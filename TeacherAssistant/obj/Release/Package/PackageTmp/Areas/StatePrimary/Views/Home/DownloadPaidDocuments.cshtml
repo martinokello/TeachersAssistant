@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Download Paid Documents";
+    Layout = "~/Areas/StatePrimary/Views/Shared/_LayoutStatePrimary.cshtml";
+}
+<div class="form-horizontal">
+    <h2>Download Paid Documents</h2>
+    <ul id="paidDocs"></ul>
+    <div><hr style="text-align:center; width:69%;" /></div>
+        <div style="background-color: #DADADA;">
+            <div class="row" style="padding:5px;">
+                <ul id="paidVids"></ul>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var jsonpaidDocs = @Html.Raw(Json.Encode(ViewBag.PaidDocumentsLists));
+        var $ulHandleDocs = $('ul#paidDocs');
+        for(var doc=0; doc<jsonpaidDocs.length; doc++ ){
+            $ulHandle.append('<li><a href='+jsonpaidDocs[docs]+'>'+jsonpaidDocs[docs].Description+'</li>');
+        }
+
+        var jsonpaidVids = @Html.Raw(Json.Encode(ViewBag.PaidVideosLists));
+        var $ulHandleVids = $('ul#paidVids');
+        for(var doc=0; doc<jsonpaidVids.length; doc++ ){
+            $ulHandle.append('<li><a href='+jsonpaidVids[docs]+'>'+jsonpaidVids[docs].Description+'</li>');
+        }
+    });
+</script>

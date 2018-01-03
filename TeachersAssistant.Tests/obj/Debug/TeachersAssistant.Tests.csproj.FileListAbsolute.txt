@@ -1,0 +1,233 @@
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\ApplicationInsights.config
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\csc.exe
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\Microsoft.CSharp.Core.targets
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\Microsoft.VisualBasic.Core.targets
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\System.Collections.Immutable.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\System.Reflection.Metadata.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\vbc.exe
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\VBCSCompiler.exe
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\roslyn\VBCSCompiler.exe.config
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .Tests.dll.config
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .Tests.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .Tests.pdb
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Newtonsoft.Json.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Helpers.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Mvc.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Razor.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.WebPages.Deployment.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.WebPages.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.WebPages.Razor.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Optimization.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.AspNet.Identity.Owin.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.Security.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Owin.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Http.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .Services.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Practices.Unity.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\EntityFramework.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Http.WebHost.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .DataAccess.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Unity.WebApi.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Net.Http.Formatting.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant.Domain.Model.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .pdb
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Newtonsoft.Json.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Helpers.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Mvc.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Razor.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.WebPages.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.WebPages.Razor.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Optimization.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.AspNet.Identity.Owin.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.Security.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.Security.Cookies.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Http.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .Services.pdb
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Practices.Unity.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\EntityFramework.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Web.Http.WebHost.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant; .DataAccess.pdb
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\System.Net.Http.Formatting.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\bin\Debug\TeachersAssistant.Domain.Model.pdb
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\obj\Debug\TeachersAssistant.Tests.csprojResolveAssemblyReference.cache
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\obj\Debug\TeachersAssistant; .Tests.dll
+C:\C#Projects\TeachersAssistant; \TeachersAssistant; .Tests\obj\Debug\TeachersAssistant; .Tests.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\ApplicationInsights.config
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\csc.exe
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CSharp.Core.targets
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.VisualBasic.Core.targets
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\System.Collections.Immutable.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\System.Reflection.Metadata.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\vbc.exe
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\VBCSCompiler.exe
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\VBCSCompiler.exe.config
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Tests.dll.config
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Tests.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Tests.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Newtonsoft.Json.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Helpers.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Mvc.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Razor.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Deployment.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Razor.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Optimization.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Owin.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Owin.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Domain.Model.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Services.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.DataAccess.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.Unity.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\UPAEventsPayPal.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\AutoMapper.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\EntityFramework.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.WebHost.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Unity.Mvc5.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Net.Http.Formatting.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Helpers.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Mvc.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Razor.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Razor.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Optimization.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Owin.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Domain.Model.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Services.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.DataAccess.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.Unity.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\UPAEventsPayPal.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\AutoMapper.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\EntityFramework.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.WebHost.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Net.Http.Formatting.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.csprojResolveAssemblyReference.cache
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\ApplicationInsights.config
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\csc.exe
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.CSharp.Core.targets
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\Microsoft.VisualBasic.Core.targets
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\System.Collections.Immutable.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\System.Reflection.Metadata.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\vbc.exe
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\VBCSCompiler.exe
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\roslyn\VBCSCompiler.exe.config
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Tests.dll.config
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Tests.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Tests.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Newtonsoft.Json.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Helpers.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Mvc.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Razor.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Deployment.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Razor.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Optimization.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Owin.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Owin.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Domain.Model.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Services.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.DataAccess.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.Unity.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\UPAEventsPayPal.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\AutoMapper.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\EntityFramework.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.WebHost.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Unity.Mvc5.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Net.Http.Formatting.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Helpers.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Mvc.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Razor.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.WebPages.Razor.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Optimization.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.Owin.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Domain.Model.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.Services.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.DataAccess.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.Unity.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\UPAEventsPayPal.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\AutoMapper.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\EntityFramework.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Http.WebHost.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Net.Http.Formatting.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.csprojResolveAssemblyReference.cache
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.dll
+C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.pdb

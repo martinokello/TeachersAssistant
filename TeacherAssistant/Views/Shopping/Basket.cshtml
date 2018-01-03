@@ -1,0 +1,216 @@
+﻿@using TeacherAssistant.Infrastructure
+@using TeacherAssistant.Infrastructure.ExtensionMethods
+@using TeachersAssistant.Domain.Model.Models
+@using UPAEventsPayPal
+@model SHOP_PRODS[]
+@{
+    ViewBag.Title = "Basket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var countItems = 0;
+    var url = Url.Content("~/Shopping/Basket") + "/{0}";
+    var pageIndex = 0;
+    var startIndex = 0;
+    var endIndex = 0;
+    try
+    {
+        pageIndex = ((PagingInfo)((Paging)Session["PagingInfo2"]).PagingInfoDetails).CurrentPageIndex;
+        startIndex = ((Paging)Session["PagingInfo2"]).StartDisplayFromPage() - 1;
+        endIndex = startIndex + ((PagingInfo)((Paging)Session["PagingInfo2"]).PagingInfoDetails).NumberOfPagesToDisplay >=
+                       ((PagingInfo)((Paging)Session["PagingInfo2"]).PagingInfoDetails).NumberOfPages ?
+                           ((PagingInfo)((Paging)Session["PagingInfo2"]).PagingInfoDetails).NumberOfPages - 1 :
+                           startIndex + ((PagingInfo)((Paging)Session["PagingInfo2"]).PagingInfoDetails).NumberOfPagesToDisplay - 1;
+
+    }
+    catch (Exception e)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+    decimal runningCosts = (decimal)0.00;
+    var shoppingBasket = (IList<SHOP_PRODS>)Session["ShoppingBasket"];
+    var basketShowing = (Model ?? new SHOP_PRODS[0]).ToArray() ;
+
+    if (shoppingBasket != null && shoppingBasket.Count > 0)
+    {
+        var upaProducts = shoppingBasket.Select(item => new UPAEventsPayPal.Product { Ammount = item.prodPrice, ProductDescription = item.prodDesc, ProductName = item.prodName, Quantity = 1, VATAmmount = 0 }).ToList();
+        runningCosts = shoppingBasket.Sum(item => item.prodPrice);
+
+    }
+}
+
+<style type="text/css">
+    .paging {
+        background-color: teal;
+        font-size: medium;
+        color: red;
+        font-weight: bolder;
+        margin: 5px;
+    }
+
+    .shop-listing-row {
+        background-color: burlywood;
+        margin: 5px;
+    }
+
+    .header {
+        font-weight: bolder;
+        font-size: large;
+        color: black;
+        background-color: brown;
+        margin: 5px;
+    }
+
+    .cell {
+        padding: 5px;
+        color: saddlebrown;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input#ShoppingList').click(function () {
+            window.location.href = '@Url.Content("~/Shopping/ShopContentListing")';
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('input#btnPayment').click(function () {
+            window.location.href = '@Url.Content("~/Shopping/Payment")';
+        });
+        if ('@((((Paging)Session["PagingInfo2"])).EnableNextPageLink())' == 'True') {
+            $('span#nextPage').css('display', 'inline');
+        }
+        else { $('span#nextPage').css('display', 'none'); }
+        if ('@((((Paging)Session["PagingInfo2"])).EnableNextSetPageLinks())' == 'True') {
+            $('span#nextPageSet').css('display', 'inline');
+        }
+        else { $('span#nextPageSet').css('display', 'none'); }
+        if ('@((((Paging)Session["PagingInfo2"])).EnablePreviousPageLink())' == 'True') {
+            $('span#previousPage').css('display', 'inline');
+        }
+        else { $('span#previousPage').css('display', 'none'); }
+        if ('@((((Paging)Session["PagingInfo2"])).EnablePreviousSetPageLinks())' == 'True') {
+            $('span#previousPageSet').css('display', 'inline');
+        }
+        else { $('span#previousPageSet').css('display', 'none'); }
+    });
+</script>
+
+<style type="text/css">
+    #navigation ul {
+        height: 47px;
+    }
+</style>
+<div style="text-align: left;">
+    <div class="centralProduct" style="background-color: #DADADA;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <h2>Basket</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <div>
+                        <label id="greeting" style="text-align: left; font-weight: bold; color: blue;">Welcome @User.Identity.Name</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                <div>
+                    <div style="height: auto;">
+                        <div>
+                            <img id="Img1" alt="No image" src="@Url.Content("~/images/basket.jpg")" /><br />
+                            <input id="btnPayment" type="button" value="Make Payment" class="oneRow3but" style="font-weight: bold; margin-top: 10px;" /><br />
+                            <input id="ShoppingList" type="button" value="Product Page" class="oneRow3but" style="font-weight: bold; margin-top: 10px;" /><br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8" style="text-align: center;">
+               
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="paging">
+                                <span id="previousPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).PreviousSetPages()})"><<</a> | </span><span id="previousPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).PreviousPage()})"><</a> | </span><span id="listingOfPages">@Html.Raw(Html.Page(pageIndex, startIndex, endIndex, url))|</span><span id="nextPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).NextPage()})">></a> | </span><span id="nextPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).NextSetPages()})">>></a></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row header">
+                        <div class="col-lg-3">
+                            <div class="cell">Product ID</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="cell">Product Name</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="cell">Price</div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="cell">Remove</div>
+                        </div>
+                    </div>
+                    <div class="row shop-listing-row">
+
+                        @foreach (SHOP_PRODS product in basketShowing)
+						{   if (countItems >= 3)
+							{
+								break;
+							}
+							countItems++;
+							
+                            <div class="col-lg-12">
+                                <div id="@product.prodCode" class="row">
+                                    <div class="col-lg-3">
+                                        <div class="cell">@product.prodId</div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="cell">@product.prodName</div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="cell">@product.prodPrice</div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="cell">
+                                            @using (Html.BeginForm("BasketRemoveProduct", "Shopping"))
+                                            {
+                                                @Html.Hidden("prodId", product.prodId)
+                                                @Html.Hidden("prodName", product.prodName)
+                                                @Html.Hidden("prodDesc", product.prodDesc)
+                                                @Html.Hidden("prodPrice", product.prodPrice)
+                                                <input type="submit" id="@product.prodId" class="btn-default" style="font-weight: bold;" name="remove" value="Remove" /><div>&nbsp;</div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+						}
+						
+                    </div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="paging">
+							<span id="previousPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).PreviousSetPages()})"><<</a> | </span><span id="previousPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).PreviousPage()})"><</a> | </span><span id="listingOfPages">@Html.Raw(Html.Page(pageIndex, startIndex, endIndex, url))|</span><span id="nextPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).NextPage()})">></a> | </span><span id="nextPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).NextSetPages()})">>></a></span>
+						</div>
+					</div>
+				</div>
+         
+                <div class="row" style="font-weight: bold; font-family: Tahoma; font-size: small; text-align: center; color: Red;" >
+                    <label id="ltRunningCost">Current running costs: $@runningCosts</label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix" style="margin-top: 1%;">
+</div>

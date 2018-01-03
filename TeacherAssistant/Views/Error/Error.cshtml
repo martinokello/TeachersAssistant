@@ -1,0 +1,30 @@
+﻿@using System.Configuration
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Error</h2>
+
+<div style="text-align: center;">
+    <div class="centralProduct">
+        <div class="row" style="background-color: #DADADA; margin-right: 0px; margin-left: 0px; text-align: left;">
+            <div class="col-lg-12" style="color: white; font-weight: bolder;background-color:silver;">
+                <div style="padding:10px;">
+                    <div>
+                        An error occured while you were browsing the site. Please contact the Administrator <a href="mailto:@ConfigurationManager.AppSettings["BusinessEmail"]">through this link.</a><br />
+                    </div>
+                    <div>
+                        Sorry for any convenience. Do tell us what you where doing when the error occured and we will help sort it out to make your experience count and provide you with better services.<br />
+                    </div>
+                    <div>
+                        Many thanks for your considerations.<br />
+                        Admin at MartinLayooInc.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

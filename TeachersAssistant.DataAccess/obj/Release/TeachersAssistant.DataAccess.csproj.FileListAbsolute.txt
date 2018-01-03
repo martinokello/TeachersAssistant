@@ -1,0 +1,12 @@
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.DataAccess.dll.config
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.DataAccess.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.DataAccess.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.SqlServer.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.Domain.Model.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.Domain.Model.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.SqlServer.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csprojResolveAssemblyReference.cache
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.pdb

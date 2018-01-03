@@ -1,0 +1,127 @@
+﻿@model TeachersAssistant.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Manage Products";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Manage Products</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Product View Model</h4>
+
+        <div style="background-color: #DADADA;">
+            <div style="padding:5px;">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ProductId", (List<SelectListItem>)ViewBag.ProductIdsList, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsPaidDocument, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("DocumentType",
+                       new List<SelectListItem> {
+                           new SelectListItem {Text = "Is it a Document", Value="-1"},
+                           new SelectListItem {Text = "PaidDocument", Value="0"},
+                           new SelectListItem {Text = "PaidVideo", Value="1"}},
+                           new { @class = "form-control", @id = "IsPaidDocument" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor( model => model.DocumentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select id="DocumentIdList" class="form-control"  name="DocumentId"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" name="Select" value="Select" class="btn btn-default" />
+                        <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                        <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    var paidDocsUrl = '@Url.Content("~/")'+ 'Administration/GetPaidDocuments?';
+
+    function getDocumentList(val) {
+        $.ajax({
+            url: paidDocsUrl + 'paidDocument=' + val,
+            type:'GET',
+            success: function (data) {
+                if (data) {
+                    //fill DocumentIdList
+                    for (var n = 0; n < data.length; n++) {
+                        $('select#DocumentIdList').append('<option value=' + data[n].DocumentId + '>' + data[n].DocumentName+ '</option>')
+                    }
+                }
+                else{
+                    $('select#DocumentIdList').find('option').remove();
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        var initVal = $('select#IsPaidDocument').val();
+        getDocumentList(initVal);
+        $('select#IsPaidDocument').change(function () {
+            var result = $(this).val();
+            switch(result)
+            {
+                case '0':
+                    //documents
+                    getDocumentList(0);
+                    break;
+                case '1':
+                    //videos
+                    getDocumentList(1);
+                    break;
+                default:
+
+                    break;
+            }
+        });
+    });
+</script>

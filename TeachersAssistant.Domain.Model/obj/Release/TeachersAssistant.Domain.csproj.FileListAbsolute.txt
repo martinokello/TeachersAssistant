@@ -1,0 +1,4 @@
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Release\TeachersAssistant.Domain.Model.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Release\TeachersAssistant.Domain.Model.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.Model.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.Model.pdb

@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Download Paid Documents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}<style type="text/css">
+    .paging {
+        background-color: teal;
+        font-size: medium;
+        color: red;
+        font-weight: bolder;
+        margin: 5px;
+    }
+
+    .col-md-4 {
+        background-color: burlywood;
+        color: black;
+    }
+
+    .header {
+        font-weight: bolder;
+        font-size: medium;
+        color: black;
+        background-color: brown;
+        margin:5px;
+    }
+
+    .cell,ul#paidDocs,ul#paidDocs {
+        padding: 5px;
+        color: saddlebrown;
+    }
+</style>
+<div class="form-horizontal">
+    <div class="header row">
+        <div class="col-lg-12">
+            <h2>Download Paid Documents</h2>
+        </div>
+    </div>
+    <div style="background-color: #DADADA;">
+        <form name="FormDownLoads" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="row" style="margin: 5px;">
+                <div class="col-lg-12 cell">
+                    <h4>Paid Documents</h4>
+                </div>
+                <div class="col-lg-12 cell">
+                    <ul id="paidDocs" class="cell" style="margin: 5px;"></ul>
+                </div>
+            </div>
+            <div class="row" style="margin: 5px;">
+                <div class="col-lg-12 cell">
+                    <hr style="text-align: center; width: 69%;" />
+                </div>
+            </div>
+            <div class="row" style="margin: 5px;">
+                <div class="col-lg-12 cell">
+                    <h4>Paid Videos</h4>
+                </div>
+                <div class="col-lg-12 cell">
+                    <ul id="paidVids" class="cell" style="margin: 5px;"></ul>
+                </div>
+            </div>
+            <input type="hidden" name="virtualPath"/>;
+        </form>
+    </div>
+</div>
+    <script type="text/javascript">
+
+        function DownloadContent(virtualPath) {
+            debugger;
+            var $downloadForm = $('form[name="FormDownLoads"]');
+            var htmlForm = document.getElementsByName("FormDownLoads");
+            $downloadForm.find('input[name="virtualPath"]').val(virtualPath);
+            $downloadForm.attr('action','@Url.Action("HandlePaidDocumentDownload","Home")');
+            $downloadForm.attr('method','post');
+            $downloadForm.submit();
+        }
+        $(document).ready(function () {
+            var jsonpaidDocs = @Html.Raw(Json.Encode(ViewBag.PaidDocumentsList));
+            var $ulHandleDocs = $('ul#paidDocs');
+            var $ulHandleVids = $('ul#paidVids');
+
+            for(var doc=0; doc<jsonpaidDocs.length; doc++ ){
+                if(jsonpaidDocs[doc].IsDocument)
+                {
+                    $ulHandleDocs.append('<li><a href="#" rel="'+jsonpaidDocs[doc].FilePath+'">'+jsonpaidDocs[doc].ProdName+' ,'+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+                }
+                else {
+                    $ulHandleVids.append('<li><a href="#" rel="'+jsonpaidDocs[doc].FilePath+'">'+jsonpaidDocs[doc].ProdName+' ,'+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+                }
+            }
+
+            $ulHandleDocs.find('a').each(function(){
+				$(this).on('click',function(){
+					DownloadContent($(this).attr('rel'));
+					return false;
+				});
+			});
+            $ulHandleVids.find('a').each(function(){
+				$(this).on('click',function(){
+					DownloadContent($(this).attr('rel'));
+					return false;
+				});
+			});
+        });
+    </script>

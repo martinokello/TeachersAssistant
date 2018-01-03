@@ -1,0 +1,146 @@
+﻿@model TeachersAssistant.Models.ProductViewModel[]
+
+@{
+    ViewBag.Title = "Shop Contents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .shop-listing-row {
+        background-color: burlywood;
+        margin: 5px;
+    }
+
+    .header {
+        font-weight: bolder;
+        font-size: large;
+        color: black;
+        background-color: brown;
+        margin:5px;
+    }
+    .cell{padding:5px;color:saddlebrown;}
+</style>
+<h2>Shop Contents</h2>
+<div class="form-horizontal" style="background-color: #DADADA;">
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.ActionLink("Go to Basket", "Basket", new { @id = "GoToBasket" })
+        </div>
+    </div>
+    <div class="row header">
+        <div class="col-lg-1">
+
+            <div class="cell">
+                @Html.Label("Product Id")
+            </div>
+        </div>
+        <div class="col-lg-2 ">
+            <div class="cell">
+                @Html.Label("Product Name")
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="cell">
+                @Html.Label("Product Description")
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="cell">
+                @Html.Label("Product Price") :in £
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="cell">
+                @Html.Label("Is Paid Document")
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="cell">
+                @Html.Label("Is Paid Video")
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="cell">
+                @Html.Label("Buy")
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="row shop-listing-row">
+            <div class="col-lg-1">
+                <div>
+                    @Html.Label(item.ProductId.ToString(), new { @id = "ProductId" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="cell">
+                    @Html.Label(item.ProductName)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="cell">
+                    @item.ProductDescription
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="cell">
+                    £ @item.ProductPrice.ToString()
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="cell">
+                    @item.IsPaidDocument.ToString()
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="cell">
+                    @item.IsPaidVideo.ToString()
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="cell">
+                    <a href="#" id="AddToBasket" style="padding:5px;">Add To Basket</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.ActionLink("Go to Basket", "Basket", new { @id = "GoToBasket" })
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('a#AddToBasket').addClass("btn-primary");
+        $('a#GoToBasket').addClass("btn-primary");
+
+        $('a#AddToBasket').click(function () {
+            debugger;
+            var prodId = $(this).parent('div').parent('div').parent('div').find('Label#ProductId').text();
+            var addToUrl = '@Url.Action("AddToBasket", "Shopping")';
+            var jsonData = JSON.stringify({ productId: prodId });
+            $.ajax({
+                url: addToUrl,
+                type: 'POST',
+                data: jsonData,
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    //alert("Product with Id: " + prodId + " added to basket");
+                    window.location.href = '@Url.Content("~/Shopping/Basket")';
+                },
+                error: function (xhrq) {
+                    alert("Failed to add Product");
+                }
+            });
+            return false;
+        });
+
+        $('a.BasketPointer').click(function () {
+            window.location.href = '@Url.Content("~/Shopping/Basket")';
+        });
+    });
+</script>

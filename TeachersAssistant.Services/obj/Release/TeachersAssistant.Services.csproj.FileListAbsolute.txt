@@ -1,0 +1,13 @@
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\TeachersAssistant.Services.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\TeachersAssistant.Services.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\AutoMapper.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\EntityFramework.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\TeachersAssistant.DataAccess.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\TeachersAssistant.Domain.Model.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\TeachersAssistant.DataAccess.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\TeachersAssistant.Domain.Model.pdb
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\AutoMapper.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\bin\Release\EntityFramework.xml
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\obj\Release\TeachersAssistant.Services.csprojResolveAssemblyReference.cache
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\obj\Release\TeachersAssistant.Services.dll
+C:\C#Projects\TeachersAssistant\TeachersAssistant.Services\obj\Release\TeachersAssistant.Services.pdb

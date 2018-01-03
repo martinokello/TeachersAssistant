@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Free Documents";
+    Layout = "~/Areas/StateJunior/Views/Shared/_LayoutStateJunior.cshtml";
+}
+<div class="form-horizontal">
+    <h2>Free Documents</h2>
+    <div style="background-color: #DADADA;">
+        <div class="row" style="padding:5px;">
+            <ul id="freeDocs"></ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var jsonDocs = @Html.Raw(Json.Encode(ViewBag.FilesToList));
+        var $ulHandle = $('ul#freeDocs');
+        for(var doc=0; doc<jsonDocs.length; doc++ ){
+            $ulHandle.append('<li><a href='+jsonDocs+'>'+jsonDoc+'</li>')
+        }
+    });
+</script>

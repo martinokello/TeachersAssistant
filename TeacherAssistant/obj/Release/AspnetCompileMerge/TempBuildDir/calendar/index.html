@@ -1,0 +1,79 @@
+﻿<!doctype html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>jquery-calendar.js Demos</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
+
+    <link rel="stylesheet" type="text/css" href="css/calendar.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery-calendar.js"></script>
+
+    <style>
+        #calendar {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="col-xs-12 col-sm-6 col-md-4">
+
+            <div class="title">Blue:</div>
+
+            <div id="calendar-4"></div>
+
+            <hr />
+
+        </div>
+
+    </div>
+
+    <script>
+
+        var events = [{ start: '2017-04-01', end: '2017-04-07', summary: "Example Event", mask: true }, { start: '2017-05-05', end: '2017-05-15', summary: "Example Event #3", mask: true }];
+
+
+        var calendar4 = new Date();
+        calendar4.setMonth(calendar4.getMonth() + 3);
+
+        $('#calendar-4').calendar({ color: 'blue', date: calendar4 });
+
+    </script>
+
+</body>
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+</html>

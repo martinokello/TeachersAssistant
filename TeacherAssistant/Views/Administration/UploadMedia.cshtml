@@ -1,0 +1,108 @@
+﻿@model TeachersAssistant.Models.UploadMediaViewModel
+
+@{
+    ViewBag.Title = "Upload Media";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewBag.MediaId = new List<SelectListItem>();
+}
+
+<h2>Upload Media</h2>
+<form method="post" action="@Url.Content("~/Administration/UploadMedia")" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Upload Media ViewModel</h4>
+
+        <div style="background-color: #DADADA;">
+            <div style="padding:5px;">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MediaId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("MediaId",null, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MediaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>,  new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>                
+				<div class="form-group">
+                    @Html.Label("RoleName", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("RoleName", ViewBag.RoleList as List<SelectListItem>
+						, "RoleName", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MediaType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("MediaType", new List<SelectListItem>() { new SelectListItem() { Text = "FreeDocument", Value = "FreeDocument" }, new SelectListItem() { Text = "PaidDocument", Value = "PaidDocument" }, new SelectListItem() { Text = "FreeVideo", Value = "FreeVideo" }, new SelectListItem() { Text = "PaidVideo", Value = "PaidVideo" } }, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MediaContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input type="file" name="MediaContent" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.MediaContent, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" name="Select" value="Select" class="btn btn-default" />
+                        <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                        <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function triggerGetMediaIds() {
+        
+            var role = $('select[name="RoleName"]').val();
+            var option = $('select[name="MediaType"]').val().toLowerCase();
+            var getUrl = '@Url.Content("~/")'+'Administration/GetMediaDocumentIdsFor?'
+            
+            getUrl+=('mediaType='+option+'&role='+role);
+
+            $.ajax({url:getUrl, type:'GET', dataType:'json', success:function(data){
+
+                var mediaList = $('select[name="MediaId"]');
+                mediaList.remove('option');
+                $.each(data, function(index, value){
+                    mediaList.append('<option value="'+value.Value+'">'+value.Text+'</option>');
+                });
+            },
+                error:function(xhRq){
+
+                }
+            });
+    }
+    $(document).ready(function() {
+        triggerGetMediaIds();
+
+        $('select[name="MediaType"]').change(function() {
+            triggerGetMediaIds();
+        });
+    });
+</script>

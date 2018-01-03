@@ -1,0 +1,74 @@
+﻿@using TeachersAssistant.Domain.Model.Models
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Session["ShoppingBasket"] == null)
+    {
+        Response.Redirect("/Home/Basket");
+    }
+    var totalPay = Session["ShoppingBasket"] == null ? (decimal)0.00 : ((IList<SHOP_PRODS>)Session["ShoppingBasket"]).Sum(p => p.prodPrice);
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#totalPrice').val("@totalPay");
+        if ('@User.Identity.IsAuthenticated' == 'False')
+            $('#submitbutton').css('display', 'none');
+        else
+            $('#submitbutton').css('display', 'block');
+
+    });
+</script>
+
+<style type="text/css">
+    #navigation ul {
+        height: 47px;
+    }
+</style>
+<div style="text-align: center;">
+    <div class="centralProduct">
+        <div style="background-color: #DADADA; text-align: left;">
+            <h2>Payment</h2>
+            <div style="font-weight: bold; color: Green;" class="row">
+                <div>
+                    <label id="ThanksMessg"></label>
+                </div>
+                <div>
+                    <input type="hidden" name="rm" value="2">
+                </div>
+            </div>
+             <div class="row" style="padding: 10px; font-weight: normal; color: Red;">
+                        <div id="ltGeneralMessage">
+                            You should be logged in to make payments, and will be directed to the Paypal site, and don't need to fill in the details of this page except the email field, as you will repeat this process on the Paypal Site. If not logged in do so, and just click the Submit Button now.<br />
+                        </div>
+                        <div style='color: green;'>Only Email field Required</div>
+                 </div>
+            @using (Html.BeginForm("PostToPaypal", "Shopping"))
+            {
+                <div class="row">
+                    <div style="font-weight: bold; color: Red;" class="col-lg-12">
+                            <label id="ltErrorMessg">@Html.ValidationSummary()</label>
+                    </div>
+                    <div class="col-lg-12">
+                        <label id="amountLabel" class="col-lg-3 label" style="color: #0000C0; text-align:right;">Amount To Pay ($ US Dollars):</label>
+                        <input type="text" id="totalPrice" name="totalPrice" readonly="readonly" class="col-lg-3" style="color:#C00000; background-color: #80FFFF; height:2.0em;" />
+                    </div>
+                    <div class="col-lg-12">
+                        <label id="email" class="col-lg-3 label" style="color: #0000C0; text-align:right;">Email: *</label>
+                        <input type="text" id="txtEmail" name="buyerEmail" class="col-lg-3" style="color:#C00000; background-color: #80FFFF; height:2.0em;" />
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="col-lg-3" style="text-align:right;">
+                            <img src="@Url.Content("~/Images/paypal_logo.gif")" alt="Paypal_Logo" />
+                        </div>
+                        <div col="col-lg-3">
+                            <input id="submitbutton" type="submit" class="form-control" value="Submit payment to Paypal" style="font-weight:bolder;" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="clearfix" style="margin-top:1%;"></div>
+        </div>
+    </div>
+</div>

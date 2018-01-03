@@ -1,0 +1,56 @@
+﻿@using System.Web.UI.HtmlControls
+@model string[]
+@{
+    ViewBag.Title = "Download Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    foreach (string product in Model)
+    {
+        var link = new TagBuilder("a");
+    }
+
+    var UserName = Request.QueryString["username"];
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var message = '@((String.IsNullOrEmpty(User.Identity.Name) ? "Customer" : User.Identity.Name) + ", here are the Links to your Downloads, and hope you can shop again with MartinLayooInc sometime in the near future.")';
+        $('#thanksMessage').html(message);
+
+        @{ var productsRange = "<ul>"; }
+
+        @foreach (var product in Model)
+            {
+                productsRange += "<li><a href='./Home/ProductPage?productId=" + product + "'>" + product + "</a></li>";
+            }
+
+        @{ productsRange += "<ul>"; }
+
+    });
+</script> 
+
+<div style="text-align: center;">
+    <div class="centralProduct">
+        <div class="row" style="background-color: #DADADA; margin-right: 0px; margin-left: 0px; text-align: left;">
+            <h2>DownloadPage</h2>
+            <div style="height: auto;" class="row">
+                <div id="tweetSearch" style="margin: 20px 40px 0px auto; width: 0px; float: right; position: relative; visibility: hidden;">@{ Html.RenderPartial("_PartialTweetSearchFeed"); }</div>
+                <div style="clear:both; margin-top:1%;"></div>
+            </div>tweetSearch" style="margin:20px 40px 0px auto;width:0px;float:right;position:relative;visibility: hidden;">@{ Html.RenderPartial("_PartialTweetSearchFeed"); }
+        </div><div class="ClearBoth" />
+    </div>
+    <div style="text-align:left;">
+        <label id="Thanks1" style="background-color: white; font-weight: bold; color: maroon; width: 800px; height: 450px;"></label>
+        <br />
+        <label id="productsLabel" style="margin-left: 0px; margin-right: 0px; font-family: verdana;font-weight: bold; color: Teal; margin-top: 5px; height: 300px;padding:20px;">
+            <div style="padding:20px;">
+                <p>Thanks @UserName, for shopping with MartinLayooInc Business Solutions. Your list of products is below. Click on each link to download.</p><br />
+                <p>Hope to see you shopping with us in the future. Do please enjoy your product and can request for features at this site via the Contacts Page.</p>
+                @Html.Raw(productsRange)
+
+            </div>
+        </label>
+        <br />
+    </div>
+</div>

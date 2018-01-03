@@ -1,0 +1,33 @@
+﻿@using TeacherAssistant.Infrastructure
+@model string
+@{
+    ViewBag.Title = "ProductPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="text-align: center;">
+    <div class="centralProduct">
+        <div class="row" style="background-color: #DADADA; margin-right: 0px; margin-left: 0px; text-align: left;">
+            <h2>ProductPage</h2>                                 <div id="thanksMessage" style="padding: 20px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{
+    FTPDownloadUtility downloadUtility = null;
+
+    if (Session["FTPDownLoadUtility"] == null)
+    {
+        downloadUtility = new FTPDownloadUtility(System.Configuration.ConfigurationManager.AppSettings["ftpServerUser"],
+                                                 System.Configuration.ConfigurationManager.AppSettings["ftpServerPassword"],
+                                                 System.Configuration.ConfigurationManager.AppSettings["ftpServer"]);
+        Session["FTPDownLoadUtility"] = downloadUtility;
+    }
+    else
+    {
+        downloadUtility = (FTPDownloadUtility)Session["FTPDownLoadUtility"];
+    }
+    string buttonId = Model;
+    downloadUtility.DownloadFile(Server.MapPath("~/MartinLayooInc/DownloadsX/" + Model + ".zip"));
+}

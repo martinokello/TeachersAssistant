@@ -1,0 +1,5 @@
+*.js linguist-language=JavaScript
+js/jquery.min.js linguist-vendored=false
+js/jquery-calendar.min.js linguist-vendored=false
+css/* linguist-vendored
+index.html linguist-documentation

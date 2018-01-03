@@ -1,0 +1,297 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; ViewBag.Title = "Public Class";
+    var userName = !string.IsNullOrEmpty(User.Identity.Name) ? User.Identity.Name : "anonymous";
+}
+<div style="text-align: center;width:100%;">
+    <div class="centralProduct">
+        <div style="background-color: #F0F0F0; margin-right: 0px; margin-left: 0px; text-align: left;">           
+			<div style="color: Red; margin-left: 40px;">
+                <h2>MartinLayooInc. Public Class:</h2>
+			</div>
+			
+			<div style="background-color: #DADADA; margin-left: 0px; margin-right: 0px;">
+				<div style="color: Teal; font-size: smaller; margin-left: 40px;">
+					<span style="color: #0080ff;">
+						<b>
+							<i>Public Class Room</i>
+						</b>
+					</span>
+					<br />
+					<a id="aEnableSecretRoom" href="~/Grammar11Plus/Home/PrivateClass">
+						<b>
+							<span style="font-size: medium;">
+								Private Class Invitation - Go to <i>Private Class Room</i>
+							</span>
+						</b>
+					</a>
+				</div>
+                <div style="width:100%;">
+					<div style="background-color: #DADADA; margin-left: 0px; margin-right: 0px;width:100%;">
+						<div style="float: left; width:67%;">
+							<div id="txtMessages" style="border: solid 1px #999999; padding: 5px 5px 5px 5px;  	margin-top: 15px; margin-left: 10px; width: 95%; height: 240px; overflow-y: auto; font-family: Times New Roman; font-size: small; color: blue; background-color: White;">
+							</div>
+							<div style="margin-left: 10px; width:100%;">
+								<textarea id="txtTypeHere" style="margin-top: 10px; width: 96%; height: 240px;" placeholder="Type messages here and click return or send button" title="type messages here and click return or send button" onkeyup="keyDownMessage(event);return false;"></textarea>
+							</div>
+							<div style="margin-top: 10px; margin-left: 10px; margin-bottom: 10px;">
+								<input type="button" id="btnSubmit" onclick="wasClicked(); return false;" value="Send" class="oneRowButton" />
+								@if(User.IsInRole("Administrator"))
+                                {
+                                    <input type="button" id="btnCreateRoom" value="Book Room" class="oneRowButton" onclick="BookSecretRoom();" />
+                                }
+								<input type="button" id="btnExitRoom" value="Exit Meeting" class="oneRowButton" onclick="ExitRoom('PublicRoom'); return false;" />
+							</div>
+							</div>
+						<div style="float:left; margin-right: 0px;width:33%">
+							<div style="color: Green; margin-left: 10px; margin-top:-15px; font-style: italic; font-weight: bold; font-size: x-small;">List of Users currently in Public Chat Room below. <br />Do please use caution.</div>
+							<div>
+								<ul id="lbUserList" style="margin-left: 10px;margin-right: 10px; background-color: white; height: 490px; color:teal;" />
+							</div>
+						</div>
+						<div style="clear:both;">
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="clear:both;">
+</div>
+<script type="text/javascript">
+
+    function GetClientUsername2() {
+        $.ajax({
+            url: "/Chat/GetClientUsername",
+            type: "GET",
+            dataType: "json",
+            success: GotClientUsername,
+            async: false
+        });
+    }
+    function LoadUserList() {
+        var userList = null;
+        $.ajax({
+            url: "/Chat/GetUserList",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                userList = data;
+            },
+            async: false
+        });
+
+        $('ul#lbUserList li').remove();
+
+        if (userList.length > 0) {
+            AddToUserList(userList);
+        }
+    }
+
+    function AddToUserList(userList) {
+        var userListCont = $('ul#lbUserList');
+        for (var index = 0; index < userList.length; index++) {
+            userListCont.append('<li>' + userList[index] + '</li>');
+        }
+    }
+
+
+    function wasClicked() {
+        GotClientUsername('@User.Identity.Name');
+    }
+
+    function GotClientUsername(userName) {
+        var message = $('#txtTypeHere').val();
+        $('#txtTypeHere').val('');
+        //Create Client Object:
+        var clt = { Username: userName, Message: message };
+
+        var jsonData = JSON.stringify(clt);
+        if ('@User.Identity.IsAuthenticated' == 'True') {
+            $.ajax({
+                url: "/Chat/AddMessagePublicRoom",
+                type: "POST",
+                dataType: "json",
+                data: jsonData,
+                contentType: "application/json",
+                async: false
+            });
+        } else alert("You need to be logged in to send messages!!");
+    }
+
+    function getMsgs() {
+        setTimeout("LoadUserList()", 5000);
+        $.ajax({
+            url: "/Chat/GetMessage/PublicRoom",
+            type: "GET",
+			async: false,
+            dataType: "html",
+            contentType: "application/json",
+            success: GotMessagePublicRoom,
+            error: GotMessagePublicRoom
+        });
+    }
+    function SetUsage(res) {
+
+        var inviteLink = document.getElementById('aEnableSecretRoom');
+        var clientUsername = '@User.Identity.Name';
+        var invitedClientUserName = '';
+
+        $.ajax({
+            url: "/Chat/GetInvitedClientUsername",
+            type: "GET",
+            dataType: "json",
+            success: function (userName) { invitedClientUserName = userName; },
+            async: false
+        });
+
+        var bookerUsername = '';
+
+        $.ajax({
+            url: "/Chat/GetBookerClient",
+            type: "GET",
+            dataType: "json",
+            success: function (userName) { bookerUsername = userName; },
+            async: false
+        });
+        if (invitedClientUserName === clientUsername || clientUsername === bookerUsername || IsInSecretRoom()) {
+            inviteLink.style.display = 'block';
+        }
+        else {
+            inviteLink.style.display = 'none';
+        }
+        if (res)
+        {
+            ConnectMessageInterception(res)
+        };
+    }
+    function ConnectMessageInterception(res, xHRq, method) {
+        if (res && res !== 'null' && typeof res === 'string' && res !== '') {
+            res = res.replace('"', '').replace('\\u000a', '').replace(/\\\//g, '/').replace("\\", '').replace('"', '');
+            $('div#txtMessages').append(res.substr(0, res.lastIndexOf('n')) + '<br/>');
+            scrollContentDown();
+        }
+        setTimeout("getMsgs()", 3000);
+    }
+
+    function GotMessagePublicRoom(res) {
+
+        SetUsage(res);
+    }
+
+    function BookSecretRoom() {
+        var userName = '@User.Identity.Name';
+
+        var message = "Invite to Secret Room";
+        //Create Client Object:
+        var client = { Username: userName, Message: message };
+        var jsonData = JSON.stringify(client);
+        var bookingMsg = null;
+        $.ajax({
+            url: "/Chat/BookSecretRoom",
+            type: "POST",
+            dataType: "json",
+            data: jsonData,
+            contentType: "application/json",
+            success: function (msg) {
+                bookingMsg = msg;
+            },
+            error: function () {
+                alert("Failed to get Message from public Room");
+            },
+            async: false
+        });
+
+        if (bookingMsg) {
+            alert('You are booked to use the room now: \nPlease enter the Secret Room and invite comrade!!');
+            document.location = "/Adhoc/SecretChat";
+        }
+        else alert('You require to be using Public Room and Loged In to book Secret Room or\nSecret Room is unavailalbe as it is currently in use: \nPlease try later!!');
+
+    }
+
+    function InviteClient(SecretRoom) {
+        var userList = document.getElementById('lbUserList');
+
+        var invitedUser = userList.value.substring(userList.selectionBegin, userList.selectionEnd);
+
+        var client = { Username: invitedUser, Message: '<b><span style="color:Teal;font-style:italic;">' + invitedUser + ' Enter my Conversation at Secret Room: ' + SecretRoom + ' Please</span>' };
+        var jsonData = JSON.stringify(client);
+
+        $.ajax({
+            url: "/Chat/InviteClient",
+            type: "POST",
+            dataType: "json",
+            data: jsonData,
+            contentType: "application/json",
+            error: function () {
+                alert("Failed to invite Client to Secret room");
+            },
+            async: false
+        });
+    }
+
+    function keyDownMessage(e) {
+        if (e.keyCode == 13) {
+            wasClicked();
+            $('#txtTypeHere').val('');
+            $('#txtTypeHere').focus();
+        }
+    }
+    function scrollContentDown() {
+        var theDiv = document.getElementById('txtMessages');
+        theDiv.scrollTop =
+        theDiv.scrollHeight - theDiv.clientHeight;
+
+        var theMsg = document.getElementById('txtTypeHere');
+        if (theMsg != null)
+            theMsg.focus();
+    }
+    function ExitRoom(room) {
+
+        var userName = '@User.Identity.Name';
+        //Create Client Object:
+        var client = { Username: userName, Message: 'Client has exited the Classroom.' };
+
+        var jsonData = JSON.stringify(client);
+        $.ajax({
+            url: "/Chat/ExitPublicRoom",
+            type: "POST",
+            dataType: "json",
+            data: jsonData,
+            contentType: "application/json",
+            async: false
+        });
+    }
+    function IsInSecretRoom() {
+        var userName = '@User.Identity.Name';
+        //Create Client Object:
+        var client = { Username: userName, Message: '' };
+        var jsonData = JSON.stringify(client);
+        var result = false;
+
+        $.ajax({
+            url: "/Chat/IsInPrivateRoom",
+            type: "POST",
+            async: false,
+            data: jsonData,
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+		
+                if (data !== 'True') {
+                    result = false;
+                } else result = true;
+            }
+        });
+        return result;
+    }
+    $(document).ready(function () {
+        $('#txtTypeHere').focus();
+        $('#txtTypeHere').css('background-color', 'snow');
+        $('lbUserList').html('');
+        getMsgs();
+        document.getElementById('aEnableSecretRoom').style.display = 'none';
+    }
+);
+</script>

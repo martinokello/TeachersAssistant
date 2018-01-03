@@ -1,0 +1,22 @@
+﻿@using System.Web.Mvc.Html
+<div>
+    <p>
+        <h4 id="title"></h4>
+    </p>
+    <p>
+        <div class="calendarNav"><span><a href="" id="previousMonth">Previous Month</a> | <a href="" id="currentMonth">This Month</a> | <a href="" id="nextMonth">Next Month</a></span></div>
+        <div id="calendar" style="background-color:dodgerblue; width:auto;margin:10px;padding:5px;color:white;">
+
+        </div>
+    </p>
+</div>
+<script>
+    $('#calendar').calendar();
+
+    $('#calendar').calendar({months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        daysMin: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+        dayLetter: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+        date:new Date()
+    });
+</script>

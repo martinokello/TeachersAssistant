@@ -1,0 +1,123 @@
+﻿@model TeachersAssistant.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "ManageProducts";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>ManageProducts</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ProductViewModel</h4>
+
+        <div style="background-color: #DADADA;">
+            <div style="padding:5px;">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsPaidDocument, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select id="IsPaidDocument" class="form-control">
+                            <option value="-1">Choose If Paid Document</option>
+                            <option value="0">PaidDocument</option>
+                            <option value="1">PaidVideo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DocumentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select id="DocumentIdList" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                        <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    function getDocumentList(val){
+        $.ajax({
+            url: paidDocsUrl+'isPaidDocs='+val,
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    //fill DocumentIdList
+                    for (var n = 0; n < data.length; n++) {
+                        $('select#DocumentIdList').add('<option value=' + data[n].DocumentId + '>' + data[n].DocumentName+ '</option>')
+                    }
+                }
+                else{
+                    $('select#DocumentIdList').find('option').remove();
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('select#IsPaidDocument').change(function () {
+            var result = $(this).val();
+            var paidDocsUrl = '/Administration/GetPaidDocuments?';
+            switch(result)
+            {
+                case 0:
+                    //documents
+                    getDocumentList(0);
+                    break;
+                case 1:
+                    //videos
+                    getDocumentList(1);
+                    break;
+                default:
+
+                    break;
+            }
+        });
+    });
+</script>

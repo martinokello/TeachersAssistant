@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Download Free Documents";
+    Layout = "~/Areas/Grammar11Plus/Views/Shared/_LayoutGrammar11Plus.cshtml";
+}
+<div class="form-horizontal">
+    <h2>Download Free Documents</h2>
+
+    <ul id="freeDocs"></ul>
+</div>
+
+<h2>Download Free Documents</h2>
+<div style="background-color: #DADADA;" class="form-horizontal">
+
+    <div style="padding:5px;">
+        <ul id="freeDocs"></ul>
+        <div><hr style="text-align:center; width:69%;" /></div>
+        <ul id="freeVids"></ul>
+    </div>
+</div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var jsonfreeDocs = @Html.Raw(Json.Encode(ViewBag.FreeDocumentsLists));
+            var $ulHandleDocs = $('ul#freeDocs');
+            for(var doc=0; doc<jsonfreeDocs.length; doc++ ){
+                $ulHandle.append('<li><a href='+jsonfreeDocs[docs]+'>'+jsonfreeDocs[docs].Description+'</li>');
+            }
+
+            var jsonfreeVids = @Html.Raw(Json.Encode(ViewBag.FreeVideosLists));
+            var $ulHandleVids = $('ul#freeVids');
+            for(var doc=0; doc<jsonfreeVids.length; doc++ ){
+                $ulHandle.append('<li><a href='+jsonfreeVids[docs]+'>'+jsonfreeVids[docs].Description+'</li>');
+            }
+        });
+    </script>
