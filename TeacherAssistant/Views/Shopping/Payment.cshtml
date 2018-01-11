@@ -24,6 +24,7 @@
     #navigation ul {
         height: 47px;
     }
+    div.form-body{background-color:lightsteelblue;margin: 0 15px;padding-bottom:5px;}
 </style>
 <div style="text-align: center;">
     <div class="centralProduct">
@@ -45,7 +46,7 @@
                  </div>
             @using (Html.BeginForm("PostToPaypal", "Shopping"))
             {
-                <div class="row">
+                <div class="row form-body">
                     <div style="font-weight: bold; color: Red;" class="col-lg-12">
                             <label id="ltErrorMessg">@Html.ValidationSummary()</label>
                     </div>
@@ -62,7 +63,7 @@
                             <img src="@Url.Content("~/Images/paypal_logo.gif")" alt="Paypal_Logo" />
                         </div>
                         <div col="col-lg-3">
-                            <input id="submitbutton" type="submit" class="form-control" value="Submit payment to Paypal" style="font-weight:bolder;" />
+                            <input id="submitbutton" type="submit" class="btn-primary" value="Submit payment to Paypal" style="font-weight:bolder;" />
                         </div>
                     </div>
                 </div>

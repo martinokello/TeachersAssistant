@@ -52,7 +52,7 @@
         background-color: burlywood;
         margin: 5px;
     }
-
+    .shop-listing-row div.row{border: white solid;} 
     .header {
         font-weight: bolder;
         font-size: large;
@@ -196,13 +196,13 @@
 						}
 						
                     </div>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="paging">
-							<span id="previousPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).PreviousSetPages()})"><<</a> | </span><span id="previousPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).PreviousPage()})"><</a> | </span><span id="listingOfPages">@Html.Raw(Html.Page(pageIndex, startIndex, endIndex, url))|</span><span id="nextPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).NextPage()})">></a> | </span><span id="nextPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {page = (((Paging) Session["PagingInfo2"])).NextSetPages()})">>></a></span>
-						</div>
-					</div>
-				</div>
+					<div class="row">
+                        <div class="col-lg-12">
+                            <div class="paging">
+                                <span id="previousPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).PreviousSetPages()})"><<</a> | </span><span id="previousPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).PreviousPage()})"><</a> | </span><span id="listingOfPages">@Html.Raw(Html.Page(pageIndex, startIndex, endIndex, url))|</span><span id="nextPage"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).NextPage()})">></a> | </span><span id="nextPageSet"><a class="normalLink" href="@Url.Action("Basket", "Shopping", new {id = (((Paging) Session["PagingInfo2"])).NextSetPages()})">>></a></span>
+                            </div>
+                        </div>
+                    </div>
          
                 <div class="row" style="font-weight: bold; font-family: Tahoma; font-size: small; text-align: center; color: Red;" >
                     <label id="ltRunningCost">Current running costs: $@runningCosts</label>

@@ -14,52 +14,47 @@
         font-weight: bolder;
         margin: 0px;
     }
-
     .area {
-        background-color: burlywood;
-        color: black;
+        background-color: burlywood;color:black;
     }
 
-    .header h2 {
+	.header{
+        background-color: #485254 !important;
+		margin: 0 0px;
+	}
+    .header h2{
         font-weight: bolder;
         font-size: medium;
-        background-color: #7F8784;
-        color: white;
+        color: white !important;
     }
 
-    div.cell {
+    div.cell{
         padding: 5px;
-        color: saddlebrown;
+        color: white !important;
+		background-color: #485254 !important;
     }
-
-    div.header > div.cell, .lead {
-        color: white;
-        font-size: medium;
-        background-color: #7F8784;
-    }
-
+    
+    div.header>div.cell,.lead {color:white;font-size:medium;}
     div.cell > h2 {
         color: white !important;
     }
 </style>
 
 <div class="form-horizontal" style="background-color: #DADADA;">
-<div class="header">
+<div class="header row">
     <div class="cell">
-        <h2>State Junior Students</h2>
-        <p class="lead">This is the home page of the Teacher's Assistant Role of <b>State Junior</b> which should be viewable on all devices. MartinLayooInc has enabled Teachers and their students to interact via this application, and holds all the rights to the App. Ensure that you are using the App with consent from the developer.</p>
-        <p class="lead">For support and new feature requests, do get in touch with <a style="color:white;font-size:large;" href="mailto:business-enterprise@martinlayooinc.co.uk">@@MartinLayooInc &copy;</a></p>
-    </div>
-</div>
-<div class="paging">
-    <div class="cell">
-        <p><a href="http://www.martinlayooinc.co.uk/Home/AboutUs" class="btn btn-primary">Find out about MartinLayooInc &copy;</a></p>
-    </div>
+		<div class="col-md-12">
+			<h2>Teacher Assistant by &copy; MartinLayooInc</h2>
+			<p class="lead">This is the home page of <i>State Junior Students</i>, which should be viewable on all devices. MartinLayooInc has enabled Teachers and their students to interact via this application, and holds all the rights to the App. Ensure that you are using the App with consent from the developer.
+			 For support and new feature requests, do get in touch with <a style="font-size:large;" href="mailto:business-enterprise@martinlayooinc.co.uk">MartinLayooInc &copy;</a></p>
+		</div>
+	</div>
 </div>
 <div class="area">
     <div class="row" style="padding:5px;">
         <div class="col-md-4">
             <h2>Getting started</h2>
+			<p><a href="@Url.Content("~/")/Home/AboutUs" class="btn btn-primary">Find out about MartinLayooInc &copy;</a></p>
             <p>
                 Ensure that you register an account with a specific email during the login process. Once that is done, you can start using the application.
             </p>
@@ -68,7 +63,7 @@
         <div class="col-md-4">
             <h2>If you are viewing this page, then you are a State Junior Student.</h2>
             <p>However if this page is not what you registered to view, or you are not a State Junior Student, then I suggest you should contact your Tutor/Teacher for support needs</p>
-            <p><a class="btn btn-default" href="/Home/AboutUs">Learn more about us</a></p>
+            <p><a class="btn btn-primary" href="/Home/AboutUs">Learn more about us</a></p>
         </div>
         <div class="col-md-4">
             <h2>Should a need exist for support</h2>
