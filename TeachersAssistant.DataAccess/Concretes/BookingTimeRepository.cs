@@ -5,43 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.DataAccess.Interfaces;
+using TeachersAssistant.DataAccess.Abstracts;
 
 namespace TeachersAssistant.DataAccess.Concretes
 {
-    public class BookingTimeRepository : IRepository<BookingTime>,IBookingTimeRepositoryMarker
+    public class BookingTimeRepository : AbstractRepository<BookingTime>,IBookingTimeRepositoryMarker
     {
-        public TeachersAssistant DbContextTeachersAssistant { get; set; }
-        public bool Add(BookingTime item)
-        {
-            try
-            {
-                DbContextTeachersAssistant.BookingTimes.Add(item);
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        public bool Delete(BookingTime item)
-        {
-            var bookingTime = DbContextTeachersAssistant.BookingTimes.SingleOrDefault(p => p.BookingTimeId == item.BookingTimeId);
-            DbContextTeachersAssistant.BookingTimes.Remove(bookingTime);
-            return true;
-        }
-
-        public BookingTime[] GetAll()
-        {
-            return DbContextTeachersAssistant.BookingTimes.ToArray();
-        }
-
-        public BookingTime GetById(int id)
+        public override BookingTime GetById(int id)
         {
             return DbContextTeachersAssistant.BookingTimes.SingleOrDefault(p => p.BookingTimeId == id);
         }
 
-        public bool Update(BookingTime item)
+        public override bool Update(BookingTime item)
         {
             try
             {

@@ -27,5 +27,6 @@ C:\C#Projects\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.
 C:\C#Projects\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.pdb
 C:\TeamFoundationProjects\TeachersAssistant\MartinLayooInc.Caching\bin\Debug\MartinLayooInc.Caching.dll
 C:\TeamFoundationProjects\TeachersAssistant\MartinLayooInc.Caching\bin\Debug\MartinLayooInc.Caching.pdb
+C:\TeamFoundationProjects\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.csprojResolveAssemblyReference.cache
 C:\TeamFoundationProjects\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.dll
 C:\TeamFoundationProjects\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.pdb

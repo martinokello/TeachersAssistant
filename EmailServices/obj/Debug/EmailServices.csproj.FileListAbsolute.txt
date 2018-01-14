@@ -28,6 +28,6 @@ C:\GitRepositories\EntertainmentTicketMaster\EmailServices\obj\Debug\EmailServic
 C:\GitRepositories\EntertainmentTicketMaster\EmailServices\obj\Debug\EmailServices.pdb
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\bin\Debug\EmailServices.dll
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\bin\Debug\EmailServices.pdb
+C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csprojResolveAssemblyReference.cache
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.dll
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.pdb
-C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csprojResolveAssemblyReference.cache

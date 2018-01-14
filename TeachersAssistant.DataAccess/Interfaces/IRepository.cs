@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace  TeachersAssistant.DataAccess.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : class
     {
         T GetById(int id);
         T[] GetAll();

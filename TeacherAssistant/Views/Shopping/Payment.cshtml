@@ -38,16 +38,16 @@
                     <input type="hidden" name="rm" value="2">
                 </div>
             </div>
-             <div class="row" style="padding: 10px; font-weight: normal; color: Red;">
+					<div class="row" style="padding: 10px; font-weight: normal; color: Red;">
                         <div id="ltGeneralMessage">
                             You should be logged in to make payments, and will be directed to the Paypal site, and don't need to fill in the details of this page except the email field, as you will repeat this process on the Paypal Site. If not logged in do so, and just click the Submit Button now.<br />
                         </div>
                         <div style='color: green;'>Only Email field Required</div>
                  </div>
             @using (Html.BeginForm("PostToPaypal", "Shopping"))
-            {
+            { 
                 <div class="row form-body">
-                    <div style="font-weight: bold; color: Red;" class="col-lg-12">
+                    <div style="font-weight: bold; color: red;" class="col-lg-12">
                             <label id="ltErrorMessg">@Html.ValidationSummary()</label>
                     </div>
                     <div class="col-lg-12">
@@ -70,6 +70,7 @@
             }
 
             <div class="clearfix" style="margin-top:1%;"></div>
+            </div>
         </div>
     </div>
 </div>

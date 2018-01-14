@@ -64,6 +64,6 @@ C:\C#Projects\TeachersAssistant\Twitter\obj\Debug\Twitter.pdb
 C:\TeamFoundationProjects\TeachersAssistant\Twitter\bin\Debug\Twitter.dll
 C:\TeamFoundationProjects\TeachersAssistant\Twitter\bin\Debug\Twitter.pdb
 C:\TeamFoundationProjects\TeachersAssistant\Twitter\bin\Debug\Newtonsoft.Json.dll
+C:\TeamFoundationProjects\TeachersAssistant\Twitter\obj\Debug\Twitter.csprojResolveAssemblyReference.cache
 C:\TeamFoundationProjects\TeachersAssistant\Twitter\obj\Debug\Twitter.dll
 C:\TeamFoundationProjects\TeachersAssistant\Twitter\obj\Debug\Twitter.pdb
-C:\TeamFoundationProjects\TeachersAssistant\Twitter\obj\Debug\Twitter.csprojResolveAssemblyReference.cache
