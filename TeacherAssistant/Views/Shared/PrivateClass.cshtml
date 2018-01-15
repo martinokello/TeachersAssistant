@@ -2,7 +2,6 @@
     ViewBag.Title = "Private Class";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div style="text-align: center;">
     <div class="centralProduct">
         <div style="background-color: #F0F0F0; margin-right: 0px; margin-left: 0px; text-align: left;">
@@ -12,7 +11,7 @@
                 </div>
                 <div style="color: Teal; font-size: smaller; margin-left: 40px;">
                     <span style="color: #0080ff;"><b><i>Private Class Room</i></b></span><br />
-                    <a id="aEnableSecretRoom" href="~/Home/PublicClass"><b><span style="font-size: medium;">Private Class: Go to <i>Public Class Room</i></span></b></a>
+                    <a id="aEnableSecretRoom" href="@Url.Action("/PublicClass")"><b><span style="font-size: medium;">Private Class: Go to <i>Public Class Room</i></span></b></a>
                 </div>
             </div>
 
@@ -58,8 +57,7 @@
             url: "/Chat/GetUserList",
             type: "GET",
             dataType: "json",
-            success: AddUserToList,
-            async: false
+            success: AddUserToList
         });
     }
     function AddUserToList(userList) {
@@ -113,8 +111,7 @@
     function ClearRoom(room) {
         $.ajax({
             url: "/Chat/ClearPrivateRoom",
-            type: "GET",
-            async: false
+            type: "GET"
         });
         document.location.href = '/Home/PublicClass';
     }
@@ -130,8 +127,7 @@
             type: "POST",
             dataType: "json",
             data: jsonData,
-            contentType: "application/json",
-            async: false
+            contentType: "application/json"
         });
         document.location.href = '/Home/PublicClass';
     }
@@ -150,18 +146,16 @@
                 type: "POST",
                 dataType: "json",
                 data: jsonData,
-                contentType: "application/json",
-                async: false
+                contentType: "application/json"
             });
         } else alert("You need to be logged in to send messages!!");
     }
 
     function getMsgs() {
-        setTimeout("LoadUserList()", 5000);
+        setTimeout("LoadUserList()", 10000);
         $.ajax({
             url: "/Chat/GetMessage/SecretRoom",
             type: "GET",
-			async: false,
             dataType: "html",
             contentType: "application/json",
             success: GotMessagePrivateRoom,

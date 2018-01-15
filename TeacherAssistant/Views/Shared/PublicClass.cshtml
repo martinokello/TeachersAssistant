@@ -17,7 +17,7 @@
 						</b>
 					</span>
 					<br />
-					<a id="aEnableSecretRoom" href="~/Grammar11Plus/Home/PrivateClass">
+				    <a id="aEnableSecretRoom" href="@Url.Action("/PrivateClass")">
 						<b>
 							<span style="font-size: medium;">
 								Private Class Invitation - Go to <i>Private Class Room</i>
@@ -65,8 +65,7 @@
             url: "/Chat/GetClientUsername",
             type: "GET",
             dataType: "json",
-            success: GotClientUsername,
-            async: false
+            success: GotClientUsername
         });
     }
     function LoadUserList() {
@@ -76,16 +75,17 @@
             type: "GET",
             dataType: "json",
             success: function (data) {
+
+                $('ul#lbUserList li').remove();
                 userList = data;
-            },
-            async: false
+                if (userList.length > 0) {
+                    AddToUserList(userList);
+                }
+            }
         });
 
-        $('ul#lbUserList li').remove();
 
-        if (userList.length > 0) {
-            AddToUserList(userList);
-        }
+
     }
 
     function AddToUserList(userList) {
@@ -113,8 +113,7 @@
                 type: "POST",
                 dataType: "json",
                 data: jsonData,
-                contentType: "application/json",
-                async: false
+                contentType: "application/json"
             });
         } else alert("You need to be logged in to send messages!!");
     }
@@ -124,7 +123,6 @@
         $.ajax({
             url: "/Chat/GetMessage/PublicRoom",
             type: "GET",
-			async: false,
             dataType: "html",
             contentType: "application/json",
             success: GotMessagePublicRoom,
@@ -141,8 +139,7 @@
             url: "/Chat/GetInvitedClientUsername",
             type: "GET",
             dataType: "json",
-            success: function (userName) { invitedClientUserName = userName; },
-            async: false
+            success: function (userName) { invitedClientUserName = userName; }
         });
 
         var bookerUsername = '';
@@ -151,19 +148,21 @@
             url: "/Chat/GetBookerClient",
             type: "GET",
             dataType: "json",
-            success: function (userName) { bookerUsername = userName; },
-            async: false
+            success: function (userName) {
+                bookerUsername = userName;
+
+                if (invitedClientUserName === clientUsername || clientUsername === bookerUsername || IsInSecretRoom()) {
+                    inviteLink.style.display = 'block';
+                }
+                else {
+                    inviteLink.style.display = 'none';
+                }
+                if (res) {
+                    ConnectMessageInterception(res)
+                };
+            }
         });
-        if (invitedClientUserName === clientUsername || clientUsername === bookerUsername || IsInSecretRoom()) {
-            inviteLink.style.display = 'block';
-        }
-        else {
-            inviteLink.style.display = 'none';
-        }
-        if (res)
-        {
-            ConnectMessageInterception(res)
-        };
+
     }
     function ConnectMessageInterception(res, xHRq, method) {
         if (res && res !== 'null' && typeof res === 'string' && res !== '') {
@@ -195,18 +194,18 @@
             contentType: "application/json",
             success: function (msg) {
                 bookingMsg = msg;
+                if (bookingMsg) {
+                    alert('You are booked to use the room now: \nPlease enter the Secret Room and invite comrade!!');
+                    document.location = "/Adhoc/SecretChat";
+                }
+                else alert('You require to be using Public Room and Loged In to book Secret Room or\nSecret Room is unavailalbe as it is currently in use: \nPlease try later!!');
+
             },
             error: function () {
                 alert("Failed to get Message from public Room");
-            },
-            async: false
+            }
         });
 
-        if (bookingMsg) {
-            alert('You are booked to use the room now: \nPlease enter the Secret Room and invite comrade!!');
-            document.location = "/Adhoc/SecretChat";
-        }
-        else alert('You require to be using Public Room and Loged In to book Secret Room or\nSecret Room is unavailalbe as it is currently in use: \nPlease try later!!');
 
     }
 
@@ -226,8 +225,7 @@
             contentType: "application/json",
             error: function () {
                 alert("Failed to invite Client to Secret room");
-            },
-            async: false
+            }
         });
     }
 
@@ -259,8 +257,7 @@
             type: "POST",
             dataType: "json",
             data: jsonData,
-            contentType: "application/json",
-            async: false
+            contentType: "application/json"
         });
     }
     function IsInSecretRoom() {
@@ -273,7 +270,6 @@
         $.ajax({
             url: "/Chat/IsInPrivateRoom",
             type: "POST",
-            async: false,
             data: jsonData,
             dataType: "json",
             contentType: "application/json",

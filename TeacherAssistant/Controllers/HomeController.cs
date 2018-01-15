@@ -83,12 +83,12 @@ namespace  TeacherAssistant.Controllers
             return View("PublicClass");
         }
         [HttpGet]
-        public ActionResult OnlineClassRoom()
+        [Authorize(Roles = "Administrator,Grammar11Plus,StatePrimary,StateJunior")]
+        public ViewResult PrivateClass()
         {
-            ViewBag.Message = "Online Classroom.";
-
-            return View();
+            return View("PrivateClass");
         }
+
         [HttpGet]
         public ActionResult BookTeacherHelpTime()
         {
