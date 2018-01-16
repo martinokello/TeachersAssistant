@@ -166,8 +166,8 @@
     }
     function ConnectMessageInterception(res, xHRq, method) {
         if (res && res !== 'null' && typeof res === 'string' && res !== '') {
-            res = res.replace('"', '').replace('\\u000a', '').replace(/\\\//g, '/').replace("\\", '').replace('"', '');
-            $('div#txtMessages').append(res.substr(0, res.lastIndexOf('n')) + '<br/>');
+            res = res.replace('"', '').replace('\\u000a', '').replace(/\\\//g, '/').replace("\\n", '<br/>').replace('"', '');
+            $('div#txtMessages').append(res);
             scrollContentDown();
         }
         setTimeout("getMsgs()", 3000);
@@ -249,7 +249,7 @@
 
         var userName = '@User.Identity.Name';
         //Create Client Object:
-        var client = { Username: userName, Message: 'Client has exited the Classroom.' };
+        var client = { Username: userName, Message: 'Client has exited the Classroom.\n' };
 
         var jsonData = JSON.stringify(client);
         $.ajax({
