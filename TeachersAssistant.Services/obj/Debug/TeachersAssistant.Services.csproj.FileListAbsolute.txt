@@ -35,3 +35,16 @@ C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Services\bin\Debug
 C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.csprojResolveAssemblyReference.cache
 C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.dll
 C:\TeamFoundationProjects\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.Services.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.Services.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\AutoMapper.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\EntityFramework.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.DataAccess.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.Domain.Model.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.DataAccess.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.Domain.Model.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\AutoMapper.xml
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\EntityFramework.xml
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.csprojResolveAssemblyReference.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.pdb

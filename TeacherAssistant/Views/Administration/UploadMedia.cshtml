@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Upload Media";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	ViewBag.MediaId = new List<SelectListItem>();
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    ViewBag.MediaId = new List<SelectListItem>();
 }
 
 <h2>Upload Media</h2>
@@ -20,41 +20,39 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.MediaId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("MediaId",null, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownList("MediaId", null, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.MediaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("RoleName", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("RoleName", ViewBag.RoleList as List<SelectListItem>
+                        , new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MediaType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("MediaType", new List<SelectListItem>() { new SelectListItem() { Text = "Pick Document Type", Value = "" }, new SelectListItem() { Text = "FreeDocument", Value = "FreeDocument" }, new SelectListItem() { Text = "PaidDocument", Value = "PaidDocument" }, new SelectListItem() { Text = "FreeVideo", Value = "FreeVideo" }, new SelectListItem() { Text = "PaidVideo", Value = "PaidVideo" } }, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MediaType, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>,  new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
-                </div>                
-				<div class="form-group">
-                    @Html.Label("RoleName", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("RoleName", ViewBag.RoleList as List<SelectListItem>
-						, "RoleName", new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MediaType, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("MediaType", new List<SelectListItem>() { new SelectListItem() { Text = "FreeDocument", Value = "FreeDocument" }, new SelectListItem() { Text = "PaidDocument", Value = "PaidDocument" }, new SelectListItem() { Text = "FreeVideo", Value = "FreeVideo" }, new SelectListItem() { Text = "PaidVideo", Value = "PaidVideo" } }, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.MediaContent, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -78,30 +76,36 @@
 
 <script type="text/javascript">
     function triggerGetMediaIds() {
-        
-            var role = $('select[name="RoleName"]').val();
-            var option = $('select[name="MediaType"]').val().toLowerCase();
-            var getUrl = '@Url.Content("~/")'+'Administration/GetMediaDocumentIdsFor?'
-            
-            getUrl+=('mediaType='+option+'&role='+role);
+        debugger;
+        var role = $('select[name="RoleName"]').val();
+        var option = $('select[name="MediaType"]').val().toLowerCase();
+        var option1 = $('select[name="MediaType"]').val();
+        var getUrl = '@Url.Content("~/")' + 'Administration/GetMediaDocumentIdsFor?';
 
-            $.ajax({url:getUrl, type:'GET', dataType:'json', success:function(data){
+        getUrl += ('mediaType=' + option + '&role=' + role);
 
+        $.ajax({
+            url: getUrl, type: 'GET', dataType: 'json', success: function (data) {
+                debugger;
                 var mediaList = $('select[name="MediaId"]');
-                mediaList.remove('option');
-                $.each(data, function(index, value){
-                    mediaList.append('<option value="'+value.Value+'">'+value.Text+'</option>');
+                mediaList.find('option').remove();
+                $.each(data, function (index, value) {
+                    mediaList.append('<option value="' + value.Value + '">' + value.Text + '</option>');
                 });
+                mediaList.val('@(Model != null? Model.MediaId:-1)');
             },
-                error:function(xhRq){
-
-                }
-            });
+            error: function (xhRq) {
+                debugger;
+                var mediaList = $('select[name="MediaId"]');
+                mediaList.find('option').remove();
+                mediaList.append('<option value="' + -1 + '">' + "Pick a Media Id" + '</option>');
+            }
+        });
     }
-    $(document).ready(function() {
+    $(document).ready(function () {
         triggerGetMediaIds();
 
-        $('select[name="MediaType"]').change(function() {
+        $('select[name="MediaType"]').change(function () {
             triggerGetMediaIds();
         });
     });

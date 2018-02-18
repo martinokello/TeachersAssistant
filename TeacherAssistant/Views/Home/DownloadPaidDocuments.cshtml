@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Download Paid Documents";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }<style type="text/css">
     .paging {
         background-color: teal;
@@ -84,7 +84,7 @@
                     $ulHandleDocs.append('<li><a href="#" rel="'+jsonpaidDocs[doc].FilePath+'">'+jsonpaidDocs[doc].ProdName+' ,'+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
                 }
                 else {
-                    $ulHandleVids.append('<li><a href="#" rel="'+jsonpaidDocs[doc].FilePath+'">'+jsonpaidDocs[doc].ProdName+' ,'+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+                    $ulHandleVids.append('<li><div class="col-lg-8"><section>'+jsonpaidDocs[doc].ProdName+', '+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</section></div><div class="col-lg-8"><video width="320" height="auto" controls><source src="'+jsonpaidDocs[doc].FilePath.substr(1)+'" type="video/mp4"><source src="'+jsonpaidDocs[doc].FilePath.substr(1).replace(".mp4",".webm")+'" type="video/webm"><source src="'+jsonpaidDocs[doc].FilePath.substr(1).replace(".mp4",".ogg")+'" type="video/ogg">Your browser does not support the video tag.</video></div></li>');
                 }
             }
 
@@ -93,12 +93,13 @@
 					DownloadContent($(this).attr('rel'));
 					return false;
 				});
-			});
+            });
+            /*
             $ulHandleVids.find('a').each(function(){
 				$(this).on('click',function(){
 					DownloadContent($(this).attr('rel'));
 					return false;
 				});
-			});
+			});*/
         });
     </script>

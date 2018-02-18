@@ -1,12 +1,13 @@
 ﻿@{
     ViewBag.Title = "Home Page";
-    Layout = "~/Areas/StatePrimary/Views/Shared/_LayoutStatePrimary.cshtml";
+    Layout = "~/Areas/StatePrimary/Views/Shared/_NewLayoutStatePrimary.cshtml";
 
     if (!User.IsInRole("StatePrimary") && !User.IsInRole("Administrator"))
     {
         Response.Redirect("~/Home/Index");
     }
 }
+<!--
 <style type="text/css">
     .paging {
         font-size: medium;
@@ -39,8 +40,8 @@
         color: white !important;
     }
 </style>
-
-<div class="form-horizontal" style="background-color: #DADADA;">
+-->
+<div class="form-horizontal">
 <div class="header row">
     <div class="cell">
 		<div class="col-md-12">
@@ -63,7 +64,7 @@
             <div class="col-md-4">
                 <h2>If you are viewing this page, then you are a State Primary Student.</h2>
                 <p>However if this page is not what you registered to view, or you are not a State Primary Student, then I suggest you should contact your Tutor/Teacher for support needs</p>
-                <p><a class="btn btn-default" href="/Home/AboutUs">Learn more about us</a></p>
+                <p><a class="btn btn-primary" href="/Home/AboutUs">Learn more about us</a></p>
             </div>
             <div class="col-md-4">
                 <h2>Should a need exist for support</h2>

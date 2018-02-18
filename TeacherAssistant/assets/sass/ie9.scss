@@ -1,38 +1,84 @@
 @import 'libs/vars';
 @import 'libs/functions';
 @import 'libs/mixins';
+@import 'libs/skel';
 
 /*
-	ZeroFour by HTML5 UP
+	Editorial by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-/* Basic */
+/* Features */
 
-	.button {
-		background-image: url('images/ie/grad0-20.svg');
+	.features {
+		&:after {
+			clear: both;
+			content: '';
+			display: block;
+		}
+
+		article {
+			float: left;
+
+			&:after {
+				clear: both;
+				content: '';
+				display: block;
+			}
+
+			.icon {
+				float: left;
+			}
+		}
 	}
 
-	.box-feature1 header.second {
+/* Posts */
+
+	.posts {
+		&:after {
+			clear: both;
+			content: '';
+			display: block;
+		}
+
+		article {
+			float: left;
+		}
+	}
+
+/* Main */
+
+	#main {
+		padding-left: _size(sidebar-width-alt);
+	}
+
+/* Sidebar */
+
+	#sidebar {
+		position: absolute;
+		top: 0;
 		left: 0;
+		min-height: 100%;
+		width: _size(sidebar-width-alt);
 	}
 
-/* Wrappers	*/
+/* Banner */
 
-	#footer-wrapper,
-	#header .inner {
-		background-image: url('images/ie/grad0-35.svg');
-	}
+	#banner {
+		&:after {
+			clear: both;
+			content: '';
+			display: block;
+		}
 
-/* Nav */
+		.content {
+			float: left;
+			padding-right: (_size(element-margin) * 2);
+		}
 
-	.dropotron {
-		background-image: url('images/ie/grad35-0.svg');
-	}
-
-/* Mobile UI */
-
-	#titleBar, #navPanel {
-		background-image: url('images/ie/grad0-35.svg');
+		.image {
+			float: left;
+			margin-left: 0;
+		}
 	}

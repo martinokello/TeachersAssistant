@@ -1,22 +1,25 @@
-﻿using System;
+﻿using FluentValidation.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using TeachersAssistant.Infrastructure.FluentValidation;
 
 namespace TeachersAssistant.Models
 {
+    [Validator(typeof(UploadMediaViewModelValidator))]
     public class UploadMediaViewModel
     {
         public int? MediaId { get; set; }
-        [Required]
+        //[Required]
         public string MediaType { get; set; }
-        [Required]
+        //[Required]
         public string Name { get; set; }
         public HttpPostedFileBase MediaContent { get; set; }
-        [Required]
+       // [Required]
         public string RoleName { get; set; }
-        [Required]
+        //[Required]
         public int SubjectId { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }

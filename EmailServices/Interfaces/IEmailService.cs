@@ -7,8 +7,10 @@ using EmailServices.EmailDomain;
 
 namespace EmailServices.Interfaces
 {
+    public enum EmailType { Text, Html}
     public interface IEmailService
     {
         void SendEmail(TicketMasterEmailMessage message);
+        EmailType EmailType { get; set; }
     }
 }

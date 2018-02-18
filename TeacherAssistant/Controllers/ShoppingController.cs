@@ -12,6 +12,7 @@ using TeachersAssistant.Services.Concretes;
 using TeachersAssistant.Models;
 using System.Text.RegularExpressions;
 using UPAEventsPayPal;
+using CuttingEdge.Conditions;
 
 namespace TeachersAssistant.Controllers
 {
@@ -39,6 +40,23 @@ namespace TeachersAssistant.Controllers
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingRepositoryMarker)
         {
+
+            Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
+            Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeDocumentRepositoryMarker>(freeDocumentRepositoryMarker, "freeDocumentRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeDocumentStudentRepositoryMarker>(freeDocumentStudentRepositoryMarker, "freeDocumentStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeVideoRepositoryMarker>(freeVideoRepositoryMarker, "freeVideoRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeVideoStudentRepositoryMarker>(freeVideoStudentRepositoryMarker, "freeVideoStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidDocuemtStudentRepositoryMarker>(paidDocuemtStudentRepositoryMarker, "paidDocuemtStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidDocumentRepositoryMarker>(paidDocumentRepositoryMarker, "paidDocumentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidVideoRepositoryMarker>(paidVideoRepositoryMarker, "paidVideoRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidVideoStudentRepositoryMarker>(paidVideoStudentRepositoryMarker, "paidVideoStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentRepositoryMarker>(studentRepositoryMarker, "studentRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "studentTypeRepositoryMarker").IsNotNull();
+            Condition.Requires<ISubjectRepositoryMarker>(subjectRepositoryMarker, "subjectRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
+            Condition.Requires<IBookingTimeRepositoryMarker>(bookingRepositoryMarker, "bookingRepositoryMarker").IsNotNull();
+
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,

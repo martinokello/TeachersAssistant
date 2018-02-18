@@ -4,10 +4,20 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using TeachersAssistant.Domain.Model.Models;
+using TeachersAssistant.Infrastructure;
 
 namespace TeacherAssistant.Models
 {
+    public class BookingTimeString
+    {
+        [DateTimeFormat()]
+        public string StartTime { get; set; }
 
+        [DateTimeFormat()]
+        public string EndTime { get; set; }
+
+        public int? BookingTimeId { get; set; }
+    }
     public class TeacherCalendarViewModel
     {
         public int? CalendarBookingId { get; set; }
@@ -18,7 +28,7 @@ namespace TeacherAssistant.Models
         public int StudentTypeId { get; set; }
         [Required]
         public int StudentId { get; set; }
-        public BookingTime[] BookingTimes { get; set; }
+        public BookingTimeString[] BookingTimes { get; set; }
         public string TeacherFullName { get; set; }
         public string StudentFullName { get; set; }
         [Required]

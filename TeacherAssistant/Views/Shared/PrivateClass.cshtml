@@ -1,7 +1,19 @@
 ﻿@{
     ViewBag.Title = "Private Class";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
+<style type="text/css">
+	input[type='checkbox'], input[type='radio'] {
+    -moz-appearance:none !important;
+    -ms-appearance:none!important;
+    appearance:none !important;
+	visibility:visible !important;
+    opacity: 1;
+    width: 1em;
+    z-index: 9999;
+}
+
+</style>
 <div style="text-align: center;">
     <div class="centralProduct">
         <div style="background-color: #F0F0F0; margin-right: 0px; margin-left: 0px; text-align: left;">
@@ -11,7 +23,7 @@
                 </div>
                 <div style="color: Teal; font-size: smaller; margin-left: 40px;">
                     <span style="color: #0080ff;"><b><i>Private Class Room</i></b></span><br />
-                    <a id="aEnableSecretRoom" href="@Url.Action("/PublicClass")"><b><span style="font-size: medium;">Private Class: Go to <i>Public Class Room</i></span></b></a>
+                    <a id="aEnableSecretRoom" href="@Url.Action("PublicClass","Home")"><b><span style="font-size: medium;">Private Class: Go to <i>Public Class Room</i></span></b></a>
                 </div>
             </div>
 
@@ -35,7 +47,9 @@
                     <div style="float:left; width: 33%; margin-right: 0px;">
                         <div style="color: Green; margin-left: 10px; margin-top:15px; font-style: italic; font-weight: bold; font-size: x-small;">Please select the User you want to invite to Secret Room</div>
                         <div>
-                            <ul class="listless" id="radioList" style="margin-left: 10px;margin-right: 10px;background-color:white;height:490px;width: auto; color:teal;" />
+                            <ul class="listless" id="radioList" style="margin-left: 10px;margin-right: 10px;background-color:white;height:490px;width: auto; color:teal;">
+							 
+							</ul>
                         </div>
                     </div>
                     
@@ -63,26 +77,29 @@
     function AddUserToList(userList) {
         var userListCont = document.getElementById('radioList');
         $(userListCont).children('li').remove();
-        var radio = null;
+        var checkbox = null;
 
         for (var i = 0; i < userList.length; i++) {
             if (userList[i] !== '@User.Identity.Name') {
-                radio = CreateRadio('userList', userList[i]);
+                checkbox = CreateCheckbox('userList', userList[i]);
+				$(checkbox).css('color','green');
                 var li = document.createElement("li");
                 var lb = document.createElement("span");
                 lb.innerHTML = userList[i];
-                $(li).append(radio);
+                $(li).append(checkbox);
+				$(lb).css('margin-left','5px;');
                 $(li).append(lb);
                 $(userListCont).append(li);
             }
         }
+		
 
     }
-    function CreateRadio(name, value) {
+    function CreateCheckbox(name, value) {
 
         var element = document.createElement("input");
         var id = name + value;
-        element.setAttribute('type', 'radio');
+        element.setAttribute('type', 'checkbox');
         element.setAttribute('value', value);
         element.setAttribute('name', name);
         element.setAttribute('id', id);
@@ -102,7 +119,7 @@
             success: function (data) {
                 if (data !== 'True') {
 
-                    document.location.href = '/Home/PublicClass';
+                    document.location.href = '@Url.Action("PublicClass","Home")';
                 }
             }
         });
@@ -113,7 +130,7 @@
             url: "/Chat/ClearPrivateRoom",
             type: "GET"
         });
-        document.location.href = '/Home/PublicClass';
+        document.location.href = '@Url.Action("PublicClass","Home")';
     }
 
     function ExitRoom() {
@@ -129,7 +146,7 @@
             data: jsonData,
             contentType: "application/json"
         });
-        document.location.href = '/Home/PublicClass';
+        document.location.href = '@Url.Action("PublicClass","Home")';
     }
     function wasClicked() {
 
@@ -175,7 +192,7 @@
 
     function InviteClient() {
 
-        var invitedUser = $("input[type='radio'][name='userList']:checked").attr('value');
+        var invitedUser = $("input[type='checkbox'][name='userList']:checked").attr('value');
         if (typeof (invitedUser) != "undefined") {
             var client = { Username: invitedUser, Message: '<b><span style="color:Teal;font-style:italic;">' + invitedUser + ' Enter my Conversation at Secret Room: Secret Room Please</span>' };
 

@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using TeacherAssistant.Models;
 using System.Data.Entity;
 using System.Web;
+using EmailServices.Interfaces;
 using Microsoft.Owin.Security;
 
 namespace TeachersAssistant
@@ -23,7 +24,7 @@ namespace TeachersAssistant
         public static void RegisterComponents()
         {
 			var unityContainer = new UnityContainer();
-
+            unityContainer.RegisterType<IEmailService, EmailServices.EmailService>();
             unityContainer.RegisterType<ICalendarBookingRepositoryMarker, CalendarBookingRepository>();
             unityContainer.RegisterType<IClassroomRepositoryMarker, ClassroomRepository>();
             unityContainer.RegisterType<IFreeDocumentRepositoryMarker, FreeDocumentRepository>();

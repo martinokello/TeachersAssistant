@@ -17,8 +17,9 @@ namespace EmailServices
         public EmailService(string smtpHostServer)
         {
             _smtpServer = new SmtpClient(smtpHostServer);
+            EmailType = EmailType.Text;
         }
-
+        public EmailType EmailType { get; set; }
         public void SendEmail(TicketMasterEmailMessage message)
         {
             MailMessage mailMessage = new MailMessage();
@@ -31,6 +32,7 @@ namespace EmailServices
                 mailMessage.Attachments.Add(new Attachment(message.AttachmentFilePath));
 
             mailMessage.Subject = message.Subject;
+            mailMessage.IsBodyHtml = EmailType == EmailType.Html;
             mailMessage.Body = message.EmailMessage;
             _smtpServer.Credentials = new NetworkCredential("business-enterprise@martinlayooinc.co.uk", "eps1LonX!505First14Chars");
 

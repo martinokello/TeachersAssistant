@@ -9,13 +9,14 @@ using TeacherAssistant.Models;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Models;
 using TeachersAssistant.Services.Concretes;
-using TeachersAssistant.Services.Interfaces;
 using TeachersAssistant.DataAccess.Interfaces;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Security.Principal;
 using AutoMapper;
+using System.Globalization;
+using System.Configuration;
+using EmailServices.Interfaces;
+using CuttingEdge.Conditions;
+using TeachersAssistant.Infrastructure.FluentValidation;
 
 namespace TeacherAssistant.Controllers
 {
@@ -46,6 +47,21 @@ namespace TeacherAssistant.Controllers
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingRepositoryMarker)
         {
+            Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
+            Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeDocumentRepositoryMarker>(freeDocumentRepositoryMarker, "freeDocumentRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeDocumentStudentRepositoryMarker>(freeDocumentStudentRepositoryMarker, "freeDocumentStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeVideoRepositoryMarker>(freeVideoRepositoryMarker, "freeVideoRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeVideoStudentRepositoryMarker>(freeVideoStudentRepositoryMarker, "freeVideoStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidDocuemtStudentRepositoryMarker>(paidDocuemtStudentRepositoryMarker, "paidDocuemtStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidDocumentRepositoryMarker>(paidDocumentRepositoryMarker, "paidDocumentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidVideoRepositoryMarker>(paidVideoRepositoryMarker, "paidVideoRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidVideoStudentRepositoryMarker>(paidVideoStudentRepositoryMarker, "paidVideoStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentRepositoryMarker>(studentRepositoryMarker, "studentRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "studentTypeRepositoryMarker").IsNotNull();
+            Condition.Requires<ISubjectRepositoryMarker>(subjectRepositoryMarker, "subjectRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
+            Condition.Requires<IBookingTimeRepositoryMarker>(bookingRepositoryMarker, "bookingRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -267,6 +283,18 @@ namespace TeacherAssistant.Controllers
             {
                 GetUIDropdownLists();
 
+                ModelState.Clear();
+                var validator = new UploadMediaViewModelValidator();
+                var errors = validator.Validate(mediaModel).Errors;
+                foreach(var failed in errors)
+                {
+                    ModelState.AddModelError(failed.PropertyName, failed.ErrorMessage);
+                }
+                if (errors.Any())
+                {
+                    return View("UploadMedia", mediaModel);
+                }
+
                 ViewBag.RoleList = GetRolesSelectList();
 
 
@@ -301,11 +329,10 @@ namespace TeacherAssistant.Controllers
 
                 if (mediaModel.Select != null)
                 {
-                    ModelState.Clear();
-                    if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType))
+                    if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType) || mediaModel.MediaId < 1)
                     {
                         ModelState.AddModelError("MediaId", "Media Id Required");
-                        return UploadMedia(mediaModel);
+                        return View("UploadMedia",mediaModel);
                     }
                     switch (mediaType.ToLower())
                     {
@@ -323,15 +350,14 @@ namespace TeacherAssistant.Controllers
                             var freeVideo = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
                             return View(new UploadMediaViewModel { MediaId = freeVideo.FreeVideoId, RoleName = freeVideo.RoleName, Name = freeVideo.FilePath });
                     }
-                    return View(mediaModel);
+                    return View("UploadMedia", mediaModel);
                 }
                 else if (mediaModel.Delete != null)
                 {
-                    ModelState.Clear();
-                    if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType))
+                    if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType) || mediaModel.MediaId<1)
                     {
                         ModelState.AddModelError("MediaId", "Media Id Required");
-                        return UploadMedia(mediaModel);
+                        return View("UploadMedia", mediaModel);
                     }
 
 
@@ -390,7 +416,7 @@ namespace TeacherAssistant.Controllers
                             _repositoryServices.DeleteFreeVideoById(mediaModel.MediaId);
                             return View("SuccessfullCreation");
                     }
-                    return View(mediaModel);
+                    return View("UploadMedia", mediaModel);
                 }
                 else
                 {
@@ -407,8 +433,12 @@ namespace TeacherAssistant.Controllers
                         var dirInfo = new DirectoryInfo(physicalPath);
                         if (!dirInfo.Exists) dirInfo.Create();
 
+                        FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                        if (fileInfo1.Exists)
+                        {
+                            fileInfo1.Delete();
+                        }
                         FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
-                        if (fileInfo.Exists) fileInfo.Delete();
                         using (var fileStream = fileInfo.Create())
                         {
                             fileStream.Write(fileBuffer, 0, fileBuffer.Length);
@@ -455,7 +485,7 @@ namespace TeacherAssistant.Controllers
             {
                 ModelState.Clear();
                 ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
-                return View("UploadMedia");
+                return View("UploadMedia", mediaModel);
             }
         }
 
@@ -689,10 +719,23 @@ namespace TeacherAssistant.Controllers
                 Subject subject = _repositoryServices.GetSubjectById(bookingTimeViewModel.SubjectId);
                 foreach (var bookingTime in bookingTimeViewModel.BookingTimes)
                 {
-                    _repositoryServices.SaveOrUpdateBooking(teacher, student, subject, bookingTime,
+                    _repositoryServices.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
                         bookingTimeViewModel.Description);
                 }
 
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"]);
+
+                var emailMessage = new System.Net.Mail.MailMessage();
+
+                var fileInfo = new FileInfo(Server.MapPath("~/Infrastructure/MailTemplates/TeacherBookingTime.html"));
+                var html = fileInfo.OpenText().ReadToEnd();
+                html.Replace("{TeacherName}", teacher.EmailAddress);
+                html.Replace("{StudentName}", student.EmailAddress);
+                html.Replace("{SubjectName}", subject.SubjectName);
+                html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
+                html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
+                emailService.EmailType = EmailType.Html;
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
                 return View("SuccessfullCreation");
             }
             return View("ManageTeacherCalendar", bookingTimeViewModel);
@@ -840,7 +883,7 @@ namespace TeacherAssistant.Controllers
 
             ViewBag.RoleName = GetRolesSelectList();
 
-            if (ModelState.IsValid && AssignRoles(userInRole.Username, userInRole.RoleName))
+            if (AssignRoles(userInRole.Username, userInRole.RoleName))
             {
                 return View("SuccessfullCreation");
             }
@@ -865,7 +908,7 @@ namespace TeacherAssistant.Controllers
             }
             ViewBag.RoleName = new SelectList(rolesList);
 
-            if (ModelState.IsValid && RemoveUserFromRole(userInRole.Username, userInRole.RoleName))
+            if (RemoveUserFromRole(userInRole.Username, userInRole.RoleName))
             {
                 return View("SuccessfullCreation");
             }
@@ -949,6 +992,7 @@ namespace TeacherAssistant.Controllers
         {
             var rolesList = new List<SelectListItem>();
 
+            rolesList.Add(new SelectListItem { Text = "Pick a Role", Value = "" });
             foreach (var role in Roles.GetAllRoles())
             {
                 rolesList.Add(new SelectListItem { Text = role, Value = role });
@@ -979,21 +1023,26 @@ namespace TeacherAssistant.Controllers
             switch (mediaType.ToLower())
             {
                 case "paiddocument":
-                    return Json(_repositoryServices.GetPaidDocuments(role)
-                    .Select(p => new SelectListItem { Text = p.PaidDocumentId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.PaidDocumentId.ToString() }).ToList(), JsonRequestBehavior.AllowGet);
+                    var list = _repositoryServices.GetPaidDocuments(role)
+                   .Select(p => new SelectListItem { Text = p.PaidDocumentId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.PaidDocumentId.ToString() }).ToList();
+                    list.Add(new SelectListItem { Text = "Pick DocumentId", Value = "-1" });
+                    return Json(list.OrderBy(p=> p.Value),JsonRequestBehavior.AllowGet);
 
                 case "freedocument":
-                    return Json(_repositoryServices.GetFreeDocuments(role)
-                         .Select(p => new SelectListItem { Text = p.FreeDocumentId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.FreeDocumentId.ToString() }).ToList(), JsonRequestBehavior.AllowGet);
-
+                    list = _repositoryServices.GetFreeDocuments(role)
+                         .Select(p => new SelectListItem { Text = p.FreeDocumentId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.FreeDocumentId.ToString() }).ToList();
+                    list.Add(new SelectListItem { Text = "Pick DocumentId", Value = "-1" });
+                    return Json(list.OrderBy(p => p.Value), JsonRequestBehavior.AllowGet);
                 case "paidvideo":
-                    return Json(_repositoryServices.GetPaidVideos(role)
-                          .Select(p => new SelectListItem { Text = p.PaidVideoId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.PaidVideoId.ToString() }).ToList(), JsonRequestBehavior.AllowGet);
-
+                    list = _repositoryServices.GetPaidVideos(role)
+                          .Select(p => new SelectListItem { Text = p.PaidVideoId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.PaidVideoId.ToString() }).ToList();
+                    list.Add(new SelectListItem { Text = "Pick DocumentId", Value = "-1" });
+                    return Json(list.OrderBy(p => p.Value), JsonRequestBehavior.AllowGet);
                 case "freevideo":
-                    return Json(_repositoryServices.GetFreeVideos(role)
-                          .Select(p => new SelectListItem { Text = p.FreeVideoId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.FreeVideoId.ToString() }).ToList(), JsonRequestBehavior.AllowGet);
-
+                    list = _repositoryServices.GetFreeVideos(role)
+                          .Select(p => new SelectListItem { Text = p.FreeVideoId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.FreeVideoId.ToString() }).ToList();
+                    list.Add(new SelectListItem { Text = "Pick DocumentId", Value = "-1" });
+                    return Json(list.OrderBy(p => p.Value), JsonRequestBehavior.AllowGet);
                 default:
                     return null;
             }

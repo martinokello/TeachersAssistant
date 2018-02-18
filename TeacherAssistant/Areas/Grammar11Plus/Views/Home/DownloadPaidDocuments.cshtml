@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Download Paid Documents";
-    Layout = "~/Areas/Grammar11Plus/Views/Shared/_LayoutGrammar11Plus.cshtml";
+    Layout = "~/Areas/Grammar11Plus/Views/Shared/_NewLayoutGrammar11Plus.cshtml";
 }<style type="text/css">
     .paging {
         background-color: teal;
@@ -70,7 +70,7 @@
             var jsonpaidVids = @Html.Raw(Json.Encode(ViewBag.PaidVideosList));
             var $ulHandleVids = $('ul#paidVids');
             for(var doc=0; doc<jsonpaidVids.length; doc++ ){
-                $ulHandleVids.append('<li><a href="'+jsonpaidVids[doc].FilePath+'">'+jsonpaidVids[doc].Subject.SubjectName+' in '+jsonpaidVids[doc].RoleName+', '+jsonpaidVids[doc].FilePath.substr(jsonpaidVids[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+                $ulHandleVids.append('<li><title><div class="col-lg-8">'+jsonpaidVids[doc].Subject.SubjectName+' in '+jsonpaidVids[doc].RoleName+', '+jsonpaidVids[doc].FilePath.substr(jsonpaidVids[doc].FilePath.lastIndexOf('/')+1)+'</div></title><div class="col-lg-8"><video width="320" height="auto" controls><source src="'+jsonpaidVids[doc].FilePath+'" type="video/mp4"></video></li>');
             }
         });
     </script>

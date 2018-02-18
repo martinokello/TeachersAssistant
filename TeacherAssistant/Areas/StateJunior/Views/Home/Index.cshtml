@@ -1,12 +1,13 @@
 ﻿@{
     ViewBag.Title = "State Junior Home Page";
-    Layout = "~/Areas/StateJunior/Views/Shared/_LayoutStateJunior.cshtml";
+    Layout = "~/Areas/StateJunior/Views/Shared/_NewLayoutStateJunior.cshtml";
 
     if (!User.IsInRole("StateJunior") && !User.IsInRole("Administrator"))
     {
         Response.Redirect("~/Home/Index");
     }
 }
+<!--
 <style type="text/css">
     .paging {
         font-size: medium;
@@ -39,8 +40,8 @@
         color: white !important;
     }
 </style>
-
-<div class="form-horizontal" style="background-color: #DADADA;">
+-->
+<div class="form-horizontal">
 <div class="header row">
     <div class="cell">
 		<div class="col-md-12">

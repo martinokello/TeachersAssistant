@@ -1,13 +1,13 @@
 ﻿@model TeacherAssistant.Models.TeacherCalendarViewModel
 @{
     ViewBag.Title = "BookTeacherHelpTime";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
 
 <div class="form-horizontal" style="background-color: #DADADA;">
     @{
         ViewBag.Title = "BookTeacherHelpTime";
-        Layout = "~/Views/Shared/_Layout.cshtml";
+        Layout = "~/Views/Shared/_NewLayout.cshtml";
     }
 
     <h2>Teachers Calender</h2><br />
@@ -40,14 +40,14 @@
     <div class="form-group">
         @Html.LabelFor(model => model.BookingTimes[0].StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+            @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
             @Html.ValidationMessageFor(model => model.BookingTimes[0].StartTime, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.BookingTimes[0].EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @type = "time" } })
+            @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
             @Html.ValidationMessageFor(model => model.BookingTimes[0].EndTime, "", new { @class = "text-danger" })
         </div>
     </div>

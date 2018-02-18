@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
+using System.Web.Mail;
 using System.Web.Mvc;
 using System.Web.Security;
+using EmailServices.EmailDomain;
+using EmailServices.Interfaces;
 using TeacherAssistant.Infrastructure;
 using TeacherAssistant.Models;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Models;
 using TeachersAssistant.Services.Concretes;
+using System.Globalization;
+using CuttingEdge.Conditions;
 
 namespace  TeacherAssistant.Controllers
 {
@@ -38,6 +45,22 @@ namespace  TeacherAssistant.Controllers
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingTimeRepositoryMarker)
         {
+
+            Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
+            Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeDocumentRepositoryMarker>(freeDocumentRepositoryMarker, "freeDocumentRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeDocumentStudentRepositoryMarker>(freeDocumentStudentRepositoryMarker, "freeDocumentStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeVideoRepositoryMarker>(freeVideoRepositoryMarker, "freeVideoRepositoryMarker").IsNotNull();
+            Condition.Requires<IFreeVideoStudentRepositoryMarker>(freeVideoStudentRepositoryMarker, "freeVideoStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidDocuemtStudentRepositoryMarker>(paidDocuemtStudentRepositoryMarker, "paidDocuemtStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidDocumentRepositoryMarker>(paidDocumentRepositoryMarker, "paidDocumentRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidVideoRepositoryMarker>(paidVideoRepositoryMarker, "paidVideoRepositoryMarker").IsNotNull();
+            Condition.Requires<IPaidVideoStudentRepositoryMarker>(paidVideoStudentRepositoryMarker, "paidVideoStudentRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentRepositoryMarker>(studentRepositoryMarker, "studentRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "studentTypeRepositoryMarker").IsNotNull();
+            Condition.Requires<ISubjectRepositoryMarker>(subjectRepositoryMarker, "subjectRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
+            Condition.Requires<IBookingTimeRepositoryMarker>(bookingTimeRepositoryMarker, "bookingTimeRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -109,16 +132,29 @@ namespace  TeacherAssistant.Controllers
                 {
                     var teacherCalendar = _teacherRepository.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                     _teacherRepository.DeleteTeacherCalendarByBooking(teacherCalendar);
-                    return View("SuccssessfullCreation");
+                    return View("_SuccessfullCreation");
                 }
                 Teacher teacher = _teacherRepository.GetTeacherByName(User.Identity.Name);
                 Student student = _teacherRepository.GetStudentByName(bookingTimeViewModel.StudentFullName);
                 Subject subject = _teacherRepository.GetSubjectById(bookingTimeViewModel.SubjectId);
                 foreach (var bookingTime in bookingTimeViewModel.BookingTimes)
                 {
-                    _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, bookingTime, bookingTimeViewModel.Description);
+                    _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) }, bookingTimeViewModel.Description);
                 }
-                return View("SucssessfullCreation");
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"]);
+                
+                var emailMessage = new System.Net.Mail.MailMessage();
+
+                var fileInfo = new FileInfo(Server.MapPath("~/Infrastructure/EmailTemplates/TeacherBookingTime.html"));
+                var html = fileInfo.OpenText().ReadToEnd();
+                html.Replace("{TeacherName}", teacher.EmailAddress);
+                html.Replace("{StudentName}", student.EmailAddress);
+                html.Replace("{SubjectName}", subject.SubjectName);
+                html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
+                html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
+                emailService.EmailType = EmailType.Html;
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
+                return View("_SuccessfullCreation");
             }
             return View("BookTeacherHelpTime",bookingTimeViewModel);
         }
@@ -130,7 +166,7 @@ namespace  TeacherAssistant.Controllers
             var calendar = _teacherRepository.GetTeacherCalendar(teacher.TeacherId ?? 1);
             var teacherCalendarViewModelList = new List<TeacherCalendarViewModel>();
 
-            var bookingTimes = new List<BookingTime>();
+            var bookingTimes = new List<BookingTimeString>();
 
             if (calendar != null)
             {

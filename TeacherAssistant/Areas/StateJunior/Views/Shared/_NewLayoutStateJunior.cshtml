@@ -1,0 +1,274 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Teacher Assistant State Junior</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" href="@Url.Content("~/assets/css/ie9.css")" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="@Url.Content("~/assets/css/ie8.css")" /><![endif]-->
+    <link rel="stylesheet" href="@Url.Content("~/content/bootstrap.min.css")" />
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/calendar/css/stylesheet.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/calendar/css/calendar.css")">
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/main.css")" />
+    <!-- Scripts -->
+    <script src="@Url.Content("~/assets/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/skel.min.js")"></script>
+    <script src="@Url.Content("~/assets/js/util.js")"></script>
+    <!--[if lte IE 8]><script src="@Url.Content("~/assets/js/ie/respond.min.js")"></script><![endif]-->
+    <script src="@Url.Content("~/assets/js/main.js")"></script>
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    <!-- Scripts -->
+    <script type="text/javascript" src="@Url.Content("~/calendar/js/jquery-calendar.min.js")"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+		    $('div#sidebar a.toggle').attr('href', '');
+
+		    $('a').on('click', function () {
+		        if ($(this).hasClass('toggle') && (href === '' || href === null || href === '#')) {
+		            return false;
+		        }
+		        var href = $(this).attr('href');
+		        if (href !== '' && href !== null && href !== '#') {
+		            window.location.href = href;
+		        }
+		        else
+		        {
+		            return false;
+		        }
+		    });
+		});
+    </script>
+</head>
+<body>
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <a href="@Url.Action("index", "Home")" class="logo"><strong>Home Of Teacher's Assistant</strong> Website</a>
+                        </div>
+                        <div class="col-lg-2">
+                            <img alt="Graduation Picture" src="~/images/HappyGrad.jpg" width="100px" height="auto" />
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Banner -->
+                <div>
+                    <span style="color:teal;font-weight: bolder;">
+                        &nbsp;
+                        @{
+                            var display = string.Empty;
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                display = "Logged in as: " + User.Identity.Name;
+                            }
+                        }
+                        @display
+                    </span>
+                    <span style="color:teal;font-weight: bolder;">
+                        &nbsp;
+                        @{
+                            if (User.IsInRole("Administrator"))
+                            {
+                                <a href="@Url.Content("~/Administration/TeachersCalendar")">Site Administration </a>
+                            }
+                        }
+                    </span>
+
+                </div>
+                <!-- Section -->
+                <section>
+                    @RenderBody()
+                </section>
+
+                <!-- Section -->
+                <section>
+                    <header class="major">
+                        <h2>Ipsum sed dolor</h2>
+                    </header>
+                    <div class="posts">
+                        <article>
+                            <a href="#" class="image"><img src="~/images/pic01.jpg" alt="" /></a>
+                            <h3>Interdum aenean</h3>
+                            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                            <ul class="actions">
+                                <li><a href="#" class="button">More</a></li>
+                            </ul>
+                        </article>
+                        <article>
+                            <a href="#" class="image"><img src="~/images/pic02.jpg" alt="" /></a>
+                            <h3>Nulla amet dolore</h3>
+                            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                            <ul class="actions">
+                                <li><a href="#" class="button">More</a></li>
+                            </ul>
+                        </article>
+                        <article>
+                            <a href="#" class="image"><img src="~/images/pic03.jpg" alt="" /></a>
+                            <h3>Tempus ullamcorper</h3>
+                            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                            <ul class="actions">
+                                <li><a href="#" class="button">More</a></li>
+                            </ul>
+                        </article>
+                        <article>
+                            <a href="#" class="image"><img src="~/images/pic04.jpg" alt="" /></a>
+                            <h3>Sed etiam facilis</h3>
+                            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                            <ul class="actions">
+                                <li><a href="#" class="button">More</a></li>
+                            </ul>
+                        </article>
+                        <article>
+                            <a href="#" class="image"><img src="~/images/pic05.jpg" alt="" /></a>
+                            <h3>Feugiat lorem aenean</h3>
+                            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                            <ul class="actions">
+                                <li><a href="#" class="button">More</a></li>
+                            </ul>
+                        </article>
+                        <article>
+                            <a href="#" class="image"><img src="~/images/pic06.jpg" alt="" /></a>
+                            <h3>Amet varius aliquam</h3>
+                            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                            <ul class="actions">
+                                <li><a href="#" class="button">More</a></li>
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+                <!-- Search -->
+                <section id="search" class="alt">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div style="font-family: Arial, Helvetica, sans-serif; font-size: 7.5pt;" align=center>
+                                <a href="http://www.freefind.com/searchtipspop.html" target=searchtips onclick="somewin = window.open('http://www.freefind.com/searchtipspop.html', 'searchtips', 'resizable=yes,scrollbars=yes,width=508,height=508')">search&nbsp;tips</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div style="font-family: Arial, Helvetica, sans-serif; font-size: 7.5pt;" align=right>
+                                <a href="http://search.freefind.com/find.html?si=15594014&amp;pid=a">advanced&nbsp;search</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form style="margin:0px; margin-top:4px;" action="http://search.freefind.com/find.html" method="get" accept-charset="utf-8" target="_self">
+                            <input type="hidden" name="si" value="15594014">
+                            <input type="hidden" name="pid" value="r">
+                            <input type="hidden" name="n" value="0">
+                            <input type="hidden" name="_charset_" value="">
+                            <input type="hidden" name="bcd" value="&#247;">
+                            <div class="row">
+                                <input type="text" name="query" class="col-lg-10" placeholder="Search..." /><input type="submit" class="col-lg-2" value="Go" style="color: green;width:15%;margin-left:0;margin-top:2px;" />
+                            </div>
+                            <!---->
+                        </form>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div style="text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 7.5pt; padding-top: 4px;">
+                                <a style="text-decoration: none; color: gray;" href="http://www.freefind.com">search engine</a><a style="text-decoration: none; color: gray;" href="http://www.freefind.com">
+                                    by
+                                    <span style="color: #606060;">freefind</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Menu -->
+                <nav id="menu">
+                    <ul>
+                        <li class="current_page_item"><a href="~/Home/Index">Home</a></li>
+                        <li><a href="~/Shopping/ShopContentListing">Shop</a></li>
+                        <li><a href="~/Shopping/Basket">Basket</a></li>
+                        <li>
+                             @if (User.Identity.IsAuthenticated)
+                            {
+                                <span class="opener"><a href="~/Account/LogOff">LogOut</a></span>
+                            }
+                            else
+                            {
+                                <span class="opener"><a href="#">Login</a></span>
+                            }
+                            <ul>
+                                <li><a href="~/Account/Login?Role=Grammar11Plus">11+ (Grammar)</a></li>
+                                <li><a href="~/Account/Login?Role=StatePrimary">State Primary</a></li>
+                                <li><a href="~/Account/Login?Role=StateJunior">State Junior</a></li>
+                                <li><a href="~/Account/Login?Role=Administrator">Administrator</a></li>
+                                <li><a href="~/Home/PublicClass">OnLine Classrooms</a></li>
+                                <li><a href="~/StateJunior/Home/BookTeacherHelpTime">Book Teacher Help Time</a></li>
+                                <li><a href="~/StateJunior/Home/TeachersCalendar">Teacher's Calendar</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="~/StateJunior/Home/DownloadFreeDocuments">Free Docs</a></li>
+                        <li><a href="~/StateJunior/Home/DownloadPaidDocuments">Paid Docs</a></li>
+                        <li><a href="~/Home/AboutUs">About Us</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Section -->
+                <section>
+                    <header class="major">
+                        <h2>Uber Graduate Teacher</h2>
+                    </header>
+                    <div class="mini-posts">
+                       <img src="~/images/HappyGrad.png" alt="Uber Graduate Teacher" style="width:280px;height:auto;"/>
+                    </div>
+                    <ul class="actions">
+                        <li><a href="~/Home/AboutUs" class="button">More</a></li>
+                    </ul>
+                </section>
+
+                <!-- Section -->
+                <section>
+                    <header class="major">
+                        <h2>Get in touch</h2>
+                    </header>
+                    <p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin sed aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+                    <ul class="contact">
+                        <li class="fa-envelope-o"><a href="#">information@untitled.tld</a></li>
+                        <li class="fa-phone">(000) 000-0000</li>
+                        <li class="fa-home">
+                            1234 Somewhere Road #8254<br />
+                            Nashville, TN 00000-0000
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Footer -->
+                <footer id="footer">
+                    <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </footer>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4fa0ee7f0312e67c"></script>
+</body>
+</html>

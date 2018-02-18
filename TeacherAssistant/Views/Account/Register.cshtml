@@ -1,6 +1,7 @@
 ﻿@model TeacherAssistant.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -36,6 +37,3 @@
     </div>
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

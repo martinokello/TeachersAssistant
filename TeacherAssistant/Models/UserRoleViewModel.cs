@@ -8,7 +8,6 @@ namespace  TeacherAssistant.Models
 {
     public class UserRoleViewModel
     {
-        [Required]
         public string UserId { get; set; }
         [Required]
         public string Username { get; set; }

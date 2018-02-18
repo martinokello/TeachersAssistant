@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
+<!--
 <style type="text/css">
     .paging {
         font-size: medium;
@@ -33,45 +35,37 @@
         color: white !important;
     }
 </style>
-<div class="form-horizontal" style="background-color: #DADADA;">
-<div class="header row">
-    <div class="cell">
-		<div class="col-md-12">
-			<h2>Teacher Assistant by &copy; MartinLayooInc</h2>
-			<p class="lead">This is the home page of the Teacher's Assistant Web Application, which should be viewable on all devices. MartinLayooInc has enabled Teachers and their students to interact via this application, and holds all the rights to the App. Ensure that you are using the App with consent from the developer.
-			 For support and new feature requests, do get in touch with <a style="font-size:large;" href="mailto:business-enterprise@martinlayooinc.co.uk">MartinLayooInc &copy;</a></p>
+    -->
+<div class="form-horizontal">
+	<div class="header row">
+		<div class="cell">
+			<div class="col-md-12">
+				<h2>Teacher Assistant by &copy; MartinLayooInc</h2>
+				<p class="lead">This is the home page of the Teacher's Assistant Web Application, which should be viewable on all devices. MartinLayooInc has enabled Teachers and their students to interact via this application, and holds all the rights to the App. Ensure that you are using the App with consent from the developer.
+				 For support and new feature requests, do get in touch with <a style="font-size:large;" href="mailto:business-enterprise@martinlayooinc.co.uk">MartinLayooInc &copy;</a></p>
+			</div>
+		</div>
+	</div>
+	<div class="area">
+		<div class="row" style="padding:5px;">
+			<div class="col-md-4">
+				<h2>Getting started</h2>
+				<p><a href="@Url.Content("~/")Home/AboutUs" class="btn btn-primary">Find out about MartinLayooInc &copy;</a></p>
+				<p>
+					Ensure that you register an account with a specific email during the login process. Once that is done, you can start using the application.
+				</p>
+				<p>Having registered, your teacher will be notified, and you will be placed in a role as Student. Thereafter all communication and booking time with the Tutor and managing work will be done via the app. Please do not share your passwords. If you feel your password has been compromised, then we suggest you to reset it, during Login.</p>
+			</div>
+			<div class="col-md-4">
+				<h2>There are 4 roles at this stage.</h2>
+				<p>Provided you have registered and the Tutor is aware, await confirmation from your teacher as they place you in your right category (roles)</p>
+				<p><a class="btn btn-primary" href="/Home/AboutUs">Learn more about us</a></p>
+			</div>
+			<div class="col-md-4">
+				<h2>Should a need exist for support</h2>
+				<p>Please do not hesitate to contact your teacher if there are any issues with the site you are unsure of.</p>
+				<p>Any Support can be got via MartinLayooIn Software House, and only by teacher's requests will they be ticketed.</p>
+			</div>
 		</div>
 	</div>
 </div>
-<div class="area">
-    <div class="row" style="padding:5px;">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-			<p><a href="@Url.Content("~/")Home/AboutUs" class="btn btn-primary">Find out about MartinLayooInc &copy;</a></p>
-            <p>
-                Ensure that you register an account with a specific email during the login process. Once that is done, you can start using the application.
-            </p>
-            <p>Having registered, your teacher will be notified, and you will be placed in a role as Student. Thereafter all communication and booking time with the Tutor and managing work will be done via the app. Please do not share your passwords. If you feel your password has been compromised, then we suggest you to reset it, during Login.</p>
-        </div>
-        <div class="col-md-4">
-            <h2>There are 4 roles at this stage.</h2>
-            <p>Provided you have registered and the Tutor is aware, await confirmation from your teacher as they place you in your right category (roles)</p>
-            <p><a class="btn btn-primary" href="/Home/AboutUs">Learn more about us</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Should a need exist for support</h2>
-            <p>Please do not hesitate to contact your teacher if there are any issues with the site you are unsure of.</p>
-            <p>Any Support can be got via MartinLayooIn Software House, and only by teacher's requests will they be ticketed.</p>
-        </div>
-    </div>
-</div>
-</div>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		var $anchor = $('a').click(function(){
-			var href = $anchor.attr('href');
-			window.location.href = href;
-		});
-	});
-</script>

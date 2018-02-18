@@ -2,7 +2,7 @@
 @model string[]
 @{
     ViewBag.Title = "Download Page";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 @{
     foreach (string product in Model)
@@ -33,12 +33,15 @@
 <div style="text-align: center;">
     <div class="centralProduct">
         <div class="row" style="background-color: #DADADA; margin-right: 0px; margin-left: 0px; text-align: left;">
-            <h2>DownloadPage</h2>
-            <div style="height: auto;" class="row">
-                <div id="tweetSearch" style="margin: 20px 40px 0px auto; width: 0px; float: right; position: relative; visibility: hidden;">@{ Html.RenderPartial("_PartialTweetSearchFeed"); }</div>
-                <div style="clear:both; margin-top:1%;"></div>
-            </div>tweetSearch" style="margin:20px 40px 0px auto;width:0px;float:right;position:relative;visibility: hidden;">@{ Html.RenderPartial("_PartialTweetSearchFeed"); }
-        </div><div class="ClearBoth" />
+			<div class="col-lg-12">
+				<h2>DownloadPage</h2>
+				<div style="height: auto;" class="row">
+					<div id="tweetSearch" style="margin: 20px 40px 0px auto; width: 0px; float: right; position: relative; visibility: hidden;">@{ Html.RenderPartial("_PartialTweetSearchFeed"); }</div>
+					<div style="clear:both; margin-top:1%;"></div>
+				</div>tweetSearch" style="margin:20px 40px 0px auto;width:0px;float:right;position:relative;visibility: hidden;">@{ Html.RenderPartial("_PartialTweetSearchFeed"); }
+			</div>
+		</div>
+		<div class="ClearBoth" />
     </div>
     <div style="text-align:left;">
         <label id="Thanks1" style="background-color: white; font-weight: bold; color: maroon; width: 800px; height: 450px;"></label>

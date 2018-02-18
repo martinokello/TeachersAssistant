@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Download Free Documents";
-    Layout = "~/Areas/StateJunior/Views/Shared/_LayoutStateJunior.cshtml";
+    Layout = "~/Areas/StateJunior/Views/Shared/_NewLayoutStateJunior.cshtml";
 }
 
 <style type="text/css">
@@ -63,17 +63,17 @@
 </div>
 
 <script type="text/javascript">
-            $(document).ready(function () {
-                var jsonfreeDocs = @Html.Raw(Json.Encode(ViewBag.FreeDocumentsList));
-                var $ulHandleDocs = $('ul#freeDocs');
-                for(var doc=0; doc<jsonfreeDocs.length; doc++ ){
-                    $ulHandleDocs.append('<li><a href="'+jsonfreeDocs[doc].FilePath.substr(1)+'">'+jsonfreeDocs[doc].Subject.SubjectName+' in '+jsonfreeDocs[doc].RoleName+', '+jsonfreeDocs[doc].FilePath.substr(jsonfreeDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
-                }
+    $(document).ready(function () {
+        var jsonfreeDocs = @Html.Raw(Json.Encode(ViewBag.FreeDocumentsList));
+        var $ulHandleDocs = $('ul#freeDocs');
+        for(var doc=0; doc<jsonfreeDocs.length; doc++ ){
+            $ulHandleDocs.append('<li><a href="'+jsonfreeDocs[doc].FilePath.substr(1)+'"> '+jsonfreeDocs[doc].RoleName+', '+jsonfreeDocs[doc].FilePath.substr(jsonfreeDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+        }
 
-                var jsonfreeVids = @Html.Raw(Json.Encode(ViewBag.FreeVideosList));
-                var $ulHandleVids = $('ul#freeVids');
-                for(var doc=0; doc<jsonfreeVids.length; doc++ ){
-                    $ulHandleVids.append('<li><a href="'+jsonfreeVids[doc].FilePath.substr(1)+'">'+jsonfreeVids[doc].Subject.SubjectName+' in '+jsonfreeVids[doc].RoleName+', '+jsonfreeVids[doc].FilePath.substr(jsonfreeVids[doc].FilePath.lastIndexOf('/')+1)+'</li>');
-                }
-            });
+        var jsonfreeVids = @Html.Raw(Json.Encode(ViewBag.FreeVideosList));
+        var $ulHandleVids = $('ul#freeVids');
+        for(var doc=0; doc<jsonfreeVids.length; doc++ ){
+            $ulHandleVids.append('<li><section><div class="col-lg-8">'+jsonfreeVids[doc].RoleName+', '+jsonfreeVids[doc].FilePath.substr(jsonfreeVids[doc].FilePath.lastIndexOf('/')+1)+'</section></div><div class="col-lg-8"><video width="65%" height="auto" controls><source src="'+jsonfreeVids[doc].FilePath.substr(1)+'" type="video/mp4"><source src="'+jsonfreeVids[doc].FilePath.substr(1).replace(".mp4",".webm")+'" type="video/webm"><source src="'+jsonfreeVids[doc].FilePath.substr(1).replace(".mp4",".ogg")+'" type="video/ogg">Your browser does not support the video tag.</video></div></li>');
+        }
+        });
 </script>

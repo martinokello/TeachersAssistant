@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using EmailServices.Interfaces;
 using TeacherAssistant.Models;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Models;
 using TeachersAssistant.Services.Concretes;
+using System.Globalization;
+
 namespace TeacherAssistant.Areas.StatePrimary.Controllers
 {
 
@@ -127,20 +131,21 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
 
             return View("BookTeacherHelpTime");
         }
-
         [HttpPost]
         public ActionResult BookTeacherHelpTime(TeacherCalendarViewModel bookingTimeViewModel)
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
 
-            if (bookingTimeViewModel.CalendarBookingId < 1)
-            {
-                ModelState.AddModelError("Select", "Calendar BookingId required");
-            }
+
 
             if (bookingTimeViewModel.Select != null)
             {
+                if (bookingTimeViewModel.CalendarBookingId < 1)
+                {
+                    ModelState.AddModelError("Select", "Calendar BookingId required");
+                }
+
                 if (ModelState.IsValid)
                 {
                     var calendarBookingViewModels = new List<CalendarBookingViewModel>();
@@ -168,6 +173,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                                                 StudentId = cal.StudentId,
                                                 BookingTimeId = cal.BookingTimeId
                                             };
+
                     if (calendarsLeftJoin != null)
                         foreach (var cal in calendarsLeftJoin)
                         {
@@ -193,6 +199,10 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             }
             if (bookingTimeViewModel.Delete != null)
             {
+                if (bookingTimeViewModel.CalendarBookingId < 1)
+                {
+                    ModelState.AddModelError("Select", "Calendar BookingId required");
+                }
                 if (ModelState.IsValid)
                 {
                     var teacherCalendar =
@@ -213,10 +223,22 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                 Subject subject = _teacherRepository.GetSubjectById(bookingTimeViewModel.SubjectId);
                 foreach (var bookingTime in bookingTimeViewModel.BookingTimes)
                 {
-                    _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, bookingTime,
+                    _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
                         bookingTimeViewModel.Description);
                 }
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"]);
 
+                var emailMessage = new System.Net.Mail.MailMessage();
+
+                var fileInfo = new FileInfo(Server.MapPath("~/Infrastructure/MailTemplates/TeacherBookingTime.html"));
+                var html = fileInfo.OpenText().ReadToEnd();
+                html.Replace("{TeacherName}", teacher.EmailAddress);
+                html.Replace("{StudentName}", student.EmailAddress);
+                html.Replace("{SubjectName}", subject.SubjectName);
+                html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
+                html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
+                emailService.EmailType = EmailType.Html;
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
                 return View("SuccessfullCreation");
             }
             return View("BookTeacherHelpTime", bookingTimeViewModel);

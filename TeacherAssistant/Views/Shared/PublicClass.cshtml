@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml"; ViewBag.Title = "Public Class";
+    Layout = "~/Views/Shared/_NewLayout.cshtml"; ViewBag.Title = "Public Class";
     var userName = !string.IsNullOrEmpty(User.Identity.Name) ? User.Identity.Name : "anonymous";
 }
 <div style="text-align: center;width:100%;">
@@ -17,7 +17,7 @@
 						</b>
 					</span>
 					<br />
-				    <a id="aEnableSecretRoom" href="@Url.Action("/PrivateClass")">
+				    <a id="aEnableSecretRoom" href="@Url.Action("PrivateClass","Home")">
 						<b>
 							<span style="font-size: medium;">
 								Private Class Invitation - Go to <i>Private Class Room</i>
@@ -196,7 +196,7 @@
                 bookingMsg = msg;
                 if (bookingMsg) {
                     alert('You are booked to use the room now: \nPlease enter the Secret Room and invite comrade!!');
-                    document.location = "/Adhoc/SecretChat";
+                    document.location = "@Url.Action("PrivateClass","Home")";
                 }
                 else alert('You require to be using Public Room and Loged In to book Secret Room or\nSecret Room is unavailalbe as it is currently in use: \nPlease try later!!');
 
@@ -259,6 +259,7 @@
             data: jsonData,
             contentType: "application/json"
         });
+        document.location.href = '@Url.Action("Index","Home")';
     }
     function IsInSecretRoom() {
         var userName = '@User.Identity.Name';
@@ -274,7 +275,7 @@
             dataType: "json",
             contentType: "application/json",
             success: function (data) {
-		
+
                 if (data !== 'True') {
                     result = false;
                 } else result = true;

@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Remove User From Role";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
 
 <h2>Remove User From Role</h2>
@@ -18,13 +18,6 @@
             <div style="padding:5px;">
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })

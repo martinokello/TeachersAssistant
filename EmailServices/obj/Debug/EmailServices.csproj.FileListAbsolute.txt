@@ -31,3 +31,8 @@ C:\TeamFoundationProjects\TeachersAssistant\EmailServices\bin\Debug\EmailService
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csprojResolveAssemblyReference.cache
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.dll
 C:\TeamFoundationProjects\TeachersAssistant\EmailServices\obj\Debug\EmailServices.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\EmailServices\bin\Debug\EmailServices.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\EmailServices\bin\Debug\EmailServices.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\EmailServices\obj\Debug\EmailServices.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\EmailServices\obj\Debug\EmailServices.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csprojResolveAssemblyReference.cache

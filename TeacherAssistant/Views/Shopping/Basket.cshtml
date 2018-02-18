@@ -5,7 +5,7 @@
 @model SHOP_PRODS[]
 @{
     ViewBag.Title = "Basket";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 @{
     var countItems = 0;
@@ -65,6 +65,11 @@
         padding: 5px;
         color: saddlebrown;
     }
+	
+	.cellHeader{
+        padding: 5px;
+        color: black;
+	}
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -146,16 +151,16 @@
 
                     <div class="row header">
                         <div class="col-lg-3">
-                            <div class="cell">Product ID</div>
+                            <div class="cellHeader">Product ID</div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="cell">Product Name</div>
+                            <div class="cellHeader">Product Name</div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="cell">Price</div>
+                            <div class="cellHeader">Price</div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="cell">Remove</div>
+                            <div class="cellHeader">Remove</div>
                         </div>
                     </div>
                     <div class="row shop-listing-row">

@@ -1,12 +1,13 @@
 ﻿@{
     ViewBag.Title = "Grammar Eleven Plus Home Page";
-    Layout = "~/Areas/Grammar11Plus/Views/Shared/_LayoutGrammar11Plus.cshtml";
+    Layout = "~/Areas/Grammar11Plus/Views/Shared/_NewLayoutGrammar11Plus.cshtml";
 
     if (!User.IsInRole("Grammar11Plus") && !User.IsInRole("Administrator"))
     {
         Response.Redirect("~/Home/Index");
     }
 }
+<!--
 <style type="text/css">
     .paging {
         font-size: medium;
@@ -39,8 +40,8 @@
         color: white !important;
     }
 </style>
-
-<div class="form-horizontal" style="background-color: #DADADA;">
+-->
+<div class="form-horizontal">
 <div class="header row">
     <div class="cell">
 		<div class="col-md-12">
@@ -63,7 +64,7 @@
         <div class="col-md-4">
             <h2>If you are viewing this page, then you are a Grammar 11 Plus Student.</h2>
             <p>However if this page is not what you registered to view, or you are not a Grammar Eleven Plus Student, then I suggest you should contact your Tutor/Teacher for support needs</p>
-            <p><a class="btn btn-default" href="/Home/AboutUs">Learn more about us</a></p>
+            <p><a class="btn btn-primary" href="/Home/AboutUs">Learn more about us</a></p>
         </div>
         <div class="col-md-4">
             <h2>Should a need exist for support</h2>

@@ -52,6 +52,18 @@
       <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CuttingEdge.Conditions, Version=1.2.0.11174, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.MVC4.5.1.0.0\lib\Net40\FluentValidation.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -285,6 +297,8 @@
     <Compile Include="Controllers\ShoppingController.cs" />
     <Compile Include="Infrastructure\CachingStatic.cs" />
     <Compile Include="Infrastructure\Client.cs" />
+    <Compile Include="Infrastructure\DateTimeFormatAttribute.cs" />
+    <Compile Include="Infrastructure\FluentValidation\UploadMediaViewModelValidator.cs" />
     <Compile Include="Infrastructure\FTPDownLoadUtility.cs" />
     <Compile Include="Infrastructure\ExtensionMethods\Page.cs" />
     <Compile Include="Infrastructure\ExtensionMethods\Paging.cs" />
@@ -339,10 +353,6 @@
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\ie8.css" />
     <Content Include="assets\css\ie9.css" />
-    <Content Include="assets\css\images\bg01.png" />
-    <Content Include="assets\css\images\bg02.png" />
-    <Content Include="assets\css\images\bg03.png" />
-    <Content Include="assets\css\images\bg04.png" />
     <Content Include="assets\css\images\ie\grad0-20.svg" />
     <Content Include="assets\css\images\ie\grad0-35.svg" />
     <Content Include="assets\css\images\ie\grad35-0.svg" />
@@ -352,10 +362,8 @@
     <Content Include="assets\js\ie\html5shiv.js" />
     <Content Include="assets\js\ie\PIE.htc" />
     <Content Include="assets\js\ie\respond.min.js" />
-    <Content Include="assets\js\jquery.dropotron.min.js" />
     <Content Include="assets\js\jquery.min.js" />
     <Content Include="assets\js\main.js" />
-    <Content Include="assets\js\skel-viewport.min.js" />
     <Content Include="assets\js\skel.min.js" />
     <Content Include="assets\js\util.js" />
     <Content Include="calendar\css\calendar.css" />
@@ -374,6 +382,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="images\basket.jpg" />
     <Content Include="images\HappyGrad.jpg" />
+    <Content Include="images\HappyGrad2.jpg" />
     <Content Include="images\header.jpg" />
     <Content Include="images\paypal_logo.gif" />
     <Content Include="images\pic01.jpg" />
@@ -384,6 +393,10 @@
     <Content Include="images\pic06.jpg" />
     <Content Include="images\pic07.jpg" />
     <Content Include="images\pic08.jpg" />
+    <Content Include="images\pic09.jpg" />
+    <Content Include="images\pic10.jpg" />
+    <Content Include="images\pic11.jpg" />
+    <Content Include="Infrastructure\MailTemplates\TeacherBookingTime.html" />
     <Content Include="Views\Shared\left-sidebar.html" />
     <Content Include="Views\Shared\no-sidebar.html" />
     <Content Include="Views\Shared\right-sidebar.html" />
@@ -417,14 +430,14 @@
     <Content Include="Areas\StatePrimary\Views\Home\OnlineClassRoom.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Home\PaidDocuments.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Home\TeachersCalendar.cshtml" />
-    <Content Include="Areas\Grammar11Plus\Views\Shared\_LayoutGrammar11Plus.cshtml" />
+    <Content Include="Areas\Grammar11Plus\Views\Shared\_NewLayoutGrammar11Plus.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Shared\_SuccessfullCreation.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Shared\Error.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Shared\Lockout.cshtml" />
-    <Content Include="Areas\StateJunior\Views\Shared\_LayoutStateJunior.cshtml" />
+    <Content Include="Areas\StateJunior\Views\Shared\_NewLayoutStateJunior.cshtml" />
     <Content Include="Areas\StateJunior\Views\Shared\_SuccessfullCreation.cshtml" />
     <Content Include="Areas\StateJunior\Views\Shared\Error.cshtml" />
-    <Content Include="Areas\StatePrimary\Views\Shared\_LayoutStatePrimary.cshtml" />
+    <Content Include="Areas\StatePrimary\Views\Shared\_NewLayoutStatePrimary.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Shared\_SuccessfullCreation.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Shared\Error.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Shared\Lockout.cshtml" />
@@ -445,6 +458,26 @@
     <Content Include="Documents\Grammar11Plus\PaidDocuments\Web.config" />
     <Content Include="Documents\StateJunior\PaidDocuments\Web.config" />
     <Content Include="Documents\StatePrimary\PaidDocuments\Web.config" />
+    <Content Include="assets\sass\base\_page.scss" />
+    <Content Include="assets\sass\base\_typography.scss" />
+    <Content Include="assets\sass\components\_box.scss" />
+    <Content Include="assets\sass\components\_button.scss" />
+    <Content Include="assets\sass\components\_features.scss" />
+    <Content Include="assets\sass\components\_form.scss" />
+    <Content Include="assets\sass\components\_icon.scss" />
+    <Content Include="assets\sass\components\_image.scss" />
+    <Content Include="assets\sass\components\_list.scss" />
+    <Content Include="assets\sass\components\_mini-posts.scss" />
+    <Content Include="assets\sass\components\_posts.scss" />
+    <Content Include="assets\sass\components\_section.scss" />
+    <Content Include="assets\sass\components\_table.scss" />
+    <Content Include="assets\sass\layout\_banner.scss" />
+    <Content Include="assets\sass\layout\_footer.scss" />
+    <Content Include="assets\sass\layout\_header.scss" />
+    <Content Include="assets\sass\layout\_main.scss" />
+    <Content Include="assets\sass\layout\_menu.scss" />
+    <Content Include="assets\sass\layout\_sidebar.scss" />
+    <Content Include="assets\sass\layout\_wrapper.scss" />
     <None Include="Properties\PublishProfiles\TeachersAssistantApp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -470,7 +503,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\AboutUs.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -504,7 +536,6 @@
     <Content Include="Views\Administration\GetAllUsers.cshtml" />
     <Content Include="Views\Administration\ManageClassRoom.cshtml" />
     <Content Include="Views\Administration\ManageSubject.cshtml" />
-    <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Administration\ManageTeacher.cshtml" />
     <Content Include="Views\Administration\ManageStudent.cshtml" />
     <Content Include="Views\Administration\ManageTeacherCalendar.cshtml" />
@@ -522,8 +553,10 @@
     <Content Include="Views\Error\Error.cshtml" />
     <Content Include="Views\Shared\PublicClass.cshtml" />
     <Content Include="Views\Shared\PrivateClass.cshtml" />
-    <Content Include="Views\Home\DownloadPaidDocuments.cshtml" />
     <Content Include="Views\Home\TeachersCalendar.cshtml" />
+    <Content Include="Views\Shared\_NewLayout.cshtml" />
+    <Content Include="Views\Shared\_NewAdminLayout.cshtml" />
+    <Content Include="Views\Home\DownloadPaidDocuments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
