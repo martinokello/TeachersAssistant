@@ -7,9 +7,9 @@ namespace TeacherAssistant.Models
     {
         public int? SubjectId { get; set; }
         [Required]
-        public string SubjectName { get; set; }
+        public string SubjectName { get; set; } = "Subject Name Default";
         [Required]
-        public int TeacherId { get; set; }
+        public int TeacherId { get; set; } = -1;
         public Teacher Teacher { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }

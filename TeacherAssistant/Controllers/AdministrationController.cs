@@ -461,7 +461,7 @@ namespace TeacherAssistant.Controllers
                             case "freedocument":
                                 var freeDocument = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
                                     typeof(FreeDocument));
-                                _repositoryServices.SaveOrUpdateFeeDocument(freeDocument as FreeDocument);
+                                _repositoryServices.SaveOrUpdateFreeDocument(freeDocument as FreeDocument);
                                 break;
                             case "paidvideo":
                                 var paidVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),

@@ -279,7 +279,6 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Un
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Net.Http.Formatting.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.pdb
-C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Newtonsoft.Json.xml
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Helpers.xml
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Web.Mvc.xml
@@ -307,7 +306,6 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Mi
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\System.Net.Http.Formatting.xml
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
-C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.csprojResolveAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.pdb
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\EmailServices.dll
@@ -331,3 +329,9 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\pt
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\ru\FluentValidation.resources.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\sv\FluentValidation.resources.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\tr\FluentValidation.resources.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.dll.config
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\TeachersAssistant.DataAccess.dll.config
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\bin\Debug\UPAEventsPayPal.dll.config
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.csprojAssemblyReference.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.csproj.CoreCompileInputs.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Tests\obj\Debug\TeachersAssistant.Tests.csproj.CopyComplete

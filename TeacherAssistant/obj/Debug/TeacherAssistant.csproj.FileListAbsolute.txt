@@ -331,7 +331,6 @@ C:\TeamFoundationProjects\TeachersAssistant\TeacherAssistant\bin\Microsoft.Owin.
 C:\TeamFoundationProjects\TeachersAssistant\TeacherAssistant\obj\Debug\TeacherAssistant.csprojResolveAssemblyReference.cache
 C:\TeamFoundationProjects\TeachersAssistant\TeacherAssistant\obj\Debug\TeachersAssistant.dll
 C:\TeamFoundationProjects\TeachersAssistant\TeacherAssistant\obj\Debug\TeachersAssistant.pdb
-C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\obj\Debug\TeacherAssistant.csprojResolveAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\ApplicationInsights.config
 C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\roslyn\csc.exe
 C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -465,3 +464,8 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\pt\FluentValida
 C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\ru\FluentValidation.resources.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\sv\FluentValidation.resources.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\tr\FluentValidation.resources.dll
+C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\TeachersAssistant.DataAccess.dll.config
+C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\bin\UPAEventsPayPal.dll.config
+C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\obj\Debug\TeacherAssistant.csprojAssemblyReference.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\obj\Debug\TeacherAssistant.csproj.CoreCompileInputs.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeacherAssistant\obj\Debug\TeacherAssistant.csproj.CopyComplete

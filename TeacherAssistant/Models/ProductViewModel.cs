@@ -10,11 +10,11 @@ namespace TeachersAssistant.Models
     {
         public int ProductId { get; set; }
         [Required]
-        public string ProductName { get; set; }
+        public string ProductName { get; set; } = "MartinLayooInc ProductName Default";
         [Required]
-        public string ProductDescription { get; set; }
+        public string ProductDescription { get; set; } = "MartinLayooInc ProductDescription Default";
         [Required]
-        public decimal ProductPrice { get; set; }
+        public decimal ProductPrice { get; set; } = (decimal)0.00;
         public bool IsPaidDocument { get; set; }
         public bool IsPaidVideo { get; set; }
         public int DocumentId { get; set; }

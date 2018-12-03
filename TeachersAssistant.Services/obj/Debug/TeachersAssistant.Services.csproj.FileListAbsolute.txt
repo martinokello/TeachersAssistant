@@ -45,6 +45,9 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.Domain.Model.pdb
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\AutoMapper.xml
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\EntityFramework.xml
-C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.csprojResolveAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\bin\Debug\TeachersAssistant.DataAccess.dll.config
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.csprojAssemblyReference.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.csproj.CoreCompileInputs.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Services\obj\Debug\TeachersAssistant.Services.csproj.CopyComplete

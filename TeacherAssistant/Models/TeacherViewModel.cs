@@ -6,11 +6,11 @@ namespace TeacherAssistant.Models
     {
         public int? TeacherId { get; set; }
         [Required]
-        public string FirsName { get; set; }
+        public string FirsName { get; set; } = "Teacher FirstName";
         [Required]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = "Teacher LastName";
         [Required]
-        public string EmailAddress { get; set; }
+        public string EmailAddress { get; set; } = "Teacher@martinlayooinc.co.uk";
         public string Select { set; get; }
         public string Create { set; get; }
         public string Update { set; get; }

@@ -51,6 +51,7 @@ C:\TeamFoundationProjects\TeachersAssistant\UPAEventsPayPal\obj\Debug\UPAEventsP
 C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\bin\UPAEventsPayPal.dll.config
 C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\bin\UPAEventsPayPal.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\bin\UPAEventsPayPal.pdb
-C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\obj\Debug\UPAEventsPayPal.csprojResolveAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\obj\Debug\UPAEventsPayPal.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\obj\Debug\UPAEventsPayPal.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\obj\Debug\UPAEventsPayPal.csprojAssemblyReference.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\UPAEventsPayPal\obj\Debug\UPAEventsPayPal.csproj.CoreCompileInputs.cache

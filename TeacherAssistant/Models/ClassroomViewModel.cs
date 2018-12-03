@@ -11,11 +11,11 @@ namespace TeacherAssistant.Models
         public int TeacherId { get; set; }
         public Teacher Teacher { get; set; }
         [Required]
-        public int CalendarBookingId { get; set; }
+        public int CalendarBookingId { get; set; } = -1;
         [Required]
-        public  string StudentType { get; set; }
+        public  string StudentType { get; set; } = "StatePrimary";
         [Required]
-        public int SubjectId { get; set; }
+        public int SubjectId { get; set; } = -1;
         public Subject Subject { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }

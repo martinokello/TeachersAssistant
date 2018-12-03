@@ -43,6 +43,8 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\bin\Deb
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\TeachersAssistant.Domain.Model.pdb
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\EntityFramework.xml
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
-C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csprojResolveAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.dll
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.pdb
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csprojAssemblyReference.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CoreCompileInputs.cache
+C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CopyComplete

@@ -64,7 +64,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (classRoomModel.ClassroomId != null)
+                if (classRoomModel.ClassroomId != null && classRoomModel.ClassroomId > 0)
                 {
                     var classroom = _unitOfWork._classroomRepository.GetById((int)classRoomModel.ClassroomId);
                     _unitOfWork._classroomRepository.Delete(classroom);
@@ -162,7 +162,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (studentModel.StudentId != null)
+                if (studentModel.StudentId != null && studentModel.StudentId > 0)
                 {
                     var student = _unitOfWork._subjectRepository.GetById((int)studentModel.StudentId);
                     _unitOfWork._subjectRepository.Delete(student);
@@ -185,7 +185,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (studentModel.StudentId == null)
+                if (studentModel.StudentId == null || studentModel.StudentId < 1)
                 {
                     _unitOfWork._studentRepository.Add(studentModel);
                     _unitOfWork.SaveChanges();
@@ -207,7 +207,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (subjectModel.SubjectId != null)
+                if (subjectModel.SubjectId != null && subjectModel.SubjectId > 0)
                 {
                     var subject = _unitOfWork._subjectRepository.GetById((int)subjectModel.SubjectId);
                     _unitOfWork._subjectRepository.Delete(subject);
@@ -251,7 +251,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (teacherModel.TeacherId != null)
+                if (teacherModel.TeacherId != null && teacherModel.TeacherId > 0)
                 {
                     var teacher = _unitOfWork._teacherRepository.GetById((int)(int)teacherModel.TeacherId);
                     _unitOfWork._teacherRepository.Delete(teacher);
@@ -298,7 +298,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (teacherModel.TeacherId == null)
+                if (teacherModel.TeacherId == null || teacherModel.TeacherId < 1)
                 {
                     _unitOfWork._teacherRepository.Add(teacherModel);
                     _unitOfWork.SaveChanges();
@@ -402,7 +402,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (freeVideo.FreeVideoId > 0)
+                if (freeVideo.FreeVideoId != null && freeVideo.FreeVideoId > 0)
                 {
                     //update
                     var result = _unitOfWork._freeVideoRepository.GetById((int)freeVideo.FreeVideoId);
@@ -461,7 +461,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (paidVideo.PaidVideoId > 0)
+                if (paidVideo.PaidVideoId != null && paidVideo.PaidVideoId > 0)
                 {
                     //update
                     var result = _unitOfWork._paidVideoRepository.GetById((int)paidVideo.PaidVideoId);
@@ -519,12 +519,12 @@ namespace TeachersAssistant.Services.Concretes
             }
         }
 
-        public void SaveOrUpdateFeeDocument(FreeDocument document)
+        public void SaveOrUpdateFreeDocument(FreeDocument document)
         {
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (document.FreeDocumentId > 0)
+                if (document.FreeDocumentId != null && document.FreeDocumentId > 0)
                 {
                     //update
                     var result = _unitOfWork._freeDocumentRepository.GetById((int)document.FreeDocumentId);
@@ -551,7 +551,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (paidDocument.PaidDocumentId > 0)
+                if (paidDocument.PaidDocumentId != null && paidDocument.PaidDocumentId > 0)
                 {
                     //update
                     var result = _unitOfWork._paidDocumentRepository.GetById((int)paidDocument.PaidDocumentId);
@@ -578,7 +578,8 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                _unitOfWork._freeDocumentRepository.Delete(new FreeDocument { FreeDocumentId = (int)mediaId });
+                var pDoc = _unitOfWork._freeDocumentRepository.GetAll().FirstOrDefault(p => p.FreeDocumentId == mediaId);
+                _unitOfWork._freeDocumentRepository.Delete(pDoc);
                 _unitOfWork.SaveChanges();
             }
         }
@@ -587,7 +588,8 @@ namespace TeachersAssistant.Services.Concretes
         {
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
-                _unitOfWork.InitializeDbContext(dbContext); _unitOfWork._paidVideoRepository.Delete(new PaidVideo { PaidVideoId = (int)mediaId });
+                var pDoc = _unitOfWork._paidVideoRepository.GetAll().FirstOrDefault(p => p.PaidVideoId == mediaId);
+                _unitOfWork.InitializeDbContext(dbContext); _unitOfWork._paidVideoRepository.Delete(pDoc);
                 _unitOfWork.SaveChanges();
             }
         }
@@ -597,7 +599,8 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                _unitOfWork._paidDocumentRepository.Delete(new PaidDocument { PaidDocumentId = (int)mediaId });
+                var pDoc = _unitOfWork._paidDocumentRepository.GetAll().FirstOrDefault(p => p.PaidDocumentId == mediaId);
+                _unitOfWork._paidDocumentRepository.Delete(pDoc);
                 _unitOfWork.SaveChanges();
             }
         }
@@ -607,7 +610,8 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                _unitOfWork._freeVideoRepository.Delete(new FreeVideo { FreeVideoId = (int)mediaId });
+                var pDoc = _unitOfWork._freeVideoRepository.GetAll().FirstOrDefault(p => p.FreeVideoId == mediaId);
+                _unitOfWork._freeVideoRepository.Delete(pDoc);
                 _unitOfWork.SaveChanges();
             }
         }
@@ -652,7 +656,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistant())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                if (teacherCalendar.CalendarBookingId != null)
+                if (teacherCalendar.CalendarBookingId != null && teacherCalendar.CalendarBookingId > 0)
                 {
                     var booking = _unitOfWork._calendarBookingRepository.GetById((int)teacherCalendar.CalendarBookingId);
                     _unitOfWork._calendarBookingRepository.Delete(booking);

@@ -10,9 +10,9 @@ namespace  TeacherAssistant.Models
     {
         public string UserId { get; set; }
         [Required]
-        public string Username { get; set; }
+        public string Username { get; set; } = "Username Default";
         [Required]
-        public string RoleName { get; set; }
+        public string RoleName { get; set; } = "StatePrimary";
 
     }
 }
