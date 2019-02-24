@@ -75,3 +75,11 @@ C:\TeacherAssistantPhase2\TeachersAssistant\Twitter\obj\Debug\Twitter.pdb
 C:\TeacherAssistantPhase2\TeachersAssistant\Twitter\obj\Debug\Twitter.csprojAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\Twitter\obj\Debug\Twitter.csproj.CoreCompileInputs.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\Twitter\obj\Debug\Twitter.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\bin\Debug\Twitter.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\bin\Debug\Twitter.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\bin\Debug\Newtonsoft.Json.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Debug\Twitter.csprojAssemblyReference.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Debug\Twitter.csproj.CoreCompileInputs.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Debug\Twitter.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Debug\Twitter.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Debug\Twitter.pdb

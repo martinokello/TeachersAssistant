@@ -48,3 +48,17 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Deb
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csprojAssemblyReference.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CoreCompileInputs.cache
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\TeachersAssistant.DataAccess.dll.config
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\TeachersAssistant.DataAccess.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\TeachersAssistant.DataAccess.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\EntityFramework.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\TeachersAssistant.Domain.Model.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\TeachersAssistant.Domain.Model.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\EntityFramework.xml
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csprojAssemblyReference.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CoreCompileInputs.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.pdb
