@@ -85,7 +85,7 @@
                 var startDate = new Date(parseInt(calendarItem.BookingTime.StartTime.substr(6)));
                 var endDate = new Date(parseInt(calendarItem.BookingTime.EndTime.substr(6)));
                 var classRoom = classRoomId ? 'Classroom:' + classRoomId + ', ' : '';
-                events.push({ start: startDate, end: endDate, title: subject + ': ' + student + ' from: ' + startDate.getHours() + ':' + startDate.getMinutes() + ' <br/>to: ' + endDate.getHours() + ':' + endDate.getMinutes() });
+                events.push({ start: startDate, end: endDate, title: subject + ': ' + student + ' from: ' + startDate.getHours() + ':' + startDate.getMinutes() + ' to: ' + endDate.getHours() + ':' + endDate.getMinutes() });
             }
 
             $('div#calendar').fullCalendar({
