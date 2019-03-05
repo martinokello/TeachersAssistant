@@ -1,0 +1,37 @@
+﻿@model List<TeachersAssistant.Services.Concretes.GroupedResourcesViewModel>
+
+@{
+    ViewBag.Title = "StudentResources";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+    var role = User.IsInRole("Grammar11Plus") ? "Grammar 11 Plus" : User.IsInRole("StatePrimary")?"StatePrimary":"State Junior";
+
+
+}
+
+<h2>@role  Student Resources</h2>
+
+
+<div class="form-horizontal">
+    <h4>Student's Resources by Subject</h4>
+    <div style="background-color: #DADADA;">
+        <div style="padding:5px;">
+            @foreach (var group in Model)
+            {
+                foreach (var subjGroup in group.GroupedBySubject)
+                {
+                    <h4>@subjGroup.FirstOrDefault().Key</h4>
+                    <div style="padding:5px;">
+                        <ul>
+                            <li>
+                                @foreach (var content in group.IndividualResources)
+                                {
+                                    <span><a href="@content.FirstOrDefault().FilePath">@content.FirstOrDefault().StudentResourceName</a></span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

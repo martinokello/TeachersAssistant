@@ -1,7 +1,7 @@
 ﻿@model TeacherAssistant.Models.TeacherCalendarViewModel
 @{
     ViewBag.Title = "BookTeacherHelpTime";
-    Layout = "~/Areas/StateJunior/Views/Shared/_LayoutStateJunior.cshtml";
+    Layout = "~/Areas/StateJunior/Views/Shared/_NewLayoutStateJunior.cshtml";
 }
 @using (Html.BeginForm())
 {
@@ -20,35 +20,35 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CalendarBookingId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CalendarBookingId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("CalendarBookingId", ViewBag.CalendarBookingList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.CalendarBookingId, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>, "TeacherName", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>,  new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, "SubjectName", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.BookingTimes[0].StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
                     @Html.ValidationMessageFor(model => model.BookingTimes[0].StartTime, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.BookingTimes[0].EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
                     @Html.ValidationMessageFor(model => model.BookingTimes[0].EndTime, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -61,6 +61,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" name="Select" value="Select" class="btn btn-default" />
                     <input type="submit" name="Create" value="Create" class="btn btn-default" />
                     <input type="submit" name="Update" value="Update" class="btn btn-default" />
                     <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
@@ -69,31 +70,59 @@
         </div>
     </div>
 </div>
-}
+                }
 <script type="text/javascript">
+    var events = [];
     $(document).ready(function(){
         var calendarJsonString = @Html.Raw(Json.Encode(ViewBag.CalendarUiList));
-        if(calendarJsonString){
-            var events = [];
+        if (calendarJsonString) {
             var teacher = null;
             var student = null;
 
-            for(var n=0; n<calendarJsonString.length; n++){
+            for (var n = 0; n < calendarJsonString.length; n++) {
                 var calendarItem = calendarJsonString[n];
 
-                teacher = calendarItem.Teacher.EmailAddress;
-                student = calendarItem.Student.EmailAddress;
+                teacher = calendarItem.Teacher.FirsName + ' ' + calendarItem.Teacher.LastName;
+                student = calendarItem.Student.StudentFirsName + ' ' + calendarItem.Student.StudentLastName;
                 var subject = calendarItem.Subject.SubjectName;
+                var classRoomId = calendarItem.ClassroomId;
                 var startDate = new Date(parseInt(calendarItem.BookingTime.StartTime.substr(6)));
                 var endDate = new Date(parseInt(calendarItem.BookingTime.EndTime.substr(6)));
-                events.push({ start: startDate, end: endDate, summary: subject+', with '+student.substr(0,student.indexOf('@@'))+'<br/> from: '+startDate.getHours()+':'+startDate.getMinutes()+' <br/>to: '+endDate.getHours()+':'+endDate.getMinutes(), mask: true, color: 'red' });
+                var classRoom = classRoomId ? 'Classroom:' + classRoomId + ', ' : '';
+                events.push({ start: startDate, end: endDate, title: subject + ': ' + student + ' from: ' + startDate.getHours() + ':' + startDate.getMinutes() + ' to: ' + endDate.getHours() + ':' + endDate.getMinutes() });
             }
 
-            $('div#calendar').calendar({
+            $('div#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                defaultDate: '2019-01-12',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
                 events: events
             });
 
-            $('h4#title').text('Calendar for: Teacher: '+teacher + ', with Student: '+student);
+
+            $('a#previousMonth').click(function () {
+                var currentDate = new Date();
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                $('div#calendar').pignoseCalendar({ date: currentDate, events: events });
+                return false;
+            });
+            $('a#nextMonth').click(function () {
+                var currentDate = new Date();
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                $('div#calendar').pignoseCalendar({ date: currentDate, events: events });
+                return false;
+            });
+            $('a#currentMonth').click(function () {
+                var currentDate = new Date();
+                $('div#calendar').pignoseCalendar({ date: currentDate, events: events });
+                return false;
+            });
         }
     });
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using TeacherAssistant.Models;
 using TeachersAssistant.Domain.Model.Models;
-using TeachersAssistant.Models;
+using TeacherAssistant.Models;
 
 namespace TeachersAssistant.App_Start
 {

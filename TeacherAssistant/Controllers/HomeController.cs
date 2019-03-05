@@ -15,7 +15,7 @@ using TeacherAssistant.Infrastructure;
 using TeacherAssistant.Models;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
-using TeachersAssistant.Models;
+using TeacherAssistant.Models;
 using TeachersAssistant.Services.Concretes;
 using System.Globalization;
 using CuttingEdge.Conditions;
@@ -25,10 +25,10 @@ namespace  TeacherAssistant.Controllers
     public class HomeController : Controller
     {
         private TeachersAssistantRepositoryServices _teacherRepository;
-        public HomeController()
+       /*public HomeController()
         {
 
-        }
+        }*/
         public HomeController(ICalendarBookingRepositoryMarker calendarRepositoryMarker,
             IClassroomRepositoryMarker classroomRepositoryMarker,
             IFreeDocumentRepositoryMarker freeDocumentRepositoryMarker,
@@ -43,7 +43,8 @@ namespace  TeacherAssistant.Controllers
             IStudentTypeRepositoryMarker studentTypeRepositoryMarker,
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
-            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker)
+            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
+            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
         {
 
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
@@ -61,6 +62,7 @@ namespace  TeacherAssistant.Controllers
             Condition.Requires<ISubjectRepositoryMarker>(subjectRepositoryMarker, "subjectRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingTimeRepositoryMarker, "bookingTimeRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -75,13 +77,21 @@ namespace  TeacherAssistant.Controllers
              studentTypeRepositoryMarker,
              subjectRepositoryMarker,
              teacherRepositoryMarker,
-             bookingTimeRepositoryMarker);
+             bookingTimeRepositoryMarker,
+             studentResourceRepositoryMarker);
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
-            _teacherRepository.GetSubjectList();
         }
         public enum MediaType { Document, Video }
         public ActionResult Index()
         {
+            if (User.IsInRole("Administrator"))
+                return Redirect("~/Administration/TeachersCalendar");
+            if (User.IsInRole("StateJunior"))
+                return Redirect("~/StateJunior/Home/Index");
+            if (User.IsInRole("StatePrimary"))
+                return Redirect("~/StatePrimary/Home/Index");
+            if (User.IsInRole("Grammar11Plus"))
+                return Redirect("~/Grammar11Plus/Home/Index");
             return View();
         }
 

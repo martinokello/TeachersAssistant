@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-namespace TeachersAssistant.Infrastructure
+namespace TeacherAssistant.Infrastructure
 {
     public class DateTimeFormatAttribute : ValidationAttribute
     {

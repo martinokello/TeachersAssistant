@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using TeacherAssistant.Models;
 using TeachersAssistant.Domain.Model.Models;
-using TeachersAssistant.Models;
 using TeachersAssistant.Services.Concretes;
 using TeachersAssistant.DataAccess.Interfaces;
 using Microsoft.AspNet.Identity.Owin;
@@ -16,7 +15,7 @@ using System.Globalization;
 using System.Configuration;
 using EmailServices.Interfaces;
 using CuttingEdge.Conditions;
-using TeachersAssistant.Infrastructure.FluentValidation;
+using TeacherAssistant.Infrastructure.FluentValidation;
 
 namespace TeacherAssistant.Controllers
 {
@@ -26,10 +25,10 @@ namespace TeacherAssistant.Controllers
         private ApplicationUserManager _userManager;
 
         TeachersAssistantRepositoryServices _repositoryServices;
-        public AdministrationController()
+        /*public AdministrationController()
         {
 
-        }
+        }*/
 
         public AdministrationController(ICalendarBookingRepositoryMarker calendarRepositoryMarker,
             IClassroomRepositoryMarker classroomRepositoryMarker,
@@ -45,7 +44,8 @@ namespace TeacherAssistant.Controllers
             IStudentTypeRepositoryMarker studentTypeRepositoryMarker,
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
-            IBookingTimeRepositoryMarker bookingRepositoryMarker)
+            IBookingTimeRepositoryMarker bookingRepositoryMarker,
+            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
         {
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
             Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
@@ -62,6 +62,7 @@ namespace TeacherAssistant.Controllers
             Condition.Requires<ISubjectRepositoryMarker>(subjectRepositoryMarker, "subjectRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingRepositoryMarker, "bookingRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -76,7 +77,10 @@ namespace TeacherAssistant.Controllers
              studentTypeRepositoryMarker,
              subjectRepositoryMarker,
              teacherRepositoryMarker,
-             bookingRepositoryMarker);
+             bookingRepositoryMarker,
+             studentResourceRepositoryMarker);
+
+            unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
         }
         [HttpGet]
@@ -268,6 +272,133 @@ namespace TeacherAssistant.Controllers
                 }
             }
             return View("ManageTeacher", teacherViewModel);
+        }
+        [HttpGet]
+        public ActionResult ManageStudentResources()
+        {
+            GetUIDropdownLists();
+            return View("ManageResources");
+        }
+        [HttpPost]
+        public ActionResult ManageStudentResources(StudentResourcesViewModel resourceModel)
+        {
+            try
+            {
+                GetUIDropdownLists();
+
+                ModelState.Clear();
+
+                ViewBag.StudentResourcesList = GetStudentResourcesList();
+                ViewBag.RoleList = GetRolesSelectList();
+                ViewBag.SubjectList = GetSubjectList();
+
+                var subject = _repositoryServices.GetSubjectById(resourceModel.SubjectId);
+
+                var virtualPath = string.Empty;
+
+                //Save file to relevant fileSystem:
+                switch (resourceModel.RoleName.ToLower())
+                {
+                    case "grammar11plus":
+                        virtualPath = string.Format("~/Resources/Grammar11Plus/{0}", subject); 
+                        break;
+                    case "stateprimary":
+                        virtualPath = string.Format("~/Resources/StatePrimary/{0}", subject);
+                        break;
+                    case "statejunior":
+                        virtualPath = string.Format("~/Resources/StateJunior/{0}", subject);
+                        break;
+                }
+
+
+                if (resourceModel.Select != null)
+                {
+                    if (resourceModel.StudentResourceId < 1)
+                    {
+                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        return View("ManageResources", resourceModel);
+                    }
+                    StudentResource doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
+                    return View("ManageResources",new StudentResourcesViewModel { StudentResourceId = doc.StudentResourceId, RoleName = doc.RoleName, SubjectId = doc.SubjectId });
+                    
+                }
+                else if (resourceModel.Delete != null)
+                {
+                    if (resourceModel.StudentResourceId < 1)
+                    {
+                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        return View("ManageResources", resourceModel);
+                    }
+
+                    
+                    var doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
+                    if (doc != null)
+                    {
+                        var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                        if (delFileInfo.Exists)
+                        {
+                            delFileInfo.Delete();
+                        }
+
+                    }
+                    _repositoryServices.DeleteStudentResource(resourceModel.StudentResourceId);
+                    return View("SuccessfullCreation");
+                   
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        HttpPostedFileBase file = resourceModel.MediaContent;
+                            ;
+                        var fileName = file.FileName;
+                        var fileBuffer = new byte[file.ContentLength];
+
+                        var physicalPath = Server.MapPath(virtualPath);
+                        var dirInfo = new DirectoryInfo(physicalPath);
+                        if (!dirInfo.Exists) dirInfo.Create();
+
+                        FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                        if (fileInfo1.Exists)
+                        {
+                            fileInfo1.Delete();
+                        }
+                        FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+                        using (var fileStream = fileInfo.Create())
+                        {
+                            var sizeRead = 0;
+                            while((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
+                            {
+                                fileStream.Write(fileBuffer, 0, sizeRead);
+                            }
+                            file.InputStream.Flush();
+                            file.InputStream.Close();
+                            fileStream.Flush();
+                            fileStream.Close();
+                        }
+
+                        var studentResource = new StudentResource()
+                        {
+                            FilePath = "~/" + Url.Content(virtualPath) + "/" + file.FileName,
+                            SubjectId = resourceModel.SubjectId,
+                            RoleName = resourceModel.RoleName,
+                            StudentResourceName = resourceModel.StudentResourceName
+                        };
+                        //Save file Path To DB: 
+                        _repositoryServices.SaveOrUpdateStudentResource(studentResource);
+                        return View("SuccessfullCreation");
+                    }
+
+                    return View("ManageResources", resourceModel);
+                }
+
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("ManageResources", resourceModel);
+            }
         }
 
         [HttpGet]
@@ -1000,6 +1131,18 @@ namespace TeacherAssistant.Controllers
 
             return rolesList;
         }
+        private List<SelectListItem> GetStudentResourcesList()
+        {
+            var resourceList = new List<SelectListItem>();
+
+            resourceList.Add(new SelectListItem { Text = "Pick a Resource", Value = "" });
+            foreach (StudentResource resource in _repositoryServices.GetAllStudentResources())
+            {
+                resourceList.Add(new SelectListItem { Text = resource.StudentResourceName, Value = resource.StudentResourceId.ToString() });
+            }
+
+            return resourceList;
+        }
         private List<SelectListItem> GetProductList()
         {
             var productList = new List<SelectListItem>();
@@ -1010,6 +1153,7 @@ namespace TeacherAssistant.Controllers
         }
         private void GetUIDropdownLists()
         {
+                ViewBag.StudentResourcesList = GetStudentResourcesList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
             ViewBag.StudentList = GetStudentsList();

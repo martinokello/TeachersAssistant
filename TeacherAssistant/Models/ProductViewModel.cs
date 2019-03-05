@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace TeachersAssistant.Models
+namespace TeacherAssistant.Models
 {
     public class ProductViewModel
     {

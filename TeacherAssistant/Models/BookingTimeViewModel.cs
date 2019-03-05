@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using TeachersAssistant.Domain.Model.Models;
 
-namespace TeachersAssistant.Models
+namespace TeacherAssistant.Models
 {
     public class BookingTimeViewModel
     {

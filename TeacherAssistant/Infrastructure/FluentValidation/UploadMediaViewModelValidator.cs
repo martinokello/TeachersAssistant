@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using TeachersAssistant.Models;
+using TeacherAssistant.Models;
 
-namespace TeachersAssistant.Infrastructure.FluentValidation
+namespace TeacherAssistant.Infrastructure.FluentValidation
 {
     public class UploadMediaViewModelValidator:AbstractValidator<UploadMediaViewModel>
     {

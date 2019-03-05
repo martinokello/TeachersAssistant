@@ -9,20 +9,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using TeacherAssistant.Models;
+using TeachersAssistant.DataAccess;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
-using TeachersAssistant.Models;
 using TeachersAssistant.Services.Concretes;
+
 namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
 {
     [Authorize(Roles="Administrator,Grammar11Plus")]
     public class HomeController : Controller
     {
         private TeachersAssistantRepositoryServices _teacherRepository;
-        public HomeController()
+       /* public HomeController()
         {
 
-        }
+        }*/
         public HomeController(ICalendarBookingRepositoryMarker calendarRepositoryMarker,
             IClassroomRepositoryMarker classroomRepositoryMarker,
             IFreeDocumentRepositoryMarker freeDocumentRepositoryMarker,
@@ -37,7 +38,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             IStudentTypeRepositoryMarker studentTypeRepositoryMarker,
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
-            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker)
+            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
+            IStudentResourceRepositoryMarker studentResourcesRepositoryMarker)
         {
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -53,9 +55,10 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
              studentTypeRepositoryMarker,
              subjectRepositoryMarker,
              teacherRepositoryMarker,
-             bookingTimeRepositoryMarker);
+             bookingTimeRepositoryMarker,
+             studentResourcesRepositoryMarker);
+             unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
-            _teacherRepository.GetSubjectList();
         }
         public enum MediaType { Document, Video }
         [HttpGet]
@@ -277,6 +280,12 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             return View("TeachersCalendar");
 
         }
+        [HttpGet]
+        public ActionResult GetStudentResources()
+        {
+            var studentResources = _teacherRepository.GetGroupedResourcesByRoleThenSubject("Grammar11Plus");
+            return View("StudentResources", studentResources);
+        }
         [HttpPost]
         public ActionResult TeachersCalendar(int teacherId)
         {
@@ -284,12 +293,14 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             if (teacherId < 1)
             {
                 ModelState.AddModelError("NoTeacher", "You need to pick a teacher");
+                return View("TeachersCalendar");
             }
             ViewBag.Message = "Teachers Calendar.";
             var calendars = _teacherRepository.GetTeacherCalendar(teacherId);
             if (calendars == null)
             {
                 ModelState.AddModelError("NoTeacherCalendar", "Teacher hasn't a calendar booking");
+                return View("TeachersCalendar");
             }
             if (ModelState.IsValid)
             {

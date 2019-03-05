@@ -200,33 +200,43 @@
                 </section>
                 <!-- Menu -->
                 <nav id="menu">
-                     <ul>
-                                    <li class="current_page_item"><a href="~/Home/Index">Home</a></li>
-                                    <li><a href="~/Shopping/ShopContentListing">Shop</a></li>
-                                    <li><a href="~/Shopping/Basket">Basket</a></li>
-                                    <li>
-                                         @if (User.Identity.IsAuthenticated)
-										{
-											<span class="opener"><a href="~/Account/LogOff">LogOut</a></span>
-										}
-										else
-										{
-											<span class="opener"><a href="#">Login</a></span>
-										}
-                                        <ul>
-                                            <li><a href="~/Account/Login?Role=Grammar11Plus">11+ (Grammar)</a></li>
-                                            <li><a href="~/Account/Login?Role=StatePrimary">State Primary</a></li>
-                                            <li><a href="~/Account/Login?Role=StateJunior">State Junior</a></li>
-                                            <li><a href="~/Account/Login?Role=Administrator">Administrator</a></li>
-                                            <li><a href="~/Home/PublicClass">OnLine Classrooms</a></li>
-                                            <li><a href="~/Grammar11Plus/Home/BookTeacherHelpTime">Book Teacher Help Time</a></li>
-                                            <li><a href="~/Grammar11Plus/Home/TeachersCalendar">Teacher's Calendar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="~/Grammar11Plus/Home/DownloadFreeDocuments">Free Docs</a></li>
-                                    <li><a href="~/Grammar11Plus/Home/DownloadPaidDocuments">Paid Docs</a></li>
-                                    <li><a href="~/Home/AboutUs">About Us</a></li>
-                                </ul>
+                    <ul>
+                        <li class="current_page_item"><a href="~/Grammar11Plus/Home/Index">Home</a></li>
+                        <li><a href="~/Shopping/ShopContentListing">Shop</a></li>
+                        <li><a href="~/Shopping/Basket">Basket</a></li>
+                        <li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <span class="opener"><a href="~/Account/LogOff">LogOut</a></span>
+                            }
+                            else
+                            {
+                                <span class="opener"><a href="#">Login</a></span>
+                            }
+                            <ul>
+                                <li><a href="~/Account/Login?Role=Grammar11Plus">11+ (Grammar)</a></li>
+                                <li><a href="~/Account/Login?Role=StatePrimary">State Primary</a></li>
+                                <li><a href="~/Account/Login?Role=StateJunior">State Junior</a></li>
+                                <li><a href="~/Account/Login?Role=Administrator">Administrator</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span class="opener"><a href="#">Student Functions</a></span>
+                            <ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="~/Account/ResetPassword">Reset Password</a></li>
+                                }
+                                <li><a href="~/Home/PublicClass">OnLine Classrooms</a></li>
+                                <li><a href="~/Grammar11Plus/Home/BookTeacherHelpTime">Book Teacher Help Time</a></li>
+                                <li><a href="~/Grammar11Plus/Home/TeachersCalendar">Teacher's Calendar</a></li>
+                                <li><a href="~/Grammar11Plus/Home/GetStudentResources">Student Resources</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="~/Grammar11Plus/Home/DownloadFreeDocuments">Free Docs</a></li>
+                        <li><a href="~/Grammar11Plus/Home/DownloadPaidDocuments">Paid Docs</a></li>
+                        <li><a href="~/Home/AboutUs">About Us</a></li>
+                    </ul>
                 </nav>
 
                 <!-- Section -->

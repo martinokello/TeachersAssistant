@@ -40,6 +40,7 @@ namespace TeachersAssistant
             unityContainer.RegisterType<ISubjectRepositoryMarker, SubjectRepository>();
             unityContainer.RegisterType<ITeacherRepositoryMarker, TeacherRepository>();
             unityContainer.RegisterType<IBookingTimeRepositoryMarker, BookingTimeRepository>();
+            unityContainer.RegisterType<IStudentResourceRepositoryMarker, StudentResourcesRepository>();
             unityContainer.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
             unityContainer.RegisterType<IRoleStore<IdentityRole, string>, RoleStore<IdentityRole>>();
             unityContainer.RegisterType<ApplicationUserManager>();

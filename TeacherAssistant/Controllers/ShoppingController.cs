@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System;using TeacherAssistant.Models;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -9,7 +9,7 @@ using TeacherAssistant.Infrastructure.ExtensionMethods;
 using TeacherAssistant.Infrastructure;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Services.Concretes;
-using TeachersAssistant.Models;
+using TeacherAssistant.Models;
 using System.Text.RegularExpressions;
 using UPAEventsPayPal;
 using CuttingEdge.Conditions;
@@ -38,7 +38,8 @@ namespace TeachersAssistant.Controllers
             IStudentTypeRepositoryMarker studentTypeRepositoryMarker,
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
-            IBookingTimeRepositoryMarker bookingRepositoryMarker)
+            IBookingTimeRepositoryMarker bookingRepositoryMarker,
+            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
         {
 
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
@@ -56,6 +57,7 @@ namespace TeachersAssistant.Controllers
             Condition.Requires<ISubjectRepositoryMarker>(subjectRepositoryMarker, "subjectRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingRepositoryMarker, "bookingRepositoryMarker").IsNotNull();
+            Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
 
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -71,7 +73,8 @@ namespace TeachersAssistant.Controllers
              studentTypeRepositoryMarker,
              subjectRepositoryMarker,
              teacherRepositoryMarker,
-             bookingRepositoryMarker);
+             bookingRepositoryMarker,
+             studentResourceRepositoryMarker);
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
         }
 

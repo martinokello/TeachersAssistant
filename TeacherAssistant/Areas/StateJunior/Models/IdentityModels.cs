@@ -21,7 +21,7 @@ namespace TeacherAssistant.Areas.StateJunior.TeacherAssistant.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
 

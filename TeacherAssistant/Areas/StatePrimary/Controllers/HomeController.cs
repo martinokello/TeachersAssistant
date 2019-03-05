@@ -10,9 +10,9 @@ using EmailServices.Interfaces;
 using TeacherAssistant.Models;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
-using TeachersAssistant.Models;
 using TeachersAssistant.Services.Concretes;
 using System.Globalization;
+using TeachersAssistant.DataAccess;
 
 namespace TeacherAssistant.Areas.StatePrimary.Controllers
 {
@@ -21,10 +21,10 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
     public class HomeController : Controller
     {
         private TeachersAssistantRepositoryServices _teacherRepository;
-        public HomeController()
+        /*public HomeController()
         {
 
-        }
+        }*/
         public HomeController(ICalendarBookingRepositoryMarker calendarRepositoryMarker,
             IClassroomRepositoryMarker classroomRepositoryMarker,
             IFreeDocumentRepositoryMarker freeDocumentRepositoryMarker,
@@ -39,7 +39,8 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             IStudentTypeRepositoryMarker studentTypeRepositoryMarker,
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
-            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker)
+            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
+            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
         {
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -55,9 +56,10 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
              studentTypeRepositoryMarker,
              subjectRepositoryMarker,
              teacherRepositoryMarker,
-             bookingTimeRepositoryMarker);
+             bookingTimeRepositoryMarker,
+             studentResourceRepositoryMarker);
+            unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
-            _teacherRepository.GetSubjectList();
         }
         public enum MediaType { Document, Video }
         [HttpGet]
@@ -283,6 +285,12 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             return View("TeachersCalendar");
 
         }
+        [HttpGet]
+        public ActionResult GetStudentResources()
+        {
+            var StudentResources = _teacherRepository.GetGroupedResourcesByRoleThenSubject("StatePrimary");
+            return View("StudentResources", StudentResources);
+        }
         [HttpPost]
         public ActionResult TeachersCalendar(int teacherId)
         {
@@ -290,12 +298,14 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             if (teacherId < 1)
             {
                 ModelState.AddModelError("NoTeacher", "You need to pick a teacher");
+                return View("TeachersCalendar");
             }
             ViewBag.Message = "Teachers Calendar.";
             var calendars = _teacherRepository.GetTeacherCalendar(teacherId);
             if (calendars == null)
             {
                 ModelState.AddModelError("NoTeacherCalendar", "Teacher hasn't a calendar booking");
+                return View("TeachersCalendar");
             }
             if (ModelState.IsValid)
             {

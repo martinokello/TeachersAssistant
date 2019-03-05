@@ -203,11 +203,11 @@
                 <!-- Menu -->
                 <nav id="menu">
                     <ul>
-                        <li class="current_page_item"><a href="~/Home/Index">Home</a></li>
+                        <li class="current_page_item"><a href="~/StateJunior/Home/Index">Home</a></li>
                         <li><a href="~/Shopping/ShopContentListing">Shop</a></li>
                         <li><a href="~/Shopping/Basket">Basket</a></li>
                         <li>
-                             @if (User.Identity.IsAuthenticated)
+                            @if (User.Identity.IsAuthenticated)
                             {
                                 <span class="opener"><a href="~/Account/LogOff">LogOut</a></span>
                             }
@@ -220,9 +220,19 @@
                                 <li><a href="~/Account/Login?Role=StatePrimary">State Primary</a></li>
                                 <li><a href="~/Account/Login?Role=StateJunior">State Junior</a></li>
                                 <li><a href="~/Account/Login?Role=Administrator">Administrator</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span class="opener"><a href="#">Student Functions</a></span>
+                            <ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><a href="~/Account/ResetPassword">Reset Password</a></li>
+                                }
                                 <li><a href="~/Home/PublicClass">OnLine Classrooms</a></li>
                                 <li><a href="~/StateJunior/Home/BookTeacherHelpTime">Book Teacher Help Time</a></li>
                                 <li><a href="~/StateJunior/Home/TeachersCalendar">Teacher's Calendar</a></li>
+                                <li><a href="~/StateJunior/Home/GetStudentResources">Student Resources</a></li>
                             </ul>
                         </li>
                         <li><a href="~/StateJunior/Home/DownloadFreeDocuments">Free Docs</a></li>

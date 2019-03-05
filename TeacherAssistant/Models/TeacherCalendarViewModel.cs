@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using TeachersAssistant.Domain.Model.Models;
-using TeachersAssistant.Infrastructure;
+using TeacherAssistant.Infrastructure;
 
 namespace TeacherAssistant.Models
 {
