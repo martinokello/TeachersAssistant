@@ -21,14 +21,14 @@
                 {
                     <h4>@subjGroup.FirstOrDefault().Key</h4>
                     <div style="padding:5px;">
-                        <ul>
-                            <li>
-                                @foreach (var content in group.IndividualResources)
-                                {
-                                    <span><a href="@content.FirstOrDefault().FilePath">@content.FirstOrDefault().StudentResourceName</a></span>
-                                }
-                            </li>
-                        </ul>
+                        <ul class="list-group">
+                            @foreach (var cont in subjGroup[subjGroup.FirstOrDefault().Key])
+                            {
+                                <li class="list-group-item">
+                                    <span><a href="@cont.FilePath">@cont.StudentResourceName</a></span>
+                                </li>
+                            }
+                         </ul>
                     </div>
                 }
             }

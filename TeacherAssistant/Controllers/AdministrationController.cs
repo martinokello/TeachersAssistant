@@ -300,13 +300,13 @@ namespace TeacherAssistant.Controllers
                 switch (resourceModel.RoleName.ToLower())
                 {
                     case "grammar11plus":
-                        virtualPath = string.Format("~/Resources/Grammar11Plus/{0}", subject); 
+                        virtualPath = string.Format("~/StudentResources/Grammar11Plus/{0}", subject.SubjectName); 
                         break;
                     case "stateprimary":
-                        virtualPath = string.Format("~/Resources/StatePrimary/{0}", subject);
+                        virtualPath = string.Format("~/StudentResources/StatePrimary/{0}", subject.SubjectName);
                         break;
                     case "statejunior":
-                        virtualPath = string.Format("~/Resources/StateJunior/{0}", subject);
+                        virtualPath = string.Format("~/StudentResources/StateJunior/{0}", subject.SubjectName);
                         break;
                 }
 
@@ -350,7 +350,7 @@ namespace TeacherAssistant.Controllers
                     if (ModelState.IsValid)
                     {
                         HttpPostedFileBase file = resourceModel.MediaContent;
-                            ;
+                            
                         var fileName = file.FileName;
                         var fileBuffer = new byte[file.ContentLength];
 
@@ -379,7 +379,7 @@ namespace TeacherAssistant.Controllers
 
                         var studentResource = new StudentResource()
                         {
-                            FilePath = "~/" + Url.Content(virtualPath) + "/" + file.FileName,
+                            FilePath = Url.Content(virtualPath + "/" + file.FileName),
                             SubjectId = resourceModel.SubjectId,
                             RoleName = resourceModel.RoleName,
                             StudentResourceName = resourceModel.StudentResourceName
@@ -1153,7 +1153,7 @@ namespace TeacherAssistant.Controllers
         }
         private void GetUIDropdownLists()
         {
-                ViewBag.StudentResourcesList = GetStudentResourcesList();
+            ViewBag.StudentResourcesList = GetStudentResourcesList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
             ViewBag.StudentList = GetStudentsList();
