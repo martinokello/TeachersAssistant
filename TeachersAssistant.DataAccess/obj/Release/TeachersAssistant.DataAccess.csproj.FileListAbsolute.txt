@@ -10,3 +10,17 @@ C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityF
 C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csprojResolveAssemblyReference.cache
 C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.dll
 C:\C#Projects\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.DataAccess.dll.config
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.DataAccess.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.DataAccess.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.SqlServer.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.Domain.Model.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.Domain.Model.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.xml
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.SqlServer.xml
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csprojAssemblyReference.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csproj.CoreCompileInputs.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.pdb

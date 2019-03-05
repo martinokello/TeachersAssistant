@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Services.Interfaces;
+using TeachersAssistant.DataAccess;
 
 namespace TeachersAssistant.Services.Concretes
 {
@@ -20,7 +18,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void SaveOrUpdateCalendar(CalendarBooking calendarBk)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var calendarBooking = _unitOfWork._calendarBookingRepository.GetById((int)calendarBk.CalendarBookingId);
@@ -33,7 +31,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public CalendarBooking GetTeacherCalendarByBookingId(int teacherId, int bookingId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 CalendarBooking calendarBooking = null;
@@ -43,7 +41,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public CalendarBooking[] GetTeacherCalendar(int teacherId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var teacherCalendar = _unitOfWork._calendarBookingRepository.GetAll().Where(p => p.TeacherId == teacherId);
@@ -52,7 +50,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public CalendarBooking[] GetTeacherCalendar()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var teacherCalendar = _unitOfWork._calendarBookingRepository.GetAll();
@@ -61,7 +59,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void DeleteClassroom(Classroom classRoomModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (classRoomModel.ClassroomId != null && classRoomModel.ClassroomId > 0)
@@ -74,7 +72,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public SHOP_PRODS GetProductById(int productId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork.TeachersAssistantDbContext.ShopProducts.SingleOrDefault(p => p.prodId == productId);
@@ -83,7 +81,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public IList<SHOP_PRODS> GetProductsList()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork.TeachersAssistantDbContext.ShopProducts.ToList();
@@ -91,7 +89,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void ManageClassRoom(Classroom classRoomModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var classroom = _unitOfWork._classroomRepository.GetById((int)classRoomModel.ClassroomId);
@@ -116,7 +114,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void SaveOrUpdateOrders(Order order)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var ord = _unitOfWork._calendarBookingRepository.DbContextTeachersAssistant.Orders.SingleOrDefault(p => p.orderId == order.orderId);
@@ -138,7 +136,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void SaveOrUpdateItemOrders(ItemOrder orderItem)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var ordIt = _unitOfWork._calendarBookingRepository.DbContextTeachersAssistant.ItemOrders.SingleOrDefault(p => p.ItemId == orderItem.ItemId);
@@ -159,7 +157,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void DeleteStudent(Student studentModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (studentModel.StudentId != null && studentModel.StudentId > 0)
@@ -173,7 +171,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public List<SHOP_PRODS> GetShoppingProdsList()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._freeVideoRepository.DbContextTeachersAssistant.ShopProducts.ToList();
@@ -182,7 +180,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void ManageStudent(Student studentModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (studentModel.StudentId == null || studentModel.StudentId < 1)
@@ -204,7 +202,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeleteSubject(Subject subjectModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (subjectModel.SubjectId != null && subjectModel.SubjectId > 0)
@@ -219,7 +217,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public Classroom GetClassroomById(int? classroomId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._classroomRepository.GetById((int)classroomId);
@@ -228,7 +226,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void ManageSubject(Subject subjectModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var subject = _unitOfWork._subjectRepository.GetById((int)subjectModel.SubjectId);
@@ -248,7 +246,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void DeleteTeacher(Teacher teacherModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (teacherModel.TeacherId != null && teacherModel.TeacherId > 0)
@@ -263,7 +261,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public Student GetStudentById(int? studentId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._studentRepository.GetById((int)studentId);
@@ -271,7 +269,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public Subject GetSubjectById(int? subjectId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._subjectRepository.GetById((int)subjectId);
@@ -279,15 +277,15 @@ namespace TeachersAssistant.Services.Concretes
         }
         public Classroom[] GetClassrooms()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                return _unitOfWork._classroomRepository.GetAll().ToArray();
+                return _unitOfWork._classroomRepository.GetAll();
             }
         }
         public Teacher GetTeacherById(int? teacherId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._teacherRepository.GetById((int)teacherId);
@@ -295,7 +293,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void ManageTeachers(Teacher teacherModel)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (teacherModel.TeacherId == null || teacherModel.TeacherId < 1)
@@ -319,7 +317,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public BookingTime GetBookingById(int bookingTimeId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._bookingTimeRepository.GetById(bookingTimeId);
@@ -328,7 +326,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public Teacher GetTeacherByName(string name)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._teacherRepository.GetAll().FirstOrDefault(p => p.EmailAddress == name);
@@ -337,7 +335,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public Student GetStudentByName(string emailAddress)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._studentRepository.GetAll().FirstOrDefault(p => p.EmailAddress == emailAddress);
@@ -345,15 +343,59 @@ namespace TeachersAssistant.Services.Concretes
         }
         public Subject GetSubjectByName(string subjectName)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._subjectRepository.GetAll().FirstOrDefault(p => p.SubjectName.ToLower().Equals(subjectName.ToLower()));
             }
         }
+
+        public List<GroupedResourcesViewModel> GetGroupedResourcesByRoleThenSubject(string roleName)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                IEnumerable<Dictionary<string, IGrouping<string, StudentResource>>> result = null;
+                var results = new List<GroupedResourcesViewModel>();
+                if (_unitOfWork._studentResourcesRepository.GetAll() != null) { 
+                    result = _unitOfWork._studentResourcesRepository.GetAll().GroupBy(gr => gr.RoleName).Select(p =>
+                    {
+                        var dict = new Dictionary<string, IGrouping<string, StudentResource>>();
+                        dict.Add(p.Key, p);
+                        return dict;
+                    });
+                }
+                if(result!=null)
+                foreach (var dict in result)
+                {
+                    results.Add(new GroupedResourcesViewModel
+                    {
+                        GroupedByRole = dict.FirstOrDefault().Key,
+                        GroupedBySubject = dict.FirstOrDefault().Value.GroupBy(gs => gs.SubjectId).Select(p =>
+                        {
+                            var dic = new Dictionary<string, IGrouping<int, StudentResource>>();
+                            dic.Add(_unitOfWork._subjectRepository.GetById(p.Key).SubjectName, p);
+                            return dic;
+                        }),
+                        IndividualResources = dict.FirstOrDefault().Value.GroupBy(gs => gs.StudentResourceId)
+                    });
+                }
+                return results;
+            }
+        }
+
+        public StudentResource GetStudentResourceById(int studentResourceId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._studentResourcesRepository.GetById(studentResourceId);
+            }
+        }
+
         public Subject GetSubjectById(int subjectId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._subjectRepository.GetById((int)subjectId);
@@ -362,7 +404,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void SaveOrUpdateBooking(Teacher teacher, Student student, Subject subject, BookingTime bookingTime, string description)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var bookedTime = _unitOfWork._bookingTimeRepository.GetById((int)(bookingTime.BookingTimeId ?? Int32.Parse("-1")));
@@ -397,9 +439,22 @@ namespace TeachersAssistant.Services.Concretes
 
         }
 
+        public void DeleteStudentResource(int studentResourceId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var res = _unitOfWork._studentResourcesRepository.GetById(studentResourceId);
+                if(res != null)
+                {
+                    _unitOfWork._studentResourcesRepository.Delete(res);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+        }
         public void SaveOrUpdateFreeVideo(FreeVideo freeVideo)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (freeVideo.FreeVideoId != null && freeVideo.FreeVideoId > 0)
@@ -424,9 +479,32 @@ namespace TeachersAssistant.Services.Concretes
             }
         }
 
+        public void SaveOrUpdateStudentResource(StudentResource studentResource)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var stuRes = _unitOfWork._studentResourcesRepository.GetById(studentResource.StudentResourceId);
+                if(stuRes == null)
+                {
+                    _unitOfWork._studentResourcesRepository.Add(studentResource);
+                    _unitOfWork.SaveChanges();
+                }
+                else
+                {
+                    stuRes.SubjectId = studentResource.SubjectId;
+                    stuRes.FilePath = studentResource.FilePath;
+                    stuRes.RoleName = studentResource.RoleName;
+                    stuRes.StudentResourceName = studentResource.StudentResourceName;
+                    _unitOfWork.SaveChanges(); 
+                }
+            }
+           
+        }
+
         public PaidDocument[] GetPaidDocuments(string role)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._paidDocumentRepository.GetAll().Where(p => p.RoleName.ToLower().Equals(role.ToLower())).ToArray();
@@ -434,7 +512,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public FreeDocument[] GetFreeDocuments(string role)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._freeDocumentRepository.GetAll().Where(p => p.RoleName.ToLower().Equals(role.ToLower())).ToArray();
@@ -442,7 +520,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public PaidVideo[] GetPaidVideos(string role)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._paidVideoRepository.GetAll().Where(p => p.RoleName.ToLower().Equals(role.ToLower())).ToArray();
@@ -450,7 +528,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public FreeVideo[] GetFreeVideos(string role)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._freeVideoRepository.GetAll().Where(p => p.RoleName.ToLower().Equals(role.ToLower())).ToArray();
@@ -458,7 +536,7 @@ namespace TeachersAssistant.Services.Concretes
         }
         public void SaveOrUpdatePaidVideo(PaidVideo paidVideo)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (paidVideo.PaidVideoId != null && paidVideo.PaidVideoId > 0)
@@ -485,7 +563,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public PaidDocument GetPaidDocumentById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._paidDocumentRepository.GetById((int)mediaId);
@@ -494,7 +572,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public FreeDocument GetFreeDocumentById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._freeDocumentRepository.GetById((int)mediaId);
@@ -503,7 +581,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public PaidVideo GetPaidVideoById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._paidVideoRepository.GetById((int)mediaId);
@@ -512,7 +590,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public FreeVideo GetFreeVideoById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._freeVideoRepository.GetById((int)mediaId);
@@ -521,7 +599,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void SaveOrUpdateFreeDocument(FreeDocument document)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (document.FreeDocumentId != null && document.FreeDocumentId > 0)
@@ -548,7 +626,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void SaveOrUpdatePaidDocument(PaidDocument paidDocument)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (paidDocument.PaidDocumentId != null && paidDocument.PaidDocumentId > 0)
@@ -575,7 +653,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeleteFreeDocumentById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var pDoc = _unitOfWork._freeDocumentRepository.GetAll().FirstOrDefault(p => p.FreeDocumentId == mediaId);
@@ -586,7 +664,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeletePaidVideoById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 var pDoc = _unitOfWork._paidVideoRepository.GetAll().FirstOrDefault(p => p.PaidVideoId == mediaId);
                 _unitOfWork.InitializeDbContext(dbContext); _unitOfWork._paidVideoRepository.Delete(pDoc);
@@ -596,7 +674,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeletePaidDocumentById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var pDoc = _unitOfWork._paidDocumentRepository.GetAll().FirstOrDefault(p => p.PaidDocumentId == mediaId);
@@ -607,7 +685,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeleteFreeVideoById(int? mediaId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var pDoc = _unitOfWork._freeVideoRepository.GetAll().FirstOrDefault(p => p.FreeVideoId == mediaId);
@@ -618,33 +696,33 @@ namespace TeachersAssistant.Services.Concretes
 
         public Teacher[] GetTeacherList()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                return _unitOfWork._teacherRepository.GetAll().ToArray();
+                return _unitOfWork._teacherRepository.GetAll();
             }
         }
         public Student[] GetStudentList()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                return _unitOfWork._studentRepository.GetAll().ToArray();
+                return _unitOfWork._studentRepository.GetAll();
             }
         }
 
         public Subject[] GetSubjectList()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                return _unitOfWork._subjectRepository.GetAll().ToArray();
+                return _unitOfWork._subjectRepository.GetAll();
             }
         }
 
         public CalendarBooking GetTeacherCalendarByBookingId(int? bookingId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._calendarBookingRepository.GetById(((int)bookingId));
@@ -653,7 +731,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeleteTeacherCalendarByBooking(CalendarBooking teacherCalendar)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 if (teacherCalendar.CalendarBookingId != null && teacherCalendar.CalendarBookingId > 0)
@@ -667,7 +745,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeleteBooking(int bookingTimeId)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var bookingToDelete = _unitOfWork._bookingTimeRepository.GetById(bookingTimeId);
@@ -678,7 +756,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void SaveOrUpdate(SHOP_PRODS shopProd)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var product = _unitOfWork._bookingTimeRepository.DbContextTeachersAssistant.ShopProducts.SingleOrDefault(p => p.prodId == shopProd.prodId);
@@ -701,7 +779,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public void DeleteProduct(SHOP_PRODS shopProd)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var product = _unitOfWork._bookingTimeRepository.DbContextTeachersAssistant.ShopProducts.SingleOrDefault(p => p.prodId == shopProd.prodId);
@@ -715,7 +793,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public PaidDocument[] GetPaidDocuments()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._paidDocumentRepository.GetAll();
@@ -724,7 +802,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public PaidVideo[] GetPaidVideos()
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._paidVideoRepository.GetAll();
@@ -733,7 +811,7 @@ namespace TeachersAssistant.Services.Concretes
 
         public dynamic GetUserBoughtItems(string name)
         {
-            using (var dbContext = new DataAccess.TeachersAssistant())
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 var paidDocuments =
@@ -761,6 +839,16 @@ namespace TeachersAssistant.Services.Concretes
                     return result;
                 }
                 return null;
+            }
+        }
+
+        public StudentResource[] GetAllStudentResources()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+
+                return _unitOfWork._studentResourcesRepository.GetAll().ToArray();
             }
         }
     }

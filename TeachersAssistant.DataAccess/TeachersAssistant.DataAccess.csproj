@@ -9,12 +9,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TeachersAssistant.DataAccess</RootNamespace>
     <AssemblyName>TeachersAssistant.DataAccess</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,11 +37,9 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -58,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\AbstractRepository.cs" />
+    <Compile Include="Concretes\StudentResourcesRepository.cs" />
     <Compile Include="Interfaces\IBookingTimeRepositoryMarker.cs" />
     <Compile Include="Concretes\BookingTimeRepository.cs" />
     <Compile Include="Concretes\CalendarBookingRepository.cs" />
@@ -66,6 +66,7 @@
     <Compile Include="Concretes\FreeDocumentStudentRepository.cs" />
     <Compile Include="Concretes\FreeVideoRepository.cs" />
     <Compile Include="Concretes\FreeVideoStudentRepository.cs" />
+    <Compile Include="Interfaces\IStudentResourceRepositoryMarker.cs" />
     <Compile Include="Interfaces\IStudentTypeRepositoryMarker.cs" />
     <Compile Include="Interfaces\ISubjectRepositoryMarker.cs" />
     <Compile Include="Interfaces\ITeacherRepositoryMarker.cs" />
@@ -90,9 +91,8 @@
     <Compile Include="Concretes\TeacherRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeachersAssistant.cs" />
+    <Compile Include="TeachersAssistantDbContext.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

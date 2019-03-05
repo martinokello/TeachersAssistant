@@ -21,3 +21,11 @@ C:\C#Projects\MartinLayooIncSoftware\Twitter\bin\Release\Newtonsoft.Json.dll
 C:\C#Projects\MartinLayooIncSoftware\Twitter\obj\Release\Twitter.csprojResolveAssemblyReference.cache
 C:\C#Projects\MartinLayooIncSoftware\Twitter\obj\Release\Twitter.dll
 C:\C#Projects\MartinLayooIncSoftware\Twitter\obj\Release\Twitter.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\bin\Release\Twitter.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\bin\Release\Twitter.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\bin\Release\Newtonsoft.Json.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.csprojAssemblyReference.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.csproj.CoreCompileInputs.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.pdb

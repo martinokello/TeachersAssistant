@@ -38,7 +38,6 @@ C:\TeacherAssistantPhase2\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\Mar
 C:\TeacherAssistantPhase2\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.csprojAssemblyReference.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\bin\Debug\MartinLayooInc.Caching.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\bin\Debug\MartinLayooInc.Caching.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.csprojAssemblyReference.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Debug\MartinLayooInc.Caching.pdb

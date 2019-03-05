@@ -9,7 +9,7 @@ namespace TeachersAssistant.DataAccess.Abstracts
 {
     public abstract class AbstractRepository<T> : IRepository<T>  where T : class
     {
-        public TeachersAssistant DbContextTeachersAssistant { get; set; }
+        public TeachersAssistantDbContext DbContextTeachersAssistant { get; set; }
         public bool Add(T item)
         {
             try

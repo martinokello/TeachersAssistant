@@ -27,9 +27,10 @@ namespace  TeachersAssistant.Services.Concretes
         public SubjectRepository _subjectRepository;
         public TeacherRepository _teacherRepository;
         public BookingTimeRepository _bookingTimeRepository;
+        public StudentResourcesRepository _studentResourcesRepository;
 
 
-        public DataAccess.TeachersAssistant TeachersAssistantDbContext { get; set; }
+        public DataAccess.TeachersAssistantDbContext TeachersAssistantDbContext { get; set; }
         public TeachersAssistantUnitOfWork() { }
 
         public TeachersAssistantUnitOfWork(ICalendarBookingRepositoryMarker calendarBookingRepository,
@@ -46,7 +47,8 @@ namespace  TeachersAssistant.Services.Concretes
             IStudentTypeRepositoryMarker studentTypeRepositoryMarker,
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
-            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker)
+            IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
+            IStudentResourceRepositoryMarker studentResourcesRepositoryMarker)
         {
             _calendarBookingRepository = calendarBookingRepository as CalendarBookingRepository;
             _classroomRepository = classroomRepositoryMarker as ClassroomRepository;
@@ -63,9 +65,10 @@ namespace  TeachersAssistant.Services.Concretes
             _subjectRepository = subjectRepositoryMarker as SubjectRepository;
             _teacherRepository = teacherRepositoryMarker as TeacherRepository;
             _bookingTimeRepository = bookingTimeRepositoryMarker as BookingTimeRepository;
+            _studentResourcesRepository = studentResourcesRepositoryMarker as StudentResourcesRepository;
         }
 
-        public void InitializeDbContext(DataAccess.TeachersAssistant teachersAssistantDbContext)
+        public void InitializeDbContext(DataAccess.TeachersAssistantDbContext teachersAssistantDbContext)
         {
             _calendarBookingRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
             _classroomRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
@@ -80,9 +83,11 @@ namespace  TeachersAssistant.Services.Concretes
             _studentRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
             _studentTypeRepository.DbContextTeachersAssistant = TeachersAssistantDbContext;
             _subjectRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
-            this.TeachersAssistantDbContext = teachersAssistantDbContext;
             _teacherRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
             _bookingTimeRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
+            _bookingTimeRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
+            _studentResourcesRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
+            this.TeachersAssistantDbContext = teachersAssistantDbContext;
         }
         public void SaveChanges()
         {

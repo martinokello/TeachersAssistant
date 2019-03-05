@@ -2,3 +2,8 @@ C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Release\Teach
 C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Release\TeachersAssistant.Domain.Model.pdb
 C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.Model.dll
 C:\C#Projects\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.Model.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Release\TeachersAssistant.Domain.Model.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Release\TeachersAssistant.Domain.Model.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.csproj.CoreCompileInputs.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.Model.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Release\TeachersAssistant.Domain.Model.pdb
