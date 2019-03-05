@@ -363,7 +363,7 @@ namespace TeachersAssistant.Services.Concretes
                         var dict = new Dictionary<string, IGrouping<string, StudentResource>>();
                         dict.Add(p.Key, p);
                         return dict;
-                    });
+                    }).ToList();
                 }
                 if(result!=null)
                 foreach (var dict in result)
@@ -376,7 +376,7 @@ namespace TeachersAssistant.Services.Concretes
                             var dic = new Dictionary<string, IGrouping<int, StudentResource>>();
                             dic.Add(_unitOfWork._subjectRepository.GetById(p.Key).SubjectName, p);
                             return dic;
-                        }),
+                        }).ToList(),
                         IndividualResources = dict.FirstOrDefault().Value.GroupBy(gs => gs.StudentResourceId)
                     });
                 }

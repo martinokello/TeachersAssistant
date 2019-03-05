@@ -62,3 +62,5 @@ C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\De
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.CopyComplete
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.Migrations.AddNewTableStudentResources.resources
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Debug\TeachersAssistant.DataAccess.csproj.GenerateResource.cache

@@ -90,11 +90,18 @@
     <Compile Include="Concretes\SubjectRepository.cs" />
     <Compile Include="Concretes\TeacherRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Migrations\201903051428094_AddNewTableStudentResources.cs" />
+    <Compile Include="Migrations\201903051428094_AddNewTableStudentResources.Designer.cs">
+      <DependentUpon>201903051428094_AddNewTableStudentResources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeachersAssistantDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +109,11 @@
       <Project>{a4a71a80-b306-4c2f-8018-40f6367268a8}</Project>
       <Name>TeachersAssistant.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201903051428094_AddNewTableStudentResources.resx">
+      <DependentUpon>201903051428094_AddNewTableStudentResources.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
