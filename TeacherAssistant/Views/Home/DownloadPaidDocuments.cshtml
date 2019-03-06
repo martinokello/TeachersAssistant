@@ -42,7 +42,7 @@
                     <h4>Paid Documents</h4>
                 </div>
                 <div class="col-lg-12 cell">
-                    <ul id="paidDocs" class="cell" style="margin: 5px;"></ul>
+                    <ul id="paidDocs" class="list-group cell" style="margin: 5px;"></ul>
                 </div>
             </div>
             <div class="row" style="margin: 5px;">
@@ -55,7 +55,7 @@
                     <h4>Paid Videos</h4>
                 </div>
                 <div class="col-lg-12 cell">
-                    <ul id="paidVids" class="cell" style="margin: 5px;"></ul>
+                    <ul id="paidVids" class="list-group cell" style="margin: 5px;"></ul>
                 </div>
             </div>
             <input type="hidden" name="virtualPath"/>;
@@ -81,10 +81,10 @@
             for(var doc=0; doc<jsonpaidDocs.length; doc++ ){
                 if(jsonpaidDocs[doc].IsDocument)
                 {
-                    $ulHandleDocs.append('<li><a href="#" rel="'+jsonpaidDocs[doc].FilePath+'">'+jsonpaidDocs[doc].ProdName+' ,'+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+                    $ulHandleDocs.append('<li class="list-group-item"><a href="#" rel="'+jsonpaidDocs[doc].FilePath+'">'+jsonpaidDocs[doc].ProdName+' ,'+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
                 }
                 else {
-                    $ulHandleVids.append('<li><div class="col-lg-8"><section>'+jsonpaidDocs[doc].ProdName+', '+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</section></div><div class="col-lg-8"><video width="320" height="auto" controls><source src="'+jsonpaidDocs[doc].FilePath.substr(1)+'" type="video/mp4"><source src="'+jsonpaidDocs[doc].FilePath.substr(1).replace(".mp4",".webm")+'" type="video/webm"><source src="'+jsonpaidDocs[doc].FilePath.substr(1).replace(".mp4",".ogg")+'" type="video/ogg">Your browser does not support the video tag.</video></div></li>');
+                    $ulHandleVids.append('<li class="list-group-item"><div class="col-lg-8"><section>'+jsonpaidDocs[doc].ProdName+', '+jsonpaidDocs[doc].FilePath.substr(jsonpaidDocs[doc].FilePath.lastIndexOf('/')+1)+'</section></div><div class="col-lg-8"><video width="320" height="auto" controls><source src="'+jsonpaidDocs[doc].FilePath.substr(1)+'" type="video/mp4"><source src="'+jsonpaidDocs[doc].FilePath.substr(1).replace(".mp4",".webm")+'" type="video/webm"><source src="'+jsonpaidDocs[doc].FilePath.substr(1).replace(".mp4",".ogg")+'" type="video/ogg">Your browser does not support the video tag.</video></div></li>');
                 }
             }
 
