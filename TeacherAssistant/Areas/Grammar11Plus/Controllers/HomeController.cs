@@ -492,7 +492,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             var productList = new List<SelectListItem>();
             productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
 
-            productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description.Substring(0,20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
             return productList;
         }
         private void GetUIDropdownLists()

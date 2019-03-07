@@ -894,6 +894,7 @@ namespace TeachersAssistant.Services.Concretes
                 {
                     _unitOfWork._qAHelpRequestRepository.Update(qaHelpRequestViewModel);
                 }
+                _unitOfWork.SaveChanges();
             }
         }
     }
