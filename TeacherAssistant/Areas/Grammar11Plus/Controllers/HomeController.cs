@@ -102,6 +102,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     QAHelpRequestId = qaHelpRequest.QAHelpRequestId,
                     TeacherId = qaHelpRequest.TeacherId,
                     Description = qaHelpRequest.Description,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now,
                     StudentId = qaHelpRequest.StudentId,
                     StudentRole = qaHelpRequest.StudentRole,
                     SubjectId = qaHelpRequest.SubjectId,

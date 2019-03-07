@@ -879,8 +879,10 @@ namespace TeacherAssistant.Controllers
 
             var productList = new List<SelectListItem>();
             productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
-
-            productList.AddRange(qaItems.Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            if (qaItems.Any())
+            {
+                productList.AddRange(qaItems.Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
+            }
             return productList;
         }
 
@@ -1197,9 +1199,13 @@ namespace TeacherAssistant.Controllers
         {
             var productList = new List<SelectListItem>();
             productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
-
-            productList.AddRange(_repositoryServices.GetQARequestList().Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            var results = _repositoryServices.GetQARequestList();
+            if (results.Any())
+            {
+                productList.AddRange(results.Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            }
             return productList;
+
         }
         private List<SelectListItem> GetProductList()
         {
@@ -1212,7 +1218,6 @@ namespace TeacherAssistant.Controllers
         private void GetUIDropdownLists()
         {
             ViewBag.StudentResourcesList = GetStudentResourcesList();
-            ViewBag.QAHelpRequestList = GetQARequestList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
             ViewBag.StudentList = GetStudentsList();
