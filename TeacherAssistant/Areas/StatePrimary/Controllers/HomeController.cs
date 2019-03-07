@@ -40,7 +40,8 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
-            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
+            IStudentResourceRepositoryMarker studentResourcesRepositoryMarker,
+            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker)
         {
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -57,7 +58,8 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
              subjectRepositoryMarker,
              teacherRepositoryMarker,
              bookingTimeRepositoryMarker,
-             studentResourceRepositoryMarker);
+             studentResourcesRepositoryMarker,
+             qAHelpRequestRepositoryMarker);
             unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
@@ -78,6 +80,36 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
         {
             ViewBag.Message = "Contact Us.";
 
+            return View();
+        }
+        [HttpGet]
+        public ActionResult RequestQAHelp()
+        {
+            ViewBag.Message = "Request QA Help From Tutor";
+            GetUIDropdownLists();
+            return View(new QAHelpRequestViewModel());
+        }
+        [HttpPost]
+        public ActionResult RequestQAHelp(QAHelpRequestViewModel qaHelpRequest)
+        {
+            ViewBag.Message = "Request QA Help From Tutor";
+            GetUIDropdownLists();
+            if (ModelState.IsValid)
+            {
+                _teacherRepository.RequestQATime(new QAHelpRequest
+                {
+                    QAHelpRequestId = qaHelpRequest.QAHelpRequestId,
+                    TeacherId = qaHelpRequest.TeacherId,
+                    Description = qaHelpRequest.Description,
+                    EndTime = qaHelpRequest.EndTime,
+                    StartTime = qaHelpRequest.StartTime,
+                    StudentId = qaHelpRequest.StudentId,
+                    StudentRole = qaHelpRequest.StudentRole,
+                    SubjectId = qaHelpRequest.SubjectId,
+                    DateCreated = DateTime.Now
+                });
+                return View("_SuccessfullCreation", qaHelpRequest);
+            }
             return View();
         }
         [HttpGet]
@@ -377,6 +409,14 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
 
             return RedirectToRoute(new { controller = "Home", action = "DownloadPaidDocuments", namespaces = "TeacherAssistant.Controllers", area = "" });
         }
+        public IList<SelectListItem> GetQARequestList()
+        {
+            var productList = new List<SelectListItem>();
+            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
+
+            productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            return productList;
+        }
         private List<SelectListItem> GetClassroomList()
         {
             var classRoomList = new List<SelectListItem>();
@@ -459,6 +499,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
         }
         private void GetUIDropdownLists()
         {
+            ViewBag.QAHelpRequestList = GetQARequestList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
             ViewBag.StudentList = GetStudentsList();

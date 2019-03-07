@@ -1,0 +1,91 @@
+﻿@model TeacherAssistant.Models.QAHelpRequestViewModel
+@{
+    ViewBag.Title = "Manage QA Help Request";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+}
+
+<h2>Manage QA Help Request</h2>
+
+<div class="form-horizontal">
+    <h4>Request Tutor Help</h4>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div style="background-color: #DADADA;">
+            <div style="padding:5px;">
+                <h4>Help Request Details</h4>
+                <hr />
+                @Html.ValidationSummary(true, "*", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.QAHelpRequestId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("QAHelpRequestId", (List<SelectListItem>)ViewBag.QAHelpRequestList, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QAHelpRequestId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("TeacherId", (List<SelectListItem>)ViewBag.TeacherList, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentRole, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("StudentRole", ViewBag.RoleList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessage("StudentRole", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", @tooltip = "YYYY-MM-dd HH:mm" } })
+                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", @tooltip = "YYYY-MM-dd HH:mm" } })
+                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsScheduled, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input type="checkbox" name="IsScheduled" class="checkbox-inline" />
+                        @Html.ValidationMessageFor(model => model.IsScheduled, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Confirm Booking" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

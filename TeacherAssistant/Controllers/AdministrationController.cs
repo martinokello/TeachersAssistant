@@ -45,7 +45,8 @@ namespace TeacherAssistant.Controllers
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingRepositoryMarker,
-            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
+            IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
+            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker)
         {
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
             Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
@@ -63,6 +64,7 @@ namespace TeacherAssistant.Controllers
             Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingRepositoryMarker, "bookingRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
+            Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -78,7 +80,8 @@ namespace TeacherAssistant.Controllers
              subjectRepositoryMarker,
              teacherRepositoryMarker,
              bookingRepositoryMarker,
-             studentResourceRepositoryMarker);
+             studentResourceRepositoryMarker,
+             qAHelpRequestRepositoryMarker);
 
             unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
@@ -871,6 +874,52 @@ namespace TeacherAssistant.Controllers
             }
             return View("ManageTeacherCalendar", bookingTimeViewModel);
         }
+        private List<SelectListItem> GetFilteredQASelectList(IEnumerable<QAHelpRequest> qaItems)
+        {
+
+            var productList = new List<SelectListItem>();
+            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
+
+            productList.AddRange(qaItems.Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            return productList;
+        }
+
+        [HttpGet]
+        public ActionResult ManageQAHelpRequest()
+        {
+            GetUIDropdownLists();
+            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
+       
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult ManageQAHelpRequest(QAHelpRequestViewModel qaHelpRequestViewModel)
+        {
+            GetUIDropdownLists();
+            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
+
+            if (ModelState.IsValid)
+            {
+                _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest {QAHelpRequestId = qaHelpRequestViewModel.QAHelpRequestId, Description = qaHelpRequestViewModel.Description,
+                    EndTime = qaHelpRequestViewModel .EndTime, StartTime = qaHelpRequestViewModel.StartTime,
+                    IsScheduled = qaHelpRequestViewModel.IsScheduled, StudentId = qaHelpRequestViewModel.StudentId,
+                    StudentRole = qaHelpRequestViewModel.StudentRole, SubjectId= qaHelpRequestViewModel.SubjectId,
+                    TeacherId = qaHelpRequestViewModel .TeacherId});
+                
+                //Add to Calendar
+
+                _repositoryServices.SaveOrUpdateBooking(_repositoryServices.GetTeacherById(qaHelpRequestViewModel.TeacherId),
+                    _repositoryServices.GetStudentById(qaHelpRequestViewModel.StudentId),
+                    _repositoryServices.GetSubjectById(qaHelpRequestViewModel.SubjectId),
+                    new BookingTime { StartTime = qaHelpRequestViewModel.StartTime, EndTime = qaHelpRequestViewModel.EndTime }, qaHelpRequestViewModel.Description);
+
+                //Send emails to user about schedule:
+                return View("SuccessfullCreation");
+            }
+            return View(qaHelpRequestViewModel);
+        }
         [HttpGet]
         public ActionResult ManageProducts()
         {
@@ -1143,6 +1192,15 @@ namespace TeacherAssistant.Controllers
 
             return resourceList;
         }
+
+        public IList<SelectListItem> GetQARequestList()
+        {
+            var productList = new List<SelectListItem>();
+            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
+
+            productList.AddRange(_repositoryServices.GetQARequestList().Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            return productList;
+        }
         private List<SelectListItem> GetProductList()
         {
             var productList = new List<SelectListItem>();
@@ -1154,6 +1212,7 @@ namespace TeacherAssistant.Controllers
         private void GetUIDropdownLists()
         {
             ViewBag.StudentResourcesList = GetStudentResourcesList();
+            ViewBag.QAHelpRequestList = GetQARequestList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
             ViewBag.StudentList = GetStudentsList();

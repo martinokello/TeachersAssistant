@@ -310,6 +310,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\QAHelpRequestViewModel.cs" />
     <Compile Include="Models\StudentResourcesViewModel.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\SubjectViewModel.cs" />
@@ -574,6 +575,10 @@
     <Content Include="assets\sass\layout\_sidebar.scss" />
     <Content Include="assets\sass\layout\_wrapper.scss" />
     <Content Include="fullcalendar-3.10.0\demos\json\events.json" />
+    <Content Include="Views\Shared\_RequestQAHelp.cshtml" />
+    <Content Include="Areas\Grammar11Plus\Views\Home\RequestQAHelp.cshtml" />
+    <Content Include="Areas\StateJunior\Views\Home\RequestQAHelp.cshtml" />
+    <Content Include="Areas\StatePrimary\Views\Home\RequestQAHelp.cshtml" />
     <None Include="Properties\PublishProfiles\TeachersAssistantApp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -649,8 +654,10 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Administration\ManageQAHelpRequest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>

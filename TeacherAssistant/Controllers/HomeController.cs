@@ -44,7 +44,8 @@ namespace  TeacherAssistant.Controllers
             ISubjectRepositoryMarker subjectRepositoryMarker,
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
-            IStudentResourceRepositoryMarker studentResourceRepositoryMarker)
+            IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
+            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker)
         {
 
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
@@ -63,6 +64,7 @@ namespace  TeacherAssistant.Controllers
             Condition.Requires<IStudentTypeRepositoryMarker>(studentTypeRepositoryMarker, "teacherRepositoryMarker").IsNotNull();
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingTimeRepositoryMarker, "bookingTimeRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
+            Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -78,7 +80,8 @@ namespace  TeacherAssistant.Controllers
              subjectRepositoryMarker,
              teacherRepositoryMarker,
              bookingTimeRepositoryMarker,
-             studentResourceRepositoryMarker);
+             studentResourceRepositoryMarker,
+             qAHelpRequestRepositoryMarker);
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
         public enum MediaType { Document, Video }
@@ -331,9 +334,17 @@ namespace  TeacherAssistant.Controllers
 
             return rolesList;
         }
+        public IList<SelectListItem> GetQARequestList()
+        {
+            var productList = new List<SelectListItem>();
+            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
 
+            productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description.Substring(0, 20), Value = p.QAHelpRequestId.ToString() }).ToList());
+            return productList;
+        }
         private void GetUIDropdownLists()
         {
+            ViewBag.QAHelpRequestList = GetQARequestList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
             ViewBag.StudentList = GetStudentsList();
