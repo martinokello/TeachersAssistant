@@ -101,8 +101,6 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                     QAHelpRequestId = qaHelpRequest.QAHelpRequestId,
                     TeacherId = qaHelpRequest.TeacherId,
                     Description = qaHelpRequest.Description,
-                    EndTime = qaHelpRequest.EndTime,
-                    StartTime = qaHelpRequest.StartTime,
                     StudentId = qaHelpRequest.StudentId,
                     StudentRole = qaHelpRequest.StudentRole,
                     SubjectId = qaHelpRequest.SubjectId,
