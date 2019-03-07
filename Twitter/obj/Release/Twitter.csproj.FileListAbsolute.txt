@@ -28,4 +28,3 @@ C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.csproj.
 C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.csproj.CopyComplete
 C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\Twitter\obj\Release\Twitter.csprojAssemblyReference.cache

@@ -89,9 +89,8 @@ namespace TeachersAssistant.DataAccess
         public DbSet<SHOP_PRODS> ShopProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ItemOrder> ItemOrders { get; set; }
-        public DbSet<StudentResource> StudentResources { get; set; }
-        
-
+        public DbSet<StudentResource> StudentResources { get; set; }        
+        public DbSet<QAHelpRequest> QAHelpRequests { get; set; }
     }
     
 }

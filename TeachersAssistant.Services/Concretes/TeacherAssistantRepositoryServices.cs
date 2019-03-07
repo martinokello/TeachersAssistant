@@ -87,6 +87,34 @@ namespace TeachersAssistant.Services.Concretes
                 return _unitOfWork.TeachersAssistantDbContext.ShopProducts.ToList();
             }
         }
+        public IList<QAHelpRequest> GetQARequestList()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._qAHelpRequestRepository.GetAll();
+            }
+        }
+
+        public void RequestQATime(QAHelpRequest qaHelpRequest)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var request = _unitOfWork._qAHelpRequestRepository.GetById(qaHelpRequest.QAHelpRequestId);
+                if (request == null)
+                {
+                    _unitOfWork._qAHelpRequestRepository.Add(qaHelpRequest);
+                    _unitOfWork.SaveChanges();
+                }
+                else
+                {
+                    _unitOfWork._qAHelpRequestRepository.Update(qaHelpRequest);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+        }
+
         public void ManageClassRoom(Classroom classRoomModel)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
@@ -849,6 +877,23 @@ namespace TeachersAssistant.Services.Concretes
                 _unitOfWork.InitializeDbContext(dbContext);
 
                 return _unitOfWork._studentResourcesRepository.GetAll().ToArray();
+            }
+        }
+
+        public void SaveOrUpdateQAHelpRequests(QAHelpRequest qaHelpRequestViewModel)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var req = _unitOfWork._qAHelpRequestRepository.GetById(qaHelpRequestViewModel.QAHelpRequestId);
+                if(req == null)
+                {
+                    _unitOfWork._qAHelpRequestRepository.Add(qaHelpRequestViewModel);
+                }
+                else
+                {
+                    _unitOfWork._qAHelpRequestRepository.Update(qaHelpRequestViewModel);
+                }
             }
         }
     }

@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BookingTime.cs" />
-    <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\CalendarBooking.cs" />
     <Compile Include="Models\Classroom.cs" />
     <Compile Include="Models\FreeDocument.cs" />
     <Compile Include="Models\FreeDocumentStudent.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="Models\PaidDocumentStudent.cs" />
     <Compile Include="Models\PaidVideo.cs" />
     <Compile Include="Models\PaidVideoStudent.cs" />
+    <Compile Include="Models\QAHelpRequest.cs" />
     <Compile Include="Models\SHOP_PRODS.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentResource.cs" />

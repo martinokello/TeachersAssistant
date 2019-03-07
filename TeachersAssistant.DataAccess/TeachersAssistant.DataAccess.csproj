@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\AbstractRepository.cs" />
+    <Compile Include="Concretes\QAHelpRequestRepository.cs" />
     <Compile Include="Concretes\StudentResourcesRepository.cs" />
     <Compile Include="Interfaces\IBookingTimeRepositoryMarker.cs" />
     <Compile Include="Concretes\BookingTimeRepository.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Concretes\FreeDocumentStudentRepository.cs" />
     <Compile Include="Concretes\FreeVideoRepository.cs" />
     <Compile Include="Concretes\FreeVideoStudentRepository.cs" />
+    <Compile Include="Interfaces\IQAHelpRequestRepositoryMarker.cs" />
     <Compile Include="Interfaces\IStudentResourceRepositoryMarker.cs" />
     <Compile Include="Interfaces\IStudentTypeRepositoryMarker.cs" />
     <Compile Include="Interfaces\ISubjectRepositoryMarker.cs" />
@@ -94,6 +96,10 @@
     <Compile Include="Migrations\201903051428094_AddNewTableStudentResources.Designer.cs">
       <DependentUpon>201903051428094_AddNewTableStudentResources.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903071046114_TableQA.cs" />
+    <Compile Include="Migrations\201903071046114_TableQA.Designer.cs">
+      <DependentUpon>201903071046114_TableQA.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeachersAssistantDbContext.cs" />
@@ -113,6 +119,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201903051428094_AddNewTableStudentResources.resx">
       <DependentUpon>201903051428094_AddNewTableStudentResources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903071046114_TableQA.resx">
+      <DependentUpon>201903071046114_TableQA.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
