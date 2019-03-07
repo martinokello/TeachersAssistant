@@ -76,7 +76,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.IsScheduled, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <input type="checkbox" name="IsScheduled" class="checkbox-inline" />
+                        @Html.CheckBoxFor(model => model.IsScheduled)
                         @Html.ValidationMessageFor(model => model.IsScheduled, "", new { @class = "text-danger" })
                     </div>
                 </div>
