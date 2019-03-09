@@ -45,7 +45,9 @@ namespace  TeacherAssistant.Controllers
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
             IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
-            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker)
+            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
+            IAssignmentRepositoryMarker assignmentRepositoryMarker,
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
         {
 
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
@@ -65,6 +67,8 @@ namespace  TeacherAssistant.Controllers
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingTimeRepositoryMarker, "bookingTimeRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
             Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
+            Condition.Requires<IAssignmentRepositoryMarker>(assignmentRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
+            Condition.Requires<IAssignmentSubmissionRepositoryMarker>(assignmentSubmissionRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -81,7 +85,9 @@ namespace  TeacherAssistant.Controllers
              teacherRepositoryMarker,
              bookingTimeRepositoryMarker,
              studentResourceRepositoryMarker,
-             qAHelpRequestRepositoryMarker);
+             qAHelpRequestRepositoryMarker,
+             assignmentRepositoryMarker,
+             assignmentSubmissionRepositoryMarker);
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
         public enum MediaType { Document, Video }

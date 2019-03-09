@@ -40,7 +40,9 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingTimeRepositoryMarker,
             IStudentResourceRepositoryMarker studentResourcesRepositoryMarker,
-            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker)
+            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
+            IAssignmentRepositoryMarker assignmentRepositoryMarker,
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
         {
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -58,10 +60,22 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
              teacherRepositoryMarker,
              bookingTimeRepositoryMarker,
              studentResourcesRepositoryMarker,
-             qAHelpRequestRepositoryMarker);
+             qAHelpRequestRepositoryMarker,
+             assignmentRepositoryMarker,
+             assignmentSubmissionRepositoryMarker);
              unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
+
+        private List<SelectListItem> GetCurrentAssignmentList(string roleName)
+        {
+            var assingnmentList = new List<SelectListItem>();
+            assingnmentList.Add(new SelectListItem { Text = "Pick Assignment", Value = 0.ToString() });
+
+            assingnmentList.AddRange(_teacherRepository.GetCurrentAssignments(roleName).Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentId.ToString() }).ToList());
+            return assingnmentList;
+        }
+
         public enum MediaType { Document, Video }
         [HttpGet]
         public ViewResult Index()
@@ -495,8 +509,80 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
             return productList;
         }
+        [HttpGet]
+        public ActionResult ViewAssignmentGrades()
+        {
+            var studentId = _teacherRepository.GetStudentByName(User.Identity.Name).StudentId;
+            var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("Grammar11Plus", (int)studentId).Select(p=>
+            new AssignmentSubmissionViewModel {
+             AssignmentSubmissionId=p.AssignmentSubmissionId, AssignmentId=p.AssignmentId,
+                AssignmentName =p.AssignmentName, StudentId=p.StudentId, DateDue=p.DateDue,
+                DateSubmitted =p.DateSubmitted, Grade=p.Grade, FilePath=p.FilePath,
+                IsSubmitted =p.IsSubmitted, StudentRole=p.StudentRole
+            });
+            return View("ViewAssignmentGrades", assignments);
+
+        }
+        [HttpGet]
+        public ActionResult AssignmentAndSubmissions()
+        {
+            var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
+            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel {AssignmentName=p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted = p.IsSubmitted });
+
+            return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+
+        }
+        [HttpPost]
+        public ActionResult SubmitAssignment(AssignmentSubmissionViewModel submissions)
+        {
+            var assignment = _teacherRepository.GetAssignmentById(submissions.AssignmentId);
+            var subject = _teacherRepository.GetSubjectById(assignment.SubjectId);
+
+
+            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}", subject.SubjectName);
+
+            //Save File to FileSystem:
+            var fileBuffer = new byte[submissions.MediaContent.ContentLength];
+
+            var physicalPath = Server.MapPath(virtualPath);
+            var dirInfo = new DirectoryInfo(physicalPath);
+            if (!dirInfo.Exists) dirInfo.Create();
+            FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + submissions.MediaContent.FileName);
+            if (fileInfo1.Exists)
+            {
+                fileInfo1.Delete();
+            }
+            FileInfo fileInfo = new FileInfo(physicalPath + "\\" + submissions.MediaContent.FileName);
+
+            using (var fileStream = fileInfo.Create())
+            {
+                var sizeRead = 0;
+                while ((sizeRead = submissions.MediaContent.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
+                {
+                    fileStream.Write(fileBuffer, 0, sizeRead);
+                }
+                submissions.MediaContent.InputStream.Flush();
+                submissions.MediaContent.InputStream.Close();
+                fileStream.Flush();
+                fileStream.Close();
+            }
+            var actualSubmission = new AssignmentSubmission
+            {
+                AssignmentId = submissions.AssignmentId,
+                DateDue = assignment.DateDue,
+                DateSubmitted = DateTime.Now,
+                StudentId = assignment.StudentId,
+                StudentRole = "Grammer11Plus",
+                FilePath = Url.Content(virtualPath + "/" + submissions.MediaContent.FileName),
+                IsSubmitted = true
+            };
+            _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
+            return View("SuccessfullCreation");
+
+        }
         private void GetUIDropdownLists()
         {
+            ViewBag.AssignmentList = GetCurrentAssignmentList("Grammar11Plus");
             ViewBag.QAHelpRequestList = GetQARequestList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();

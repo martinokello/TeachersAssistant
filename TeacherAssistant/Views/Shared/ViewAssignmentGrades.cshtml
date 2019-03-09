@@ -1,0 +1,28 @@
+﻿@model TeacherAssistant.Models.AssignmentSubmissionViewModel[]
+
+@{
+    ViewBag.Title = "View Assignment Grades";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h2>View Assignment Grades</h2>
+
+<div style="background-color: #DADADA;" class="row">
+    <ul class="list-group">
+        <h4>Items Of Assingnment Exercises</h4>
+
+        @foreach (var assSub in Model)
+        {
+            using (Html.BeginForm("SubmitAssignment", "Home"))
+            {
+                <li class="list-group-item row">
+                    @Html.Hidden("AssignmentId", assSub.AssignmentId)
+                    <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
+                    Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>>
+                    Graded as: @(!string.IsNullOrEmpty(assSub.Grade)? assSub.Grade: "Awaiting Grades")
+                </li>
+            }
+        }
+    </ul>
+
+</div>

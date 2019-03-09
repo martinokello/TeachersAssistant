@@ -46,7 +46,9 @@ namespace TeacherAssistant.Controllers
             ITeacherRepositoryMarker teacherRepositoryMarker,
             IBookingTimeRepositoryMarker bookingRepositoryMarker,
             IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
-            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker)
+            IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
+            IAssignmentRepositoryMarker assignmentRepositoryMarker,
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
         {
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
             Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
@@ -65,6 +67,8 @@ namespace TeacherAssistant.Controllers
             Condition.Requires<IBookingTimeRepositoryMarker>(bookingRepositoryMarker, "bookingRepositoryMarker").IsNotNull();
             Condition.Requires<IStudentResourceRepositoryMarker>(studentResourceRepositoryMarker, "studentResourceRepositoryMarker").IsNotNull();
             Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
+            Condition.Requires<IAssignmentRepositoryMarker>(assignmentRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
+            Condition.Requires<IAssignmentSubmissionRepositoryMarker>(assignmentSubmissionRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -81,7 +85,9 @@ namespace TeacherAssistant.Controllers
              teacherRepositoryMarker,
              bookingRepositoryMarker,
              studentResourceRepositoryMarker,
-             qAHelpRequestRepositoryMarker);
+             qAHelpRequestRepositoryMarker,
+             assignmentRepositoryMarker,
+             assignmentSubmissionRepositoryMarker);
 
             unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
@@ -92,7 +98,133 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             return View("ManageClassRoom");
         }
+        [HttpGet]
+        public ActionResult AssignWork()
+        {
+            GetUIDropdownLists();
+            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            return View("AssignWork");
+        }
+        [HttpPost]
+        public ActionResult AssignWork(AssignmentViewModel assignmentViewModel)
+        {
+            try
+            {
+                GetUIDropdownLists();
 
+                ViewBag.AssignmentList = GetCurrentAssignmentList();
+                ModelState.Clear();
+
+                var virtualPath = string.Empty;
+
+                //Save file to relevant fileSystem:
+                switch (assignmentViewModel.StudentRole.ToLower())
+                {
+                    case "grammar11plus":
+                        virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId));
+                        break;
+                    case "stateprimary":
+                        virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId));
+                        break;
+                    case "statejunior":
+                        virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId));
+                        break;
+                }
+
+
+                if (assignmentViewModel.Select != null)
+                {
+                    if (assignmentViewModel.AssignmentId < 1)
+                    {
+                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        return View(assignmentViewModel);
+                    }
+                    Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                    return View( new AssignmentViewModel { AssignmentId = doc.AssignmentId, StudentRole = doc.StudentRole,
+                        SubjectId = doc.SubjectId, StudentId=doc.StudentId, FilePath = doc.FilePath, DateAssigned = doc.DateAssigned, DateDue = doc.DateDue, Description=doc.Description, AssignmentName=doc.AssignmentName });
+
+                }
+                else if (assignmentViewModel.Delete != null)
+                {
+                    if (assignmentViewModel.AssignmentId < 1)
+                    {
+                        ModelState.AddModelError("AssignmenId", "Assignment Id Required");
+                        return View( assignmentViewModel);
+                    }
+
+
+                    var doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                    if (doc != null)
+                    {
+                        var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                        if (delFileInfo.Exists)
+                        {
+                            delFileInfo.Delete();
+                        }
+
+                    }
+                    _repositoryServices.DeleteAssignment(doc.AssignmentId);
+                    return View("SuccessfullCreation");
+
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        HttpPostedFileBase file = assignmentViewModel.MediaContent;
+
+                        var fileName = file.FileName;
+                        var fileBuffer = new byte[file.ContentLength];
+
+                        var physicalPath = Server.MapPath(virtualPath);
+                        var dirInfo = new DirectoryInfo(physicalPath);
+                        if (!dirInfo.Exists) dirInfo.Create();
+                        FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                        if (fileInfo1.Exists)
+                        {
+                            fileInfo1.Delete();
+                        }
+                        FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+
+                        using (var fileStream = fileInfo.Create())
+                        {
+                            var sizeRead = 0;
+                            while ((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
+                            {
+                                fileStream.Write(fileBuffer, 0, sizeRead);
+                            }
+                            file.InputStream.Flush();
+                            file.InputStream.Close();
+                            fileStream.Flush();
+                            fileStream.Close();
+                        }
+
+                        _repositoryServices.SaveOrUpdateAssignment(new Assignment
+                        {
+                            AssignmentId = assignmentViewModel.AssignmentId,
+                            AssignmentName = assignmentViewModel.AssignmentName,
+                            DateAssigned = assignmentViewModel.DateAssigned,
+                            DateDue = assignmentViewModel.DateDue,
+                            Description = assignmentViewModel.Description,
+                            FilePath = Url.Content(virtualPath + "/" + file.FileName),
+                            StudentId = assignmentViewModel.StudentId,
+                            StudentRole = assignmentViewModel.StudentRole,
+                            SubjectId = assignmentViewModel.SubjectId
+                        });
+                        return View("SuccessfullCreation");
+                    }
+
+                    return View("AssignWork", assignmentViewModel);
+                }
+
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("AssignWork", assignmentViewModel);
+            }
+        }
         [HttpPost]
         public ActionResult ManageClassRoom(ClassroomViewModel classRoomViewModel)
         {
@@ -322,7 +454,8 @@ namespace TeacherAssistant.Controllers
                         return View("ManageResources", resourceModel);
                     }
                     StudentResource doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
-                    return View("ManageResources",new StudentResourcesViewModel { StudentResourceId = doc.StudentResourceId, RoleName = doc.RoleName, SubjectId = doc.SubjectId });
+                    return View("ManageResources",new StudentResourcesViewModel { StudentResourceId = doc.StudentResourceId, RoleName = doc.RoleName,
+                        SubjectId = doc.SubjectId, FilePath=doc.FilePath, StudentResourceName=doc.StudentResourceName });
                     
                 }
                 else if (resourceModel.Delete != null)
@@ -367,6 +500,7 @@ namespace TeacherAssistant.Controllers
                             fileInfo1.Delete();
                         }
                         FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+                        
                         using (var fileStream = fileInfo.Create())
                         {
                             var sizeRead = 0;
@@ -1096,7 +1230,29 @@ namespace TeacherAssistant.Controllers
             }
             return View("RemoveUserFromRole", userInRole);
         }
+        [HttpGet]
+        public ActionResult AddGradesToSubmissions()
+        {
+            GetUIDropdownLists();
+            ViewBag.AssignmentSubmissionList = GetAssignmentSubmissionsListItems(_repositoryServices.GetCurrentAssignmentsSubmissions());
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult AddGradesToSubmissions(Models.AssignmentSubmissionViewModel assignmentSubmissions)
+        {
+            GetUIDropdownLists();
+            if (ModelState.IsValid)
+            {
+                _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
+                    AssignmentId = assignmentSubmissions.AssignmentId, DateDue = assignmentSubmissions.DateDue, DateSubmitted = assignmentSubmissions.DateSubmitted,
+                    FilePath = assignmentSubmissions.FilePath, Grade = assignmentSubmissions.Grade,
+                    IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
+                    StudentRole =assignmentSubmissions.StudentRole });
+                View("SuccessfullCreation");
+            }
+            return View(assignmentSubmissions);
+        }
         private bool RemoveUserFromRole(string username, string roleName)
         {
             try
@@ -1109,6 +1265,15 @@ namespace TeacherAssistant.Controllers
                 return false;
             }
         }
+
+        private List<SelectListItem> GetAssignmentSubmissionsListItems(IEnumerable<AssignmentSubmission> submissions)
+        {
+            var listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem { Text = "Pick an Assignment Submission", Value = 0.ToString() });
+            listItems.AddRange(submissions.Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString()}).ToList());
+            return listItems;
+        }
+
         private List<SelectListItem> GetClassroomList()
         {
             var classRoomList = new List<SelectListItem>();
@@ -1131,7 +1296,7 @@ namespace TeacherAssistant.Controllers
 
             return studentList;
         }
-
+        
         private List<SelectListItem> GetSubjectList()
         {
             var subjects = _repositoryServices.GetSubjectList();
@@ -1217,14 +1382,24 @@ namespace TeacherAssistant.Controllers
         }
         private void GetUIDropdownLists()
         {
+            ViewBag.StudentList = GetStudentsList();
             ViewBag.StudentResourcesList = GetStudentResourcesList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();
-            ViewBag.StudentList = GetStudentsList();
             ViewBag.SubjectList = GetSubjectList();
             ViewBag.CalendarBookingList = GetCalendarList();
             ViewBag.ClassroomList = GetClassroomList();
         }
+
+        private List<SelectListItem> GetCurrentAssignmentList()
+        {
+            var assingnmentList = new List<SelectListItem>();
+            assingnmentList.Add(new SelectListItem { Text = "Pick Assignment", Value = 0.ToString() });
+
+            assingnmentList.AddRange(_repositoryServices.GetCurrentAssignments().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentId.ToString() }).ToList());
+            return assingnmentList;
+        }
+
         [HttpGet]
         public JsonResult GetMediaDocumentIdsFor(string mediaType, string role)
         {
