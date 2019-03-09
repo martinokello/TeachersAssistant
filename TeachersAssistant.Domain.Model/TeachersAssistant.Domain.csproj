@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Assignment.cs" />
+    <Compile Include="Models\AssignmentSubmission.cs" />
     <Compile Include="Models\BookingTime.cs" />
     <Compile Include="Models\CalendarBooking.cs" />
     <Compile Include="Models\Classroom.cs" />

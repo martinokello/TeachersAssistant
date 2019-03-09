@@ -162,6 +162,42 @@ namespace TeachersAssistant.Services.Concretes
                 }
             }
         }
+
+        public void SaveOrUpdateAssignment(Assignment assignment)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var assign = _unitOfWork._assignmentRepository.GetById(assignment.AssignmentId);
+
+                if(assign == null)
+                {
+                    _unitOfWork._assignmentRepository.Add(assignment);
+                }
+                else
+                {
+                    assign.AssignmentName = assignment.AssignmentName;
+                    assign.DateAssigned = assignment.DateAssigned;
+                    assign.DateDue = assignment.DateDue;
+                    assign.Description = assignment.Description;
+                    assign.FilePath = assignment.FilePath;
+                    assign.SubjectId = assignment.SubjectId;
+                    assign.StudentId = assignment.StudentId;
+                    assign.StudentRole = assignment.StudentRole;
+                }
+                _unitOfWork.SaveChanges();
+            }
+        }
+
+        public Assignment GetAssignmentById(int assignmentId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._assignmentRepository.GetById(assignmentId);
+            }
+        }
+
         public void SaveOrUpdateItemOrders(ItemOrder orderItem)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
@@ -183,6 +219,23 @@ namespace TeachersAssistant.Services.Concretes
                 }
             }
         }
+
+        public void DeleteAssignment(int assignmentId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var ass = _unitOfWork._assignmentRepository.GetById(assignmentId);
+
+                if (ass != null)
+                {
+                    _unitOfWork._assignmentRepository.Delete(ass);
+                    _unitOfWork.SaveChanges();
+                }
+
+            }
+        }
+
         public void DeleteStudent(Student studentModel)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
@@ -426,7 +479,8 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                return _unitOfWork._subjectRepository.GetById((int)subjectId);
+                var subject = _unitOfWork._subjectRepository.GetById(subjectId);
+                return new Subject { SubjectId = subject.SubjectId, SubjectName = subject.SubjectName, TeacherId = subject.TeacherId, Teacher = subject.Teacher };
             }
         }
 
@@ -538,6 +592,16 @@ namespace TeachersAssistant.Services.Concretes
                 return _unitOfWork._paidDocumentRepository.GetAll().Where(p => p.RoleName.ToLower().Equals(role.ToLower())).ToArray();
             }
         }
+
+        public AssignmentSubmission[] GetCurrentAssignmentsSubmissions(string role, int studentId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._assignmentSubmissionRepository.GetAll().Where(p => p.StudentRole.ToLower().Equals(role.ToLower()) && p.StudentId == studentId).ToArray();
+            }
+        }
+
         public FreeDocument[] GetFreeDocuments(string role)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
@@ -560,6 +624,36 @@ namespace TeachersAssistant.Services.Concretes
             {
                 _unitOfWork.InitializeDbContext(dbContext);
                 return _unitOfWork._freeVideoRepository.GetAll().Where(p => p.RoleName.ToLower().Equals(role.ToLower())).ToArray();
+            }
+        }
+
+        public void SaveOrUpdateAssignmentSubmissions(AssignmentSubmission actualSubmission)
+        {
+            actualSubmission.IsSubmitted = true;
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+
+                var submission = _unitOfWork._assignmentSubmissionRepository.GetById(actualSubmission.AssignmentSubmissionId);
+                var assignment= _unitOfWork._assignmentRepository.GetById(actualSubmission.AssignmentId);
+
+                if(submission == null)
+                {
+                    _unitOfWork._assignmentSubmissionRepository.Add(actualSubmission);
+                }
+                else
+                {
+                    submission.AssignmentId = actualSubmission.AssignmentId;
+                    submission.DateDue = actualSubmission.DateDue;
+                    submission.DateSubmitted = actualSubmission.DateSubmitted;
+                    submission.FilePath = actualSubmission.FilePath;
+                    submission.StudentId = actualSubmission.StudentId;
+                    submission.StudentRole = actualSubmission.StudentRole;
+                    submission.IsSubmitted = true;
+                    submission.Grade = actualSubmission.Grade;
+                }
+                assignment.IsSubmitted = true;
+                _unitOfWork.SaveChanges();
             }
         }
         public void SaveOrUpdatePaidVideo(PaidVideo paidVideo)
@@ -895,6 +989,35 @@ namespace TeachersAssistant.Services.Concretes
                     _unitOfWork._qAHelpRequestRepository.Update(qaHelpRequestViewModel);
                 }
                 _unitOfWork.SaveChanges();
+            }
+        }
+
+        public IEnumerable<Assignment> GetCurrentAssignments(string roleName)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var results = _unitOfWork._assignmentRepository.GetAll().Where(p => p.StudentRole.ToLower().Equals(roleName.ToLower()) && p.DateDue > DateTime.Now);
+                return results;
+            }
+        }
+        public IEnumerable<Assignment> GetCurrentAssignments()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var results = _unitOfWork._assignmentRepository.GetAll().Where(p => p.DateDue > DateTime.Now);
+                return results;
+            }
+        }
+
+        public IEnumerable<AssignmentSubmission> GetCurrentAssignmentsSubmissions()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var results = _unitOfWork._assignmentSubmissionRepository.GetAll().Where(p => p.IsSubmitted && string.IsNullOrEmpty(p.Grade));
+                return results;
             }
         }
     }

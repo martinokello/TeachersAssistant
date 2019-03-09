@@ -66,6 +66,26 @@ namespace TeachersAssistant.DataAccess
              .WithMany()
              .HasForeignKey(p => p.SubjectId)
              .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Assignment>()
+             .HasRequired(p => p.Subject)
+             .WithMany()
+             .HasForeignKey(p => p.SubjectId)
+             .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Assignment>()
+             .HasRequired(p => p.Student)
+             .WithMany()
+             .HasForeignKey(p => p.StudentId)
+             .WillCascadeOnDelete(false);
+            modelBuilder.Entity<AssignmentSubmission>()
+             .HasRequired(p => p.Assignment)
+             .WithMany()
+             .HasForeignKey(p => p.AssignmentId)
+             .WillCascadeOnDelete(false);
+            modelBuilder.Entity<AssignmentSubmission>()
+             .HasRequired(p => p.Student)
+             .WithMany()
+             .HasForeignKey(p => p.StudentId)
+             .WillCascadeOnDelete(false);
         }
 
         // Add a DbSet for each entity type that you want to include in your model. For more information 
@@ -91,6 +111,9 @@ namespace TeachersAssistant.DataAccess
         public DbSet<ItemOrder> ItemOrders { get; set; }
         public DbSet<StudentResource> StudentResources { get; set; }        
         public DbSet<QAHelpRequest> QAHelpRequests { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<AssignmentSubmission> AssignmentSubmissions { get; set; }
+
     }
     
 }
