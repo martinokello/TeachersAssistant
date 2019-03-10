@@ -1235,7 +1235,8 @@ namespace TeacherAssistant.Controllers
         public ActionResult AddGradesToSubmissions()
         {
             GetUIDropdownLists();
-            ViewBag.AssignmentSubmissionList = GetAssignmentSubmissionsListItems(_repositoryServices.GetCurrentAssignmentsSubmissions());
+            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             return View();
         }
 
@@ -1243,22 +1244,24 @@ namespace TeacherAssistant.Controllers
         public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
         {
             GetUIDropdownLists();
+            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             if (assignmentSubmissions.Select != null)
             {
-               var submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
+                AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
                 var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
                     AssignmentName = submission.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId,
                     SubjectId = submission.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
                 return View("AddGradesToSubmissions", assSub);
             }
-            if (assignmentSubmissions.Delete != null)
+            else if (assignmentSubmissions.Delete != null)
             {
                 _repositoryServices.DeleteAssignmentSubmissiongById(assignmentSubmissions.AssignmentSubmissionId);
 
                 View("SuccessfullCreation");
             }
-            if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
                     AssignmentId = assignmentSubmissions.AssignmentId, DateDue = assignmentSubmissions.DateDue, DateSubmitted = assignmentSubmissions.DateSubmitted,
@@ -1406,13 +1409,21 @@ namespace TeacherAssistant.Controllers
             ViewBag.CalendarBookingList = GetCalendarList();
             ViewBag.ClassroomList = GetClassroomList();
         }
-
+        
         private List<SelectListItem> GetCurrentAssignmentList()
         {
             var assingnmentList = new List<SelectListItem>();
             assingnmentList.Add(new SelectListItem { Text = "Pick Assignment", Value = 0.ToString() });
 
             assingnmentList.AddRange(_repositoryServices.GetCurrentAssignments().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentId.ToString() }).ToList());
+            return assingnmentList;
+        }
+        private List<SelectListItem> GetSubmittedUngradedAssignmentSubmissionsList()
+        {
+            var assingnmentList = new List<SelectListItem>();
+            assingnmentList.Add(new SelectListItem { Text = "Pick Assignment Submissions", Value = 0.ToString() });
+
+            assingnmentList.AddRange(_repositoryServices.GetUngradedSubmittedAssignments().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString() }).ToList());
             return assingnmentList;
         }
 

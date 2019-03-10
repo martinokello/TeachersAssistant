@@ -552,7 +552,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     FilePath = p.FilePath,
                     StudentId = p.StudentId,
                     StudentRole = p.StudentRole,
-                    IsSubmitted = p.IsSubmitted,
+                    IsSubmitted  = assignmentSubmission == null? false:assignmentSubmission.IsSubmitted,
                     TeacherId = p.TeacherId,
                     SubjectId = p.SubjectId
                 };
