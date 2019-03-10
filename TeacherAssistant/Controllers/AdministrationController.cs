@@ -121,13 +121,13 @@ namespace TeacherAssistant.Controllers
                 switch (assignmentViewModel.StudentRole.ToLower())
                 {
                     case "grammar11plus":
-                        virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId));
+                        virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                         break;
                     case "stateprimary":
-                        virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId));
+                        virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                         break;
                     case "statejunior":
-                        virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId));
+                        virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                         break;
                 }
 

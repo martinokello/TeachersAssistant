@@ -536,7 +536,26 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         public ActionResult AssignmentAndSubmissions()
         {
             var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
-            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel { AssignmentName = p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted = p.IsSubmitted, TeacherId = p.TeacherId, SubjectId = p.SubjectId });
+            var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
+            var listSubmissions = assignments.Select(p => {
+                var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
+                var assignmentSubmissionId = 0;
+                if (assignmentSubmission != null) assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+
+                return new AssignmentSubmissionViewModel
+                {
+                    AssignmentSubmissionId = assignmentSubmissionId,
+                    AssignmentName = p.AssignmentName,
+                    AssignmentId = p.AssignmentId,
+                    DateDue = p.DateDue,
+                    FilePath = p.FilePath,
+                    StudentId = p.StudentId,
+                    StudentRole = p.StudentRole,
+                    IsSubmitted = p.IsSubmitted,
+                    TeacherId = p.TeacherId,
+                    SubjectId = p.SubjectId
+                };
+            });
 
             return View("AssignmentAndSubmissions", listSubmissions.ToArray());
 
@@ -577,6 +596,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             }
             var actualSubmission = new AssignmentSubmission
             {
+                AssignmentSubmissionId = submissions.AssignmentSubmissionId,
                 AssignmentId = submissions.AssignmentId,
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,

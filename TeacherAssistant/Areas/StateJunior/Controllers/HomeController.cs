@@ -540,7 +540,26 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
         public ActionResult AssignmentAndSubmissions()
         {
             var assignments = _teacherRepository.GetCurrentAssignments("StateJunior");
-            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel {AssignmentName=p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted= p.IsSubmitted, TeacherId = p.TeacherId, SubjectId=p.SubjectId});
+            var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
+            var listSubmissions = assignments.Select(p => {
+                var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
+                var assignmentSubmissionId = 0;
+                if (assignmentSubmission != null) assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+
+                return new AssignmentSubmissionViewModel
+                {
+                    AssignmentSubmissionId = assignmentSubmissionId,
+                    AssignmentName = p.AssignmentName,
+                    AssignmentId = p.AssignmentId,
+                    DateDue = p.DateDue,
+                    FilePath = p.FilePath,
+                    StudentId = p.StudentId,
+                    StudentRole = p.StudentRole,
+                    IsSubmitted = p.IsSubmitted,
+                    TeacherId = p.TeacherId,
+                    SubjectId = p.SubjectId
+                };
+            });
 
             return View("AssignmentAndSubmissions", listSubmissions.ToArray());
 
