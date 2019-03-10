@@ -570,7 +570,7 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
         {
             var assignment = _teacherRepository.GetAssignmentById(submissions.AssignmentId);
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
-            Student student = _teacherRepository.GetStudentById(submissions.StudentId);
+            Student student = _teacherRepository.GetStudentByName(User.Identity.Name);
 
             var virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/Submissions/{0}/{1}", subject.SubjectName, CleanseAssignmentName(assignment.AssignmentName));
 
