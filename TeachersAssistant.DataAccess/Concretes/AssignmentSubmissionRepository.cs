@@ -13,7 +13,7 @@ namespace TeachersAssistant.DataAccess.Concretes
     {
         public override AssignmentSubmission GetById(int id)
         {
-            return DbContextTeachersAssistant.AssignmentSubmissions.SingleOrDefault(p => p.AssignmentId == id);
+            return DbContextTeachersAssistant.AssignmentSubmissions.SingleOrDefault(p => p.AssignmentSubmissionId == id);
         }
 
         public override bool Update(AssignmentSubmission item)

@@ -1009,11 +1009,19 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                var results = _unitOfWork._assignmentRepository.GetAll().Where(p => p.DateDue > DateTime.Now);
+                var results = _unitOfWork._assignmentRepository.GetAll().Where(p => p.DateDue >= DateTime.Now);
                 return results;
             }
         }
-
+        public IEnumerable<AssignmentSubmission> GetUngradedSubmittedAssignments()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var results = _unitOfWork._assignmentSubmissionRepository.GetAll().Where(p => p.IsSubmitted && string.IsNullOrEmpty(p.Grade));
+                return results;
+            }
+        }
         public IEnumerable<AssignmentSubmission> GetCurrentAssignmentsSubmissions()
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
