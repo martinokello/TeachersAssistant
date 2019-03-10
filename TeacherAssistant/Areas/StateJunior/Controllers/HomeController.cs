@@ -570,6 +570,7 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
         {
             var assignment = _teacherRepository.GetAssignmentById(submissions.AssignmentId);
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
+            Student student = _teacherRepository.GetStudentById(submissions.StudentId);
 
             var virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/Submissions/{0}/{1}", subject.SubjectName, CleanseAssignmentName(assignment.AssignmentName));
 
@@ -579,12 +580,12 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
             var physicalPath = Server.MapPath(virtualPath);
             var dirInfo = new DirectoryInfo(physicalPath);
             if (!dirInfo.Exists) dirInfo.Create();
-            FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + submissions.MediaContent.FileName);
+            FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + student.StudentFirsName+student.StudentLastName+ submissions.MediaContent.FileName);
             if (fileInfo1.Exists)
             {
                 fileInfo1.Delete();
             }
-            FileInfo fileInfo = new FileInfo(physicalPath + "\\" + submissions.MediaContent.FileName);
+            FileInfo fileInfo = new FileInfo(physicalPath + "\\" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName);
 
             using (var fileStream = fileInfo.Create())
             {
@@ -605,8 +606,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
                 StudentId = assignment.StudentId,
-                StudentRole = "Grammar11Plus",
-                FilePath = Url.Content(virtualPath + "/" + submissions.MediaContent.FileName),
+                StudentRole = "StateJunior",
+                FilePath = Url.Content(virtualPath + "/" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName),
                 IsSubmitted = true,
                 SubjectId = submissions.SubjectId,
                 TeacherId = submissions.TeacherId,
