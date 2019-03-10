@@ -20,7 +20,7 @@ namespace TeachersAssistant.DataAccess.Concretes
         {
             try
             {
-                var freeDoc = DbContextTeachersAssistant.AssignmentSubmissions.SingleOrDefault(p => p.AssignmentSubmissionId == item.AssignmentSubmissionId); ;
+                var freeDoc = DbContextTeachersAssistant.AssignmentSubmissions.SingleOrDefault(p => p.AssignmentSubmissionId == item.AssignmentSubmissionId); 
                 freeDoc.AssignmentId = item.AssignmentId;
                 freeDoc.FilePath = item.FilePath;
                 freeDoc.StudentId = item.StudentId;
@@ -28,6 +28,8 @@ namespace TeachersAssistant.DataAccess.Concretes
                 freeDoc.StudentRole = item.StudentRole;
                 freeDoc.AssignmentName = item.AssignmentName;
                 freeDoc.DateDue = item.DateDue;
+                freeDoc.SubjectId = item.SubjectId;
+                freeDoc.TeacherId = item.TeacherId;
                 return true;
             }
             catch (Exception e)

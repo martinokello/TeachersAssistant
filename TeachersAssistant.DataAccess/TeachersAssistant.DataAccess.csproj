@@ -120,6 +120,18 @@
     <Compile Include="Migrations\201903090444036_IncludeGrades.Designer.cs">
       <DependentUpon>201903090444036_IncludeGrades.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903091115404_ChangedModels.cs" />
+    <Compile Include="Migrations\201903091115404_ChangedModels.Designer.cs">
+      <DependentUpon>201903091115404_ChangedModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903091757418_RemoveRElationAssingmentSubject.cs" />
+    <Compile Include="Migrations\201903091757418_RemoveRElationAssingmentSubject.Designer.cs">
+      <DependentUpon>201903091757418_RemoveRElationAssingmentSubject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903092056558_AddSubjectTeacherColumns.cs" />
+    <Compile Include="Migrations\201903092056558_AddSubjectTeacherColumns.Designer.cs">
+      <DependentUpon>201903092056558_AddSubjectTeacherColumns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeachersAssistantDbContext.cs" />
@@ -154,6 +166,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903090444036_IncludeGrades.resx">
       <DependentUpon>201903090444036_IncludeGrades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903091115404_ChangedModels.resx">
+      <DependentUpon>201903091115404_ChangedModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903091757418_RemoveRElationAssingmentSubject.resx">
+      <DependentUpon>201903091757418_RemoveRElationAssingmentSubject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903092056558_AddSubjectTeacherColumns.resx">
+      <DependentUpon>201903092056558_AddSubjectTeacherColumns.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

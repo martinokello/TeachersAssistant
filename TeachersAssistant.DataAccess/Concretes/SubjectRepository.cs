@@ -14,7 +14,14 @@ namespace  TeachersAssistant.DataAccess.Concretes
  
         public override Subject GetById(int id)
         {
-            return DbContextTeachersAssistant.Subjects.SingleOrDefault(p => p.SubjectId == id);
+            try
+            {
+                return DbContextTeachersAssistant.Subjects.SingleOrDefault(p => p.SubjectId == id);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public override bool Update(Subject item)

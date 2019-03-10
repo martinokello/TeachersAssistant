@@ -10,6 +10,7 @@ namespace TeacherAssistant.Models
         public int AssignmentId { get; set; }
         public string StudentRole { get; set; }
         public int StudentId { get; set; }
+        public int TeacherId { get; set; }
         public int SubjectId { get; set; }
         public string AssignmentName { get; set; }
         public string Description { get; set; }

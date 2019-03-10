@@ -14,9 +14,8 @@ namespace TeachersAssistant.Domain.Model.Models
         public int AssignmentId { get; set; }
         public string StudentRole { get; set; }
         public int StudentId { get; set; }
+        public int TeacherId { get; set; }
         public Student Student { get; set; }
-        public Subject Subject{get;set; }
-        [ForeignKey("Subject")]
         public int SubjectId { get; set; }
         public string AssignmentName { get; set; }
         public string Description { get; set; }

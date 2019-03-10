@@ -209,7 +209,8 @@ namespace TeacherAssistant.Controllers
                             FilePath = Url.Content(virtualPath + "/" + file.FileName),
                             StudentId = assignmentViewModel.StudentId,
                             StudentRole = assignmentViewModel.StudentRole,
-                            SubjectId = assignmentViewModel.SubjectId
+                            SubjectId = assignmentViewModel.SubjectId,
+                            TeacherId = assignmentViewModel.TeacherId
                         });
                         return View("SuccessfullCreation");
                     }

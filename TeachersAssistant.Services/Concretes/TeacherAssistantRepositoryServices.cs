@@ -649,6 +649,9 @@ namespace TeachersAssistant.Services.Concretes
                     submission.FilePath = actualSubmission.FilePath;
                     submission.StudentId = actualSubmission.StudentId;
                     submission.StudentRole = actualSubmission.StudentRole;
+                    submission.AssignmentName = actualSubmission.AssignmentName;
+                    submission.TeacherId = actualSubmission.TeacherId;
+                    submission.SubjectId = actualSubmission.SubjectId;
                     submission.IsSubmitted = true;
                     submission.Grade = actualSubmission.Grade;
                 }

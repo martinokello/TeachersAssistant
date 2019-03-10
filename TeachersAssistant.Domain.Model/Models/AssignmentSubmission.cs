@@ -15,7 +15,9 @@ namespace TeachersAssistant.Domain.Model.Models
         [ForeignKey("Assignment")]
         public int AssignmentId { get; set; }
         public string AssignmentName { get; set; }
+        public int TeacherId { get; set; }
         public int StudentId { get; set; }
+        public int SubjectId { get; set; }
         public Student Student { get; set; }
         public Assignment Assignment { get; set; }
         public DateTime DateDue { get; set; }

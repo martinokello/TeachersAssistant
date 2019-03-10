@@ -67,11 +67,6 @@ namespace TeachersAssistant.DataAccess
              .HasForeignKey(p => p.SubjectId)
              .WillCascadeOnDelete(false);
             modelBuilder.Entity<Assignment>()
-             .HasRequired(p => p.Subject)
-             .WithMany()
-             .HasForeignKey(p => p.SubjectId)
-             .WillCascadeOnDelete(false);
-            modelBuilder.Entity<Assignment>()
              .HasRequired(p => p.Student)
              .WithMany()
              .HasForeignKey(p => p.StudentId)

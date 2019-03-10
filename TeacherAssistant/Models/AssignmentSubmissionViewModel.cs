@@ -11,6 +11,8 @@ namespace TeacherAssistant.Models
         public string AssignmentName { get; set; }
         public int AssignmentId { get; set; }
         public int StudentId { get; set; }
+        public int TeacherId { get; set; }
+        public  int SubjectId { get; set; }
         public DateTime DateDue { get; set; }
         public DateTime DateSubmitted { get; set; }
         public string FilePath { get; set; }

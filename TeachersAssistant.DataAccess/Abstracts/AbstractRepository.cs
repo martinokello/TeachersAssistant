@@ -43,7 +43,7 @@ namespace TeachersAssistant.DataAccess.Abstracts
             {
                 return DbContextTeachersAssistant.Set<T>().ToArray<T>();
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }

@@ -529,16 +529,18 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                 Grade = p.Grade,
                 FilePath = p.FilePath,
                 IsSubmitted = p.IsSubmitted,
-                StudentRole = p.StudentRole
+                StudentRole = p.StudentRole,
+                TeacherId = p.TeacherId,
+                SubjectId = p.SubjectId
             });
-            return View("ViewAssignmentGrades", assignments);
+            return View("ViewAssignmentGrades", assignments.ToArray());
 
         }
         [HttpGet]
         public ActionResult AssignmentAndSubmissions()
         {
             var assignments = _teacherRepository.GetCurrentAssignments("StateJunior");
-            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel {AssignmentName=p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted= p.IsSubmitted });
+            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel {AssignmentName=p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted= p.IsSubmitted, TeacherId = p.TeacherId, SubjectId=p.SubjectId});
 
             return View("AssignmentAndSubmissions", listSubmissions.ToArray());
 
@@ -547,10 +549,9 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
         public ActionResult SubmitAssignment(AssignmentSubmissionViewModel submissions)
         {
             var assignment = _teacherRepository.GetAssignmentById(submissions.AssignmentId);
-            var subject = _teacherRepository.GetSubjectById(assignment.SubjectId);
+            Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
 
-
-            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}", subject.SubjectName);
+            var virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/Submissions/{0}", subject.SubjectName);
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];
@@ -579,14 +580,19 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
             }
             var actualSubmission = new AssignmentSubmission
             {
+                AssignmentSubmissionId = submissions.AssignmentSubmissionId,
                 AssignmentId = submissions.AssignmentId,
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
                 StudentId = assignment.StudentId,
-                StudentRole = "Grammer11Plus",
+                StudentRole = "Grammar11Plus",
                 FilePath = Url.Content(virtualPath + "/" + submissions.MediaContent.FileName),
-                IsSubmitted = true
+                IsSubmitted = true,
+                SubjectId = submissions.SubjectId,
+                TeacherId = submissions.TeacherId,
+                AssignmentName = assignment.AssignmentName
             };
+            _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             return View("SuccessfullCreation");
 

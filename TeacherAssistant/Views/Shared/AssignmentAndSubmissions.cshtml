@@ -12,17 +12,20 @@
 
         @foreach (var assSub in Model)
         {
-            using (Html.BeginForm("SubmitAssignment", "Home"))
-            {
-        <li class="list-group-item row">
-            @Html.Hidden("AssignmentId", assSub.AssignmentId)
-            @Html.Hidden("AssignmentName", assSub.AssignmentName)
-            <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
-            Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
-            <input type="file" name="MediaContent" /><b> | </b>
-            <input type="submit" name="Create" class="btn btn-default" style="display:inline !important;" />
-        </li>
-            }
+
+            <form method="post" action="@Url.Content("~/Grammar11Plus/Home/SubmitAssignment")" enctype="multipart/form-data">
+                <li class="list-group-item row">
+                    @Html.Hidden("AssignmentSubmissionId", assSub.AssignmentSubmissionId)
+                    @Html.Hidden("AssignmentId", assSub.AssignmentId)
+                    @Html.Hidden("SubjectId", assSub.SubjectId)
+                    @Html.Hidden("TeacherId", assSub.TeacherId)
+                    @Html.Hidden("AssignmentName", assSub.AssignmentName)
+                    <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
+                    Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
+                    <input type="file" name="MediaContent" /><b> | </b>
+                    <input type="submit" name="Create" class="btn btn-default" style="display:inline !important;" />
+                </li>
+            </form>
         }
     </ul>
 

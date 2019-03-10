@@ -513,21 +513,30 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         public ActionResult ViewAssignmentGrades()
         {
             var studentId = _teacherRepository.GetStudentByName(User.Identity.Name).StudentId;
-            var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("Grammar11Plus", (int)studentId).Select(p=>
-            new AssignmentSubmissionViewModel {
-             AssignmentSubmissionId=p.AssignmentSubmissionId, AssignmentId=p.AssignmentId,
-                AssignmentName =p.AssignmentName, StudentId=p.StudentId, DateDue=p.DateDue,
-                DateSubmitted =p.DateSubmitted, Grade=p.Grade, FilePath=p.FilePath,
-                IsSubmitted =p.IsSubmitted, StudentRole=p.StudentRole
+            var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("Grammar11Plus", (int)studentId).Select(p =>
+            new AssignmentSubmissionViewModel
+            {
+                AssignmentSubmissionId = p.AssignmentSubmissionId,
+                AssignmentId = p.AssignmentId,
+                AssignmentName = p.AssignmentName,
+                StudentId = p.StudentId,
+                DateDue = p.DateDue,
+                DateSubmitted = p.DateSubmitted,
+                Grade = p.Grade,
+                FilePath = p.FilePath,
+                IsSubmitted = p.IsSubmitted,
+                StudentRole = p.StudentRole,
+                TeacherId = p.TeacherId,
+                SubjectId = p.SubjectId
             });
-            return View("ViewAssignmentGrades", assignments);
+            return View("ViewAssignmentGrades", assignments.ToArray());
 
         }
         [HttpGet]
         public ActionResult AssignmentAndSubmissions()
         {
             var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
-            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel {AssignmentName=p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted = p.IsSubmitted });
+            var listSubmissions = assignments.Select(p => new AssignmentSubmissionViewModel { AssignmentName = p.AssignmentName, AssignmentId = p.AssignmentId, DateDue = p.DateDue, FilePath = p.FilePath, StudentId = p.StudentId, StudentRole = p.StudentRole, IsSubmitted = p.IsSubmitted, TeacherId = p.TeacherId, SubjectId = p.SubjectId });
 
             return View("AssignmentAndSubmissions", listSubmissions.ToArray());
 
@@ -536,10 +545,10 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         public ActionResult SubmitAssignment(AssignmentSubmissionViewModel submissions)
         {
             var assignment = _teacherRepository.GetAssignmentById(submissions.AssignmentId);
-            var subject = _teacherRepository.GetSubjectById(assignment.SubjectId);
+            Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
 
 
-            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}", subject.SubjectName);
+            var virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/Submissions/{0}", subject.SubjectName);
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];
@@ -572,9 +581,12 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
                 StudentId = assignment.StudentId,
-                StudentRole = "Grammer11Plus",
+                StudentRole = "Grammar11Plus",
                 FilePath = Url.Content(virtualPath + "/" + submissions.MediaContent.FileName),
-                IsSubmitted = true
+                IsSubmitted = true,
+                SubjectId = submissions.SubjectId,
+                TeacherId = submissions.TeacherId,
+                AssignmentName = assignment.AssignmentName
             };
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             return View("SuccessfullCreation");
