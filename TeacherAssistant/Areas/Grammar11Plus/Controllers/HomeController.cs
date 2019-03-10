@@ -567,7 +567,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
 
 
-            var virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/Submissions/{0}", subject.SubjectName);
+            var virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/Submissions/{0}/{1}", subject.SubjectName, assignment.AssignmentName);
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];

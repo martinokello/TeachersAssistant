@@ -569,7 +569,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
 
 
-            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}", subject.SubjectName);
+            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}/{1}", subject.SubjectName, assignment.AssignmentName);
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];
