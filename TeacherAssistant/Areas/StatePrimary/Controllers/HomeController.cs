@@ -616,7 +616,6 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                 AssignmentName = assignment.AssignmentName
             };
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
-            _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             return View("SuccessfullCreation");
 
         }

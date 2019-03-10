@@ -611,8 +611,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 StudentRole = "Grammar11Plus",
                 FilePath = Url.Content(virtualPath + "/" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName),
                 IsSubmitted = true,
-                SubjectId = submissions.SubjectId,
-                TeacherId = submissions.TeacherId,
+                SubjectId = assignment.SubjectId,
+                TeacherId = assignment.TeacherId,
                 AssignmentName = assignment.AssignmentName
             };
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);

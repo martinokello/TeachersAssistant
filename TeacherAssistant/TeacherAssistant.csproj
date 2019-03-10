@@ -581,6 +581,9 @@
     <Content Include="Areas\Grammar11Plus\Views\Home\RequestQAHelp.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\RequestQAHelp.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Home\RequestQAHelp.cshtml" />
+    <Content Include="Areas\Grammar11Plus\Views\Home\AssignmentAndSubmissions.cshtml" />
+    <Content Include="Areas\StateJunior\Views\Home\AssignmentAndSubmissions.cshtml" />
+    <Content Include="Areas\StatePrimary\Views\Home\AssignmentAndSubmissions.cshtml" />
     <None Include="Properties\PublishProfiles\TeachersAssistantApp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -658,7 +661,6 @@
     </Content>
     <Content Include="Views\Administration\ManageQAHelpRequest.cshtml" />
     <Content Include="Views\Administration\AssignWork.cshtml" />
-    <Content Include="Views\Shared\AssignmentAndSubmissions.cshtml" />
     <Content Include="Views\Administration\AddGradesToSubmissions.cshtml" />
     <Content Include="Views\Shared\ViewAssignmentGrades.cshtml" />
     <None Include="Web.Debug.config">

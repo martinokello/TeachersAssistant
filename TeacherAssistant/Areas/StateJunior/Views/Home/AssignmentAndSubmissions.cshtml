@@ -1,0 +1,32 @@
+﻿@model TeacherAssistant.Models.AssignmentSubmissionViewModel[]
+
+@{
+    ViewBag.Title = "Assignments And Submissions";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h2>Assignments And Submissions</h2>
+<div style="background-color: #DADADA;" class="row">
+    <ul class="list-group">
+        <h4>Items Of Assingnment Exercises</h4>
+
+        @foreach (var assSub in Model)
+        {
+
+            <form method="post" action="@Url.Content("~/StateJunior/Home/SubmitAssignment")" enctype="multipart/form-data">
+                <li class="list-group-item row">
+                    @Html.Hidden("AssignmentSubmissionId", assSub.AssignmentSubmissionId)
+                    @Html.Hidden("AssignmentId", assSub.AssignmentId)
+                    @Html.Hidden("SubjectId", assSub.SubjectId)
+                    @Html.Hidden("TeacherId", assSub.TeacherId)
+                    @Html.Hidden("AssignmentName", assSub.AssignmentName)
+                    <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
+                    Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
+                    <input type="file" name="MediaContent" /><b> | </b>
+                    <input type="submit" name="Create" class="btn btn-default" style="display:inline !important;" />
+                </li>
+            </form>
+        }
+    </ul>
+
+</div>

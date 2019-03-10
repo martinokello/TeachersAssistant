@@ -1252,8 +1252,8 @@ namespace TeacherAssistant.Controllers
             {
                 var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId,
-                    SubjectId = submission.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
+                    FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
+                    SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
                 return View("AddGradesToSubmissions", assSub);
             }
             else if (assignmentSubmissions.Delete != null)
@@ -1268,6 +1268,8 @@ namespace TeacherAssistant.Controllers
                     AssignmentId = submission.AssignmentId, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade, AssignmentName = assignment.AssignmentName,
                     IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
+                    TeacherId = assignment.TeacherId,
+                    SubjectId = assignment.SubjectId,
                     StudentRole =assignmentSubmissions.StudentRole });
                 return View("SuccessfullCreation");
             }
