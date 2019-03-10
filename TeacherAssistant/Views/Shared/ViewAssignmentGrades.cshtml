@@ -9,18 +9,21 @@
 
 <div style="background-color: #DADADA;" class="row">
     <ul class="list-group">
-        <h4>Items Of Assingnment Exercises</h4>
+        <h4>Grades Of Assingnment Exercises</h4>
 
         @foreach (var assSub in Model)
         {
-            using (Html.BeginForm("SubmitAssignment", "Home"))
+            using (Html.BeginForm())
             {
-                <li class="list-group-item row">
-                    @Html.Hidden("AssignmentId", assSub.AssignmentId)
-                    <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
-                    Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>>
-                    Graded as: @(!string.IsNullOrEmpty(assSub.Grade)? assSub.Grade: "Awaiting Grades")
-                </li>
+        <li class="list-group-item row">
+            @Html.Hidden("AssignmentId", assSub.AssignmentId)
+            @Html.Hidden("SubjectId", assSub.SubjectId)
+            @Html.Hidden("TeacherId", assSub.TeacherId)
+            @Html.Hidden("AssignmentName", assSub.AssignmentName)
+            <a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b>
+            Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>>
+            Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")
+        </li>
             }
         }
     </ul>
