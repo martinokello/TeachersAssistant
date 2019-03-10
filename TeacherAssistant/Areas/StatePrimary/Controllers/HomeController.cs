@@ -13,6 +13,7 @@ using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Services.Concretes;
 using System.Globalization;
 using TeachersAssistant.DataAccess;
+using System.Text;
 
 namespace TeacherAssistant.Areas.StatePrimary.Controllers
 {
@@ -569,7 +570,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
 
 
-            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}/{1}", subject.SubjectName, assignment.AssignmentName);
+            var virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/Submissions/{0}/{1}", subject.SubjectName, CleanseAssignmentName(assignment.AssignmentName));
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];
@@ -624,6 +625,14 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             ViewBag.SubjectList = GetSubjectList();
             ViewBag.CalendarBookingList = GetCalendarList();
             ViewBag.ClassroomList = GetClassroomList();
+        }
+        private string CleanseAssignmentName(string assignmentName)
+        {
+            var results = assignmentName.Split(new char[] { ' ', ':', '!', ',', '?', ';' });
+            var result = string.Empty;
+            var buffer = new StringBuilder();
+            foreach (var ch in results) buffer.Append(ch);
+            return buffer.ToString();
         }
     }
 }

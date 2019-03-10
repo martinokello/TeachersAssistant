@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -567,7 +568,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
 
 
-            var virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/Submissions/{0}/{1}", subject.SubjectName, assignment.AssignmentName);
+            var virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/Submissions/{0}/{1}", subject.SubjectName, CleanseAssignmentName(assignment.AssignmentName));
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];
@@ -622,6 +623,14 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             ViewBag.SubjectList = GetSubjectList();
             ViewBag.CalendarBookingList = GetCalendarList();
             ViewBag.ClassroomList = GetClassroomList();
+        }
+        private string CleanseAssignmentName(string assignmentName)
+        {
+            var results = assignmentName.Split(new char[] { ' ', ':', '!', ',', '?', ';' });
+            var result = string.Empty;
+            var buffer = new StringBuilder();
+            foreach (var ch in results) buffer.Append(ch);
+            return buffer.ToString();
         }
     }
 }
