@@ -605,7 +605,7 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                 AssignmentId = submissions.AssignmentId,
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
-                StudentId = assignment.StudentId,
+                StudentId = (int)student.StudentId,
                 StudentRole = "StateJunior",
                 FilePath = Url.Content(virtualPath + "/" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName),
                 IsSubmitted = true,

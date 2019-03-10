@@ -603,7 +603,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                 AssignmentId = submissions.AssignmentId,
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
-                StudentId = assignment.StudentId,
+                StudentId = (int)student.StudentId,
                 StudentRole = "StatePrimary",
                 FilePath = Url.Content(virtualPath + "/" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName),
                 IsSubmitted = true,

@@ -602,7 +602,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 AssignmentId = submissions.AssignmentId,
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
-                StudentId = assignment.StudentId,
+                StudentId = (int)student.StudentId,
                 StudentRole = "Grammar11Plus",
                 FilePath = Url.Content(virtualPath + "/" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName),
                 IsSubmitted = true,
