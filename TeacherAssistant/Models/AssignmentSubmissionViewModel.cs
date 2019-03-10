@@ -20,5 +20,9 @@ namespace TeacherAssistant.Models
         public string StudentRole { get; set; }
         public bool IsSubmitted { get; set; }
         public string Grade { get; set; }
+        public string Select { get; set; }
+        public string Update { get; set; }
+        public string Create { get; set; }
+        public string Delete { get; set; }
     }
 }

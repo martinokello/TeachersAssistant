@@ -1023,5 +1023,26 @@ namespace TeachersAssistant.Services.Concretes
                 return results;
             }
         }
+
+        public AssignmentSubmission GetAssignmentSubmissionsById(int assignmentSubmissionId)
+        {
+
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._assignmentSubmissionRepository.GetById(assignmentSubmissionId);
+            }
+        }
+
+        public void DeleteAssignmentSubmissiongById(int assignmentSubmissionId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var submission = _unitOfWork._assignmentSubmissionRepository.GetById(assignmentSubmissionId);
+                _unitOfWork._assignmentSubmissionRepository.Delete(submission);
+                _unitOfWork.SaveChanges();
+            }
+        }
     }
 }

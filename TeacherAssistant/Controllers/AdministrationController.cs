@@ -1243,6 +1243,21 @@ namespace TeacherAssistant.Controllers
         public ActionResult AddGradesToSubmissions(Models.AssignmentSubmissionViewModel assignmentSubmissions)
         {
             GetUIDropdownLists();
+            if (assignmentSubmissions.Select != null)
+            {
+               var submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
+                var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
+                    AssignmentName = submission.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
+                    FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId,
+                    SubjectId = submission.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
+                return View(assignmentSubmissions);
+            }
+            if (assignmentSubmissions.Delete != null)
+            {
+                _repositoryServices.DeleteAssignmentSubmissiongById(assignmentSubmissions.AssignmentSubmissionId);
+
+                View("SuccessfullCreation");
+            }
             if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
