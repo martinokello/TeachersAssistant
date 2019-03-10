@@ -1246,9 +1246,9 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
             if (assignmentSubmissions.Select != null)
             {
-                AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
                 var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
                     AssignmentName = submission.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId,
@@ -1264,8 +1264,8 @@ namespace TeacherAssistant.Controllers
             else if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
-                    AssignmentId = assignmentSubmissions.AssignmentId, DateDue = assignmentSubmissions.DateDue, DateSubmitted = assignmentSubmissions.DateSubmitted,
-                    FilePath = assignmentSubmissions.FilePath, Grade = assignmentSubmissions.Grade,
+                    AssignmentId = submission.AssignmentId, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
+                    FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade,
                     IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
                     StudentRole =assignmentSubmissions.StudentRole });
                 return View("SuccessfullCreation");
