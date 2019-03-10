@@ -540,11 +540,15 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
         {
             var assignments = _teacherRepository.GetCurrentAssignments("StatePrimary");
             var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
+            var hasPreviouslySubmitted = false;
             var listSubmissions = assignments.Select(p => {
                 var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
                 var assignmentSubmissionId = 0;
-                if (assignmentSubmission != null) assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
-
+                if (assignmentSubmission != null)
+                {
+                    assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+                    hasPreviouslySubmitted = true;
+                }
                 return new AssignmentSubmissionViewModel
                 {
                     AssignmentSubmissionId = assignmentSubmissionId,
@@ -554,7 +558,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                     FilePath = p.FilePath,
                     StudentId = p.StudentId,
                     StudentRole = p.StudentRole,
-                    IsSubmitted = p.IsSubmitted,
+                    IsSubmitted = hasPreviouslySubmitted,
                     TeacherId = p.TeacherId,
                     SubjectId = p.SubjectId
                 };

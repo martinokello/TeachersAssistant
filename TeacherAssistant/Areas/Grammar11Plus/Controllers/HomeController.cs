@@ -537,11 +537,16 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         public ActionResult AssignmentAndSubmissions()
         {
             var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
+            var hasPreviouslySubmitted = false;
             var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
             var listSubmissions = assignments.Select(p => {
                 var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
                 var assignmentSubmissionId = 0;
-                if (assignmentSubmission != null) assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+                if (assignmentSubmission != null)
+                {
+                    assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+                    hasPreviouslySubmitted = true;
+                }
 
                 return new AssignmentSubmissionViewModel
                 {
@@ -552,7 +557,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     FilePath = p.FilePath,
                     StudentId = p.StudentId,
                     StudentRole = p.StudentRole,
-                    IsSubmitted  = assignmentSubmission == null? false:assignmentSubmission.IsSubmitted,
+                    IsSubmitted = hasPreviouslySubmitted,
                     TeacherId = p.TeacherId,
                     SubjectId = p.SubjectId
                 };

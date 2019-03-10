@@ -1246,11 +1246,12 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
             AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
             if (assignmentSubmissions.Select != null)
             {
                 var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
-                    AssignmentName = submission.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
+                    AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId,
                     SubjectId = submission.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
                 return View("AddGradesToSubmissions", assSub);
@@ -1265,7 +1266,7 @@ namespace TeacherAssistant.Controllers
             {
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
                     AssignmentId = submission.AssignmentId, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade,
+                    FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade, AssignmentName = assignment.AssignmentName,
                     IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
                     StudentRole =assignmentSubmissions.StudentRole });
                 return View("SuccessfullCreation");
