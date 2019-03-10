@@ -1244,6 +1244,11 @@ namespace TeacherAssistant.Controllers
         public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
         {
             GetUIDropdownLists();
+            if(assignmentSubmissions.AssignmentId == 0 || assignmentSubmissions.AssignmentSubmissionId == 0)
+            {
+                ModelState.AddModelError("assignmentInvalid", "AssignmentId and AssignmentSubmissionId is required");
+                return View("AddGradesToSubmissions", assignmentSubmissions);
+            }
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
