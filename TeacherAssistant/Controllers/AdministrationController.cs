@@ -1240,7 +1240,7 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddGradesToSubmissions(Models.AssignmentSubmissionViewModel assignmentSubmissions)
+        public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
         {
             GetUIDropdownLists();
             if (assignmentSubmissions.Select != null)
@@ -1250,7 +1250,7 @@ namespace TeacherAssistant.Controllers
                     AssignmentName = submission.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId,
                     SubjectId = submission.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
-                return View(assignmentSubmissions);
+                return View("AddGradesToSubmissions", assSub);
             }
             if (assignmentSubmissions.Delete != null)
             {
