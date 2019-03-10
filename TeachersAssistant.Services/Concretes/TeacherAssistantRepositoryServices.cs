@@ -1027,7 +1027,7 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                var results = _unitOfWork._assignmentSubmissionRepository.GetAll().Where(p => p.IsSubmitted && string.IsNullOrEmpty(p.Grade));
+                var results = _unitOfWork._assignmentSubmissionRepository.GetAll().Where(p => p.IsSubmitted );
                 return results;
             }
         }
