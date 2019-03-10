@@ -1259,7 +1259,7 @@ namespace TeacherAssistant.Controllers
             {
                 _repositoryServices.DeleteAssignmentSubmissiongById(assignmentSubmissions.AssignmentSubmissionId);
 
-                View("SuccessfullCreation");
+                return View("SuccessfullCreation");
             }
             else if (ModelState.IsValid)
             {
@@ -1268,7 +1268,7 @@ namespace TeacherAssistant.Controllers
                     FilePath = assignmentSubmissions.FilePath, Grade = assignmentSubmissions.Grade,
                     IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
                     StudentRole =assignmentSubmissions.StudentRole });
-                View("SuccessfullCreation");
+                return View("SuccessfullCreation");
             }
             return View(assignmentSubmissions);
         }
