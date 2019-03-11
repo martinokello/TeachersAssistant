@@ -26,5 +26,6 @@ namespace TeachersAssistant.Domain.Model.Models
         public string StudentRole { get; set; }
         public bool IsSubmitted { get; set; }
         public string Grade { get; set; }
+        public string Notes { get; set; }
     }
 }
