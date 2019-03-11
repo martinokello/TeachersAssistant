@@ -23,7 +23,7 @@
             <a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b>
             Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
             Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")<b> | </b>
-            TeachersNotes: @(string.IsNullOrEmpty(assSub.Notes)?"No Notes": (assSub.Notes)
+            TeachersNotes: @(string.IsNullOrEmpty(assSub.Notes)?"No Notes": assSub.Notes)
         </li>
             }
         }
