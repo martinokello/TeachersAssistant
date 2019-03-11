@@ -21,7 +21,7 @@
             @Html.Hidden("TeacherId", assSub.TeacherId)
             @Html.Hidden("AssignmentName", assSub.AssignmentName)
             <a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b>
-            Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>>
+            Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
             Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")
         </li>
             }
