@@ -559,7 +559,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     StudentRole = p.StudentRole,
                     IsSubmitted = hasPreviouslySubmitted,
                     TeacherId = p.TeacherId,
-                    SubjectId = p.SubjectId
+                    SubjectId = p.SubjectId,
+                    Notes = assignmentSubmission.Notes
                 };
             });
 
@@ -613,7 +614,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 IsSubmitted = true,
                 SubjectId = assignment.SubjectId,
                 TeacherId = assignment.TeacherId,
-                AssignmentName = assignment.AssignmentName
+                AssignmentName = assignment.AssignmentName,
+                Notes = submissions.Notes
             };
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             return View("SuccessfullCreation");

@@ -20,6 +20,7 @@
                     @Html.Hidden("SubjectId", assSub.SubjectId)
                     @Html.Hidden("TeacherId", assSub.TeacherId)
                     @Html.Hidden("AssignmentName", assSub.AssignmentName)
+                    @Html.Hidden("Notes", assSub.Notes)
                     <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
                     Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
                     <input type="file" name="MediaContent" /><b> | </b>

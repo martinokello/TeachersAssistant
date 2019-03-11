@@ -19,6 +19,7 @@ namespace TeacherAssistant.Models
         public HttpPostedFileBase MediaContent { get; set; }
         public string StudentRole { get; set; }
         public bool IsSubmitted { get; set; }
+        public string Notes { get; set; }
         public string Grade { get; set; }
         public string Select { get; set; }
         public string Update { get; set; }

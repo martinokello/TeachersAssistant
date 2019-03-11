@@ -560,7 +560,8 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                     StudentRole = p.StudentRole,
                     IsSubmitted = hasPreviouslySubmitted,
                     TeacherId = p.TeacherId,
-                    SubjectId = p.SubjectId
+                    SubjectId = p.SubjectId,
+                    Notes = assignmentSubmission.Notes
                 };
             });
 
@@ -613,7 +614,8 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                 IsSubmitted = true,
                 SubjectId = submissions.SubjectId,
                 TeacherId = submissions.TeacherId,
-                AssignmentName = assignment.AssignmentName
+                AssignmentName = assignment.AssignmentName,
+                Notes = submissions.Notes
             };
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             return View("SuccessfullCreation");

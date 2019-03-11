@@ -8,7 +8,7 @@
 <h2>View Assignment Grades</h2>
 
 <div style="background-color: #DADADA;" class="row">
-    <ul class="list-group">
+    <ul class="list-group row">
         <h4>Grades Of Assingnment Exercises</h4>
 
         @foreach (var assSub in Model)
@@ -22,7 +22,8 @@
             @Html.Hidden("AssignmentName", assSub.AssignmentName)
             <a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b>
             Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
-            Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")
+            Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")<b> | </b>
+            TeachersNotes: @(string.IsNullOrEmpty(assSub.Notes)?"No Notes": (assSub.Notes)
         </li>
             }
         }
