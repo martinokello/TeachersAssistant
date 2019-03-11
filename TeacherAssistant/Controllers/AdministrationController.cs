@@ -113,6 +113,12 @@ namespace TeacherAssistant.Controllers
                 GetUIDropdownLists();
 
                 ViewBag.AssignmentList = GetCurrentAssignmentList();
+
+                (ViewBag.TeacherList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentViewModel.TeacherId).FirstOrDefault().Selected = true;
+                (ViewBag.SubjectList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentViewModel.SubjectId).FirstOrDefault().Selected = true;
+                (ViewBag.StudentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentViewModel.StudentId).FirstOrDefault().Selected = true;
+                (ViewBag.RoleList as List<SelectListItem>).Where(p => p.Value == assignmentViewModel.StudentRole).FirstOrDefault().Selected = true;
+                (ViewBag.AssignmentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentViewModel.AssignmentId).FirstOrDefault().Selected = true;
                 ModelState.Clear();
 
                 var virtualPath = string.Empty;
@@ -140,6 +146,11 @@ namespace TeacherAssistant.Controllers
                         return View(assignmentViewModel);
                     }
                     Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                    (ViewBag.TeacherList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == doc.TeacherId).FirstOrDefault().Selected = true;
+                    (ViewBag.SubjectList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == doc.SubjectId).FirstOrDefault().Selected = true;
+                    (ViewBag.StudentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == doc.StudentId).FirstOrDefault().Selected = true;
+                    (ViewBag.RoleList as List<SelectListItem>).Where(p => p.Value == doc.StudentRole).FirstOrDefault().Selected = true;
+                    (ViewBag.AssignmentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == doc.AssignmentId).FirstOrDefault().Selected = true;
                     return View( new AssignmentViewModel { AssignmentId = doc.AssignmentId, StudentRole = doc.StudentRole,
                         SubjectId = doc.SubjectId, StudentId=doc.StudentId, FilePath = doc.FilePath, DateAssigned = doc.DateAssigned, DateDue = doc.DateDue, Description=doc.Description, AssignmentName=doc.AssignmentName });
 
@@ -280,6 +291,7 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageStudent(StudentViewModel studentViewModel)
         {
             GetUIDropdownLists();
+            (ViewBag.StudentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == studentViewModel.StudentId).FirstOrDefault().Selected = true;
             if (studentViewModel.Select != null)
             {
                 if (studentViewModel.StudentId < 1)
@@ -325,6 +337,8 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageSubject(SubjectViewModel subjectViewModel)
         {
             GetUIDropdownLists();
+            (ViewBag.TeacherList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == subjectViewModel.TeacherId).FirstOrDefault().Selected = true;
+            (ViewBag.SubjectList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == subjectViewModel.SubjectId).FirstOrDefault().Selected = true;
             if (subjectViewModel.Select != null)
             {
                 ModelState.Clear();
@@ -377,6 +391,7 @@ namespace TeacherAssistant.Controllers
         {
             GetUIDropdownLists();
 
+            (ViewBag.TeacherList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == teacherViewModel.TeacherId).FirstOrDefault().Selected = true;
             if (teacherViewModel.Select != null)
             {
                 if (teacherViewModel.TeacherId < 1)
@@ -421,7 +436,8 @@ namespace TeacherAssistant.Controllers
             try
             {
                 GetUIDropdownLists();
-
+              
+                (ViewBag.SubjectList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == resourceModel.SubjectId).FirstOrDefault().Selected = true;
                 ModelState.Clear();
 
                 ViewBag.StudentResourcesList = GetStudentResourcesList();
@@ -1243,14 +1259,19 @@ namespace TeacherAssistant.Controllers
         [HttpPost]
         public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
         {
-            GetUIDropdownLists();
-            if(assignmentSubmissions.AssignmentId == 0 || assignmentSubmissions.AssignmentSubmissionId == 0)
+            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            (ViewBag.TeacherList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentSubmissions.TeacherId).FirstOrDefault().Selected = true;
+            (ViewBag.SubjectList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentSubmissions.SubjectId).FirstOrDefault().Selected = true;
+            (ViewBag.StudentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentSubmissions.StudentId).FirstOrDefault().Selected = true;
+            (ViewBag.RoleList as List<SelectListItem>).Where(p => p.Value == assignmentSubmissions.StudentRole).FirstOrDefault().Selected = true;
+            (ViewBag.AssignmentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentSubmissions.AssignmentId).FirstOrDefault().Selected = true;
+            (ViewBag.UngragedAssignmentSubmissionList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assignmentSubmissions.AssignmentSubmissionId).FirstOrDefault().Selected = true;
+            if (assignmentSubmissions.AssignmentId == 0 || assignmentSubmissions.AssignmentSubmissionId == 0)
             {
                 ModelState.AddModelError("assignmentInvalid", "AssignmentId and AssignmentSubmissionId is required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
-            ViewBag.AssignmentList = GetCurrentAssignmentList();
-            ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
             AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
             if (assignmentSubmissions.Select != null)
@@ -1259,6 +1280,12 @@ namespace TeacherAssistant.Controllers
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
                     SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole };
+                (ViewBag.TeacherList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assSub.TeacherId).FirstOrDefault().Selected = true;
+                (ViewBag.SubjectList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assSub.SubjectId).FirstOrDefault().Selected = true;
+                (ViewBag.StudentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assSub.StudentId).FirstOrDefault().Selected = true;
+                (ViewBag.RoleList as List<SelectListItem>).Where(p => p.Value == assSub.StudentRole).FirstOrDefault().Selected = true;
+                (ViewBag.AssignmentList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assSub.AssignmentId).FirstOrDefault().Selected = true;
+                (ViewBag.UngragedAssignmentSubmissionList as List<SelectListItem>).Where(p => Int32.Parse(p.Value) == assSub.AssignmentSubmissionId).FirstOrDefault().Selected = true;
                 return View("AddGradesToSubmissions", assSub);
             }
             else if (assignmentSubmissions.Delete != null)
