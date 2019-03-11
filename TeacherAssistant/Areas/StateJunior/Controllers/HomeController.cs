@@ -542,8 +542,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
         {
             var assignments = _teacherRepository.GetCurrentAssignments("StateJunior");
             var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
-            var hasPreviouslySubmitted = false;
             var listSubmissions = assignments.Select(p => {
+                var hasPreviouslySubmitted = false;
                 var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
                 var assignmentSubmissionId = 0;
                 if (assignmentSubmission != null)

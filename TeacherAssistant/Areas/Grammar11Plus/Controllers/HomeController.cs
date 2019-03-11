@@ -537,9 +537,9 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         public ActionResult AssignmentAndSubmissions()
         {
             var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
-            var hasPreviouslySubmitted = false;
             var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
             var listSubmissions = assignments.Select(p => {
+                var hasPreviouslySubmitted = false;
                 var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
                 var assignmentSubmissionId = 0;
                 if (assignmentSubmission != null)
