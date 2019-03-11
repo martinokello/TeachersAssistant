@@ -560,7 +560,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     IsSubmitted = hasPreviouslySubmitted,
                     TeacherId = p.TeacherId,
                     SubjectId = p.SubjectId,
-                    Notes = assignmentSubmission.Notes
+                    Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
                 };
             });
 

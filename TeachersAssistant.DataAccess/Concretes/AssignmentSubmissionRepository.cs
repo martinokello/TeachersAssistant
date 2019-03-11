@@ -30,6 +30,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                 freeDoc.DateDue = item.DateDue;
                 freeDoc.SubjectId = item.SubjectId;
                 freeDoc.TeacherId = item.TeacherId;
+                freeDoc.Notes = item.Notes;
                 return true;
             }
             catch (Exception e)
