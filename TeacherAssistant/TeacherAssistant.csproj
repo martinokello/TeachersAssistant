@@ -496,6 +496,9 @@
     <Content Include="images\pic09.jpg" />
     <Content Include="images\pic10.jpg" />
     <Content Include="images\pic11.jpg" />
+    <Content Include="images\primaryTutor1.jpg" />
+    <Content Include="images\primaryTutor2.jpg" />
+    <Content Include="images\primaryTutor3.jpg" />
     <Content Include="Infrastructure\MailTemplates\TeacherBookingTime.html" />
     <Content Include="Views\Shared\left-sidebar.html" />
     <Content Include="Views\Shared\no-sidebar.html" />
