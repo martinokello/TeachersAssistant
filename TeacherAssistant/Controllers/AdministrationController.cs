@@ -1273,7 +1273,9 @@ namespace TeacherAssistant.Controllers
                     IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
                     TeacherId = assignment.TeacherId,
                     SubjectId = assignment.SubjectId,
-                    StudentRole = assignment.StudentRole });
+                    StudentRole = assignment.StudentRole,
+                    Notes = assignmentSubmissions.Notes
+                });
                 return View("SuccessfullCreation");
             }
             return View(assignmentSubmissions);
