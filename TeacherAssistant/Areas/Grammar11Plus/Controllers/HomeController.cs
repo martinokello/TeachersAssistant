@@ -528,7 +528,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 IsSubmitted = p.IsSubmitted,
                 StudentRole = p.StudentRole,
                 TeacherId = p.TeacherId,
-                SubjectId = p.SubjectId
+                SubjectId = p.SubjectId,
+                Notes = p.Notes
             });
             return View("ViewAssignmentGrades", assignments.ToArray());
 
