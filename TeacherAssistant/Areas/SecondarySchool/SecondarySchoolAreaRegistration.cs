@@ -8,7 +8,7 @@ namespace TeachersAssistant.Areas.Grammar11Plus
         {
             get 
             {
-                return "Grammar11Plus";
+                return "SecondarySchool";
             }
         }
 

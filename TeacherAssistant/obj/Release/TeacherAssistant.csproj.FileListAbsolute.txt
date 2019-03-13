@@ -109,6 +109,8 @@ C:\C#Projects\TeachersAssistant\TeacherAssistant\bin\Microsoft.Owin.Security.Mic
 C:\C#Projects\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.csprojResolveAssemblyReference.cache
 C:\C#Projects\TeachersAssistant\TeacherAssistant\obj\Release\TeachersAssistant.dll
 C:\C#Projects\TeachersAssistant\TeacherAssistant\obj\Release\TeachersAssistant.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.csprojAssemblyReference.cache
+C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\ApplicationInsights.config
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\TeacherAssistant.dll.config
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\TeacherAssistant.dll
@@ -280,8 +282,6 @@ C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\pt\FluentValid
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\ru\FluentValidation.resources.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\sv\FluentValidation.resources.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\bin\tr\FluentValidation.resources.dll
-C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.csprojAssemblyReference.cache
-C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.csproj.CopyComplete
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\TeacherAssistant\obj\Release\TeacherAssistant.pdb

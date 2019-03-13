@@ -3,74 +3,74 @@
     ViewBag.Title = "BookTeacherHelpTime";
     Layout = "~/Areas/StateJunior/Views/Shared/_NewLayoutStateJunior.cshtml";
 }
+
 @using (Html.BeginForm())
 {
-<div class="form-horizontal">
-    <h2>Teachers Calender</h2><br />
-    <hr />
-    <h2>Book Teacher Help Time</h2>
-    <div>
+    <div class="form-horizontal">
+        <h2>Book Teacher Help Time</h2>
         <div>
             <!--Calendar-->
             @{ Html.RenderPartial("_TeachersCalendarEditable");}
         </div>
-    </div>
-    <div style="background-color: #DADADA;">
-        <div style="padding:5px;">
-            <div class="form-group">
-                @Html.LabelFor(model => model.CalendarBookingId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("CalendarBookingId", ViewBag.CalendarBookingList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CalendarBookingId, "", new { @class = "text-danger" })
+        <div style="background-color: #DADADA;">
+            <div style="padding:5px;">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CalendarBookingId, htmlAttributes: new { @class = "control-label col-md-2", @readonly = true })
+                    <div class="col-md-10">
+                        @Html.DropDownList("CalendarBookingId", ViewBag.CalendarBookingList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CalendarBookingId, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>,  new { htmlAttributes = new { @class = "form-control", @readonly = true } })
-                    @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                        @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
-                    @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.BookingTimes[0].StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
-                    @Html.ValidationMessageFor(model => model.BookingTimes[0].StartTime, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BookingTimes[0].StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @id = "startTime", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
+                        @Html.ValidationMessageFor(model => model.BookingTimes[0].StartTime, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.BookingTimes[0].EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
-                    @Html.ValidationMessageFor(model => model.BookingTimes[0].EndTime, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BookingTimes[0].EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @id = "endTime", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
+                        @Html.ValidationMessageFor(model => model.BookingTimes[0].EndTime, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" name="Select" value="Select" class="btn btn-default" />
-                    <input type="submit" name="Create" value="Create" class="btn btn-default" />
-                    <input type="submit" name="Update" value="Update" class="btn btn-default" />
-                    <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" name="Select" value="Select" class="btn btn-default" />
+                        <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                        <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-                }
+    <script type="text/javascript">
+        jQuery('#startTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+        jQuery('#endTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+    </script>}
 <script type="text/javascript">
     var events = [];
     $(document).ready(function(){
