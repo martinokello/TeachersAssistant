@@ -1,27 +1,28 @@
-﻿using EmailServices.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using EmailServices.Interfaces;
 using TeacherAssistant.Models;
-using TeachersAssistant.DataAccess;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Services.Concretes;
+using System.Globalization;
+using TeachersAssistant.DataAccess;
+using System.Text;
 
-namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
+namespace TeacherAssistant.Areas.SecondarySchool.Controllers
 {
-    [Authorize(Roles="Administrator,Grammar11Plus")]
+
+    [Authorize(Roles = "Administrator,SecondarySchool")]
     public class HomeController : Controller
     {
         private TeachersAssistantRepositoryServices _teacherRepository;
-       /* public HomeController()
+        /*public HomeController()
         {
 
         }*/
@@ -64,10 +65,9 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
              qAHelpRequestRepositoryMarker,
              assignmentRepositoryMarker,
              assignmentSubmissionRepositoryMarker);
-             unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
+            unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
-
         private List<SelectListItem> GetCurrentAssignmentList(string roleName)
         {
             var assingnmentList = new List<SelectListItem>();
@@ -83,7 +83,6 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         {
             return View("Index");
         }
-
         public ActionResult AboutUs()
         {
             ViewBag.Message = "About Us.";
@@ -97,7 +96,6 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
 
             return View();
         }
-
         [HttpGet]
         public ActionResult RequestQAHelp()
         {
@@ -134,6 +132,12 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             ViewBag.Message = "Online Classroom.";
 
             return View();
+        }
+        [HttpGet]
+        [Authorize(Roles = "Administrator,Grammar11Plus,SecondarySchool,StateJunior")]
+        public ViewResult PrivateClass()
+        {
+            return View("PrivateClass");
         }
         [HttpGet]
         public ActionResult BookTeacherHelpTime()
@@ -175,7 +179,6 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
 
             return View("BookTeacherHelpTime");
         }
-
         [HttpPost]
         public ActionResult BookTeacherHelpTime(TeacherCalendarViewModel bookingTimeViewModel)
         {
@@ -331,8 +334,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         [HttpGet]
         public ActionResult GetStudentResources()
         {
-            var studentResources = _teacherRepository.GetGroupedResourcesByRoleThenSubject("Grammar11Plus");
-            return View("StudentResources", studentResources);
+            var StudentResources = _teacherRepository.GetGroupedResourcesByRoleThenSubject("SecondarySchool");
+            return View("StudentResources", StudentResources);
         }
         [HttpPost]
         public ActionResult TeachersCalendar(int teacherId)
@@ -401,8 +404,8 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         public ActionResult DownloadFreeDocuments()
         {
             ViewBag.Message = "Download Free Documents.";
-            var documents = _teacherRepository.GetFreeDocuments("Grammar11Plus");
-            var videos = _teacherRepository.GetFreeVideos("Grammar11Plus");
+            var documents = _teacherRepository.GetFreeDocuments("SecondarySchool");
+            var videos = _teacherRepository.GetFreeVideos("SecondarySchool");
 
             ViewBag.FreeDocumentsList = documents;
             ViewBag.FreeVideosList = videos;
@@ -411,16 +414,23 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
 
         public ActionResult DownloadPaidDocuments()
         {
-            ViewBag.Message = "Download Paid Documents.";
-            var documents = _teacherRepository.GetPaidDocuments("Grammar11Plus");
-            var videos = _teacherRepository.GetPaidVideos("Grammar11Plus");
+            ViewBag.Message = "Download Paid Documents."; 
+            var documents = _teacherRepository.GetPaidDocuments("SecondarySchool");
+            var videos = _teacherRepository.GetPaidVideos("SecondarySchool");
 
             ViewBag.PaidDocumentsList = documents;
             ViewBag.PaidVideosList = videos;
-            return RedirectToRoute(new  { controller = "Home", action = "DownloadPaidDocuments", namespaces = "TeacherAssistant.Controllers", area="" });
 
+            return RedirectToRoute(new { controller = "Home", action = "DownloadPaidDocuments", namespaces = "TeacherAssistant.Controllers", area = "" });
         }
+        public IList<SelectListItem> GetQARequestList()
+        {
+            var productList = new List<SelectListItem>();
+            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
 
+            productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
+            return productList;
+        }
         private List<SelectListItem> GetClassroomList()
         {
             var classRoomList = new List<SelectListItem>();
@@ -502,21 +512,13 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             return rolesList;
         }
 
-        public IList<SelectListItem> GetQARequestList()
-        {
-            var productList = new List<SelectListItem>();
-            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
-
-            productList.AddRange(_teacherRepository.GetQARequestList().Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
-            return productList;
-        }
         [HttpGet]
         public ActionResult ViewAssignmentGrades()
         {
             try
             {
                 var studentId = _teacherRepository.GetStudentByName(User.Identity.Name).StudentId;
-                var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("Grammar11Plus", (int)studentId).Select(p =>
+                var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("SecondarySchool", (int)studentId).Select(p =>
                 new AssignmentSubmissionViewModel
                 {
                     AssignmentSubmissionId = p.AssignmentSubmissionId,
@@ -538,7 +540,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             catch
             {
 
-                return View("ViewAssignmentGrades", new AssignmentSubmissionViewModel[] { });
+                return View("ViewAssignmentGrades", new AssignmentSubmissionViewModel[] {});
             }
 
         }
@@ -547,7 +549,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         {
             try
             {
-                var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
+                var assignments = _teacherRepository.GetCurrentAssignments("SecondarySchool");
                 var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
                 var listSubmissions = assignments.Select(p =>
                 {
@@ -589,7 +591,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);
             Student student = _teacherRepository.GetStudentByName(User.Identity.Name);
 
-            var virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/Submissions/{0}/{1}", subject.SubjectName, CleanseAssignmentName(assignment.AssignmentName));
+            var virtualPath = string.Format("~/StudentResources/SecondarySchool/Assignments/Submissions/{0}/{1}", subject.SubjectName, CleanseAssignmentName(assignment.AssignmentName));
 
             //Save File to FileSystem:
             var fileBuffer = new byte[submissions.MediaContent.ContentLength];
@@ -597,7 +599,6 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             var physicalPath = Server.MapPath(virtualPath);
             var dirInfo = new DirectoryInfo(physicalPath);
             if (!dirInfo.Exists) dirInfo.Create();
-
             FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName);
             if (fileInfo1.Exists)
             {
@@ -624,11 +625,11 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 DateDue = assignment.DateDue,
                 DateSubmitted = DateTime.Now,
                 StudentId = (int)student.StudentId,
-                StudentRole = "Grammar11Plus",
+                StudentRole = "SecondarySchool",
                 FilePath = Url.Content(virtualPath + "/" + student.StudentFirsName + student.StudentLastName + submissions.MediaContent.FileName),
                 IsSubmitted = true,
-                SubjectId = assignment.SubjectId,
-                TeacherId = assignment.TeacherId,
+                SubjectId = submissions.SubjectId,
+                TeacherId = submissions.TeacherId,
                 AssignmentName = assignment.AssignmentName,
                 Notes = submissions.Notes
             };
@@ -638,7 +639,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         }
         private void GetUIDropdownLists()
         {
-            ViewBag.AssignmentList = GetCurrentAssignmentList("Grammar11Plus");
+            ViewBag.AssignmentList = GetCurrentAssignmentList("SecondarySchool");
             ViewBag.QAHelpRequestList = GetQARequestList();
             ViewBag.TeacherList = GetTeacherList();
             ViewBag.RoleList = GetRolesSelectList();

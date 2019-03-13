@@ -250,6 +250,19 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Controllers\HomeController.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\CollegeAndPostGraduateAreaRegistration.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\BookingTimeViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\ClassroomViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\IdentityModels.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\ManageViewModels.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\StudentViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\SubjectViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\TeacherCalendarViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\TeacherViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\UploadMediaViewModel.cs" />
+    <Compile Include="Areas\CollegeAndPostGraduate\Models\UserRoleViewModel.cs" />
     <Compile Include="Areas\Grammar11Plus\Controllers\HomeController.cs" />
     <Compile Include="Areas\Grammar11Plus\Models\AccountViewModels.cs" />
     <Compile Include="Areas\Grammar11Plus\Models\BookingTimeViewModel.cs" />
@@ -262,6 +275,19 @@
     <Compile Include="Areas\Grammar11Plus\Models\TeacherViewModel.cs" />
     <Compile Include="Areas\Grammar11Plus\Models\UploadMediaViewModel.cs" />
     <Compile Include="Areas\Grammar11Plus\Models\UserRoleViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\SecondarySchoolAreaRegistration.cs" />
+    <Compile Include="Areas\SecondarySchool\Controllers\HomeController.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\BookingTimeViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\ClassroomViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\IdentityModels.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\ManageViewModels.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\StudentViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\SubjectViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\TeacherCalendarViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\TeacherViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\UploadMediaViewModel.cs" />
+    <Compile Include="Areas\SecondarySchool\Models\UserRoleViewModel.cs" />
     <Compile Include="Areas\StateJunior\Controllers\HomeController.cs" />
     <Compile Include="Areas\StateJunior\Models\AccountViewModels.cs" />
     <Compile Include="Areas\StateJunior\Models\BookingTimeViewModel.cs" />
@@ -330,6 +356,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\left-sidebar.html" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\no-sidebar.html" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\right-sidebar.html" />
     <Content Include="Areas\Grammar11Plus\Views\Home\BookTeacherHelpTime.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\ContactUs.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\FreeDocuments.cshtml" />
@@ -340,6 +369,9 @@
     <Content Include="Areas\Grammar11Plus\Views\Shared\left-sidebar.html" />
     <Content Include="Areas\Grammar11Plus\Views\Shared\no-sidebar.html" />
     <Content Include="Areas\Grammar11Plus\Views\Shared\right-sidebar.html" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\left-sidebar.html" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\no-sidebar.html" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\right-sidebar.html" />
     <Content Include="Areas\StateJunior\Views\Home\BookTeacherHelpTime.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\ContactUs.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\FreeDocuments.cshtml" />
@@ -500,9 +532,6 @@
     <Content Include="images\primaryTutor2.jpg" />
     <Content Include="images\primaryTutor3.jpg" />
     <Content Include="Infrastructure\MailTemplates\TeacherBookingTime.html" />
-    <Content Include="Views\Shared\left-sidebar.html" />
-    <Content Include="Views\Shared\no-sidebar.html" />
-    <Content Include="Views\Shared\right-sidebar.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -587,6 +616,44 @@
     <Content Include="Areas\Grammar11Plus\Views\Home\AssignmentAndSubmissions.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\AssignmentAndSubmissions.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Home\AssignmentAndSubmissions.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\AssignmentAndSubmissions.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\BookTeacherHelpTime.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\ContactUs.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\DownloadFreeDocuments.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\DownloadPaidDocuments.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\Index.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\OnlineClassRoom.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\PaidDocuments.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\RequestQAHelp.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Home\TeachersCalendar.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\_SuccessfullCreation.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\Lockout.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Shared\SuccessfullCreation.cshtml" />
+    <Content Include="Areas\SecondarySchool\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Areas\CollegeAndPostGraduate\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\AssignmentAndSubmissions.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\BookTeacherHelpTime.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\ContactUs.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\DownloadFreeDocuments.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\DownloadPaidDocuments.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\Index.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\OnlineClassRoom.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\PaidDocuments.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\RequestQAHelp.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Home\TeachersCalendar.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\_NewLayoutCollegeAndPostGraduate.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\_SuccessfullCreation.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\Lockout.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\SuccessfullCreation.cshtml" />
+    <Content Include="Areas\CollegeAndPostGraduate\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Areas\SecondarySchool\Views\Shared\_NewLayoutSecondarySchool.cshtml" />
     <None Include="Properties\PublishProfiles\TeachersAssistantApp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

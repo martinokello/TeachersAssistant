@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Download Free Documents";
+    Layout = "~/Areas/CollegeAndPostGraduate/Views/Shared/_NewLayoutCollegeAndPostGraduate.cshtml";
+}
+<style type="text/css">
+    .paging {
+        background-color: teal;
+        font-size: medium;
+        color: red;
+        font-weight: bolder;
+        margin: 5px;
+    }
+
+    .col-md-4 {
+        background-color: burlywood;
+        color: black;
+    }
+
+    .header {
+        font-weight: bolder;
+        font-size: medium;
+        color: black;
+        background-color: brown;
+        margin: 5px;
+    }
+
+    .cell, ul#paidDocs, ul#paidDocs {
+        padding: 5px;
+        color: saddlebrown;
+    }
+</style>
+<div class="form-horizontal">
+    <div class="header row">
+        <div class="col-lg-12">
+            <h2>Download Free Documents</h2>
+        </div>
+    </div>
+    <div style="background-color: #DADADA;">
+        <div class="row" style="margin:5px;">
+            <div class="col-lg-12 cell">
+                <h4>Free Documents</h4>
+            </div>
+            <div class="col-lg-12 cell">
+                <ul class="list-group cell" id="freeDocs" style="margin:5px;"></ul>
+            </div>
+        </div>
+        <div class="row" style="margin:5px;">
+            <div class="col-lg-12 cell">
+                <hr style="text-align:center; width:69%;" />
+            </div>
+        </div>
+        <div class="row" style="margin:5px;">
+            <div class="col-lg-12 cell">
+                <h4>Free Videos</h4>
+            </div>
+            <div class="col-lg-12 cell">
+                <ul class="list-group cell" id="freeVids" style="margin:5px;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var jsonfreeDocs = @Html.Raw(Json.Encode(ViewBag.FreeDocumentsList));
+        var $ulHandleDocs = $('ul#freeDocs');
+        for(var doc=0; doc<jsonfreeDocs.length; doc++ ){
+            $ulHandleDocs.append('<li class="list-group-item"><a href="'+jsonfreeDocs[doc].FilePath.substr(1)+'"> '+jsonfreeDocs[doc].RoleName+', '+jsonfreeDocs[doc].FilePath.substr(jsonfreeDocs[doc].FilePath.lastIndexOf('/')+1)+'</li>');
+        }
+
+        var jsonfreeVids = @Html.Raw(Json.Encode(ViewBag.FreeVideosList));
+        var $ulHandleVids = $('ul#freeVids');
+        for(var doc=0; doc<jsonfreeVids.length; doc++ ){
+            $ulHandleVids.append('<li class="list-group-item"><section><div class="col-lg-8">'+jsonfreeVids[doc].RoleName+', '+jsonfreeVids[doc].FilePath.substr(jsonfreeVids[doc].FilePath.lastIndexOf('/')+1)+'</section></div><div class="col-lg-8"><video width="65%" height="auto" controls><source src="'+jsonfreeVids[doc].FilePath.substr(1)+'" type="video/mp4"><source src="'+jsonfreeVids[doc].FilePath.substr(1).replace(".mp4",".webm")+'" type="video/webm"><source src="'+jsonfreeVids[doc].FilePath.substr(1).replace(".mp4",".ogg")+'" type="video/ogg">Your browser does not support the video tag.</video></div></li>');
+        }
+    });
+</script>

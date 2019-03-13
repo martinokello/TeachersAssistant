@@ -101,6 +101,10 @@ namespace  TeacherAssistant.Controllers
                 return Redirect("~/StatePrimary/Home/Index");
             if (User.IsInRole("Grammar11Plus"))
                 return Redirect("~/Grammar11Plus/Home/Index");
+            if (User.IsInRole("SecondarySchool"))
+                return Redirect("~/SecondarySchool/Home/Index");
+            if (User.IsInRole("CollegeAndPostGraduate"))
+                return Redirect("~/CollegeAndPostGraduate/Home/Index");
             return View();
         }
 
@@ -212,7 +216,7 @@ namespace  TeacherAssistant.Controllers
 
         }
         [HttpGet]
-        [Authorize(Roles="Administrator,Grammar11Plus,StatePrimary,StateJunior")]
+        [Authorize(Roles= "Administrator,Grammar11Plus,StatePrimary,StateJunior,CollegeAndPostGraduate,SecondarySchool")]
         public ActionResult DownloadFreeDocuments()
         {
             ViewBag.Message = "Download Free Documents.";
@@ -228,9 +232,17 @@ namespace  TeacherAssistant.Controllers
             {
                 switch (role)
                 {
+                    case "CollegeAndPostGraduate":
+                        freeDocsUrl = Url.Content("~/CollegeAndPostGraduate/Home/DownloadFreeDocuments");
+                        var routeVals = freeDocsUrl.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        return Redirect(freeDocsUrl);
+                    case "SecondarySchool":
+                        freeDocsUrl = Url.Content("~/SecondarySchool/Home/DownloadFreeDocuments");
+                        routeVals = freeDocsUrl.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        return Redirect(freeDocsUrl);
                     case "Grammar11Plus":
                         freeDocsUrl = Url.Content("~/Grammar11Plus/Home/DownloadFreeDocuments");
-                        var routeVals = freeDocsUrl.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                        routeVals = freeDocsUrl.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
                         return Redirect(freeDocsUrl);
                     case "StatePrimary":
                         freeDocsUrl = Url.Content("~/StatePrimary/Home/DownloadFreeDocuments");

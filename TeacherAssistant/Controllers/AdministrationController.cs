@@ -121,6 +121,12 @@ namespace TeacherAssistant.Controllers
                 //Save file to relevant fileSystem:
                 switch (assignmentViewModel.StudentRole.ToLower())
                 {
+                    case "collegeandpostgraduate":
+                        virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                        break;
+                    case "secondaryschool":
+                        virtualPath = string.Format("~/StudentResources/SecondarySchool/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                        break;
                     case "grammar11plus":
                         virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                         break;
@@ -434,6 +440,12 @@ namespace TeacherAssistant.Controllers
                 //Save file to relevant fileSystem:
                 switch (resourceModel.RoleName.ToLower())
                 {
+                    case "collegeandpostgraduate":
+                        virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/{0}", subject.SubjectName);
+                        break;
+                    case "secondaryschool":
+                        virtualPath = string.Format("~/StudentResources/SecondarySchool/{0}", subject.SubjectName);
+                        break;
                     case "grammar11plus":
                         virtualPath = string.Format("~/StudentResources/Grammar11Plus/{0}", subject.SubjectName); 
                         break;
@@ -572,6 +584,16 @@ namespace TeacherAssistant.Controllers
                 //Save file to relevant fileSystem:
                 switch (mediaModel.RoleName.ToLower())
                 {
+                    case "collegeandpostgraduate":
+                        if (mediaType.ToLower().StartsWith("paid"))
+                            virtualPath = "~/Documents/CollegeAndPostGraduate/PaidDocuments";
+                        else virtualPath = "~/Documents/CollegeAndPostGraduate/FreeDocuments";
+                        break;
+                    case "secondaryschool":
+                        if (mediaType.ToLower().StartsWith("paid"))
+                            virtualPath = "~/Documents/SecondarySchool/PaidDocuments";
+                        else virtualPath = "~/Documents/SecondarySchool/FreeDocuments";
+                        break;
                     case "grammar11plus":
                         if (mediaType.ToLower().StartsWith("paid"))
                             virtualPath = "~/Documents/Grammar11Plus/PaidDocuments";

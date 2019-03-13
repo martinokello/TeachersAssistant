@@ -515,59 +515,74 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
         [HttpGet]
         public ActionResult ViewAssignmentGrades()
         {
-            var studentId = _teacherRepository.GetStudentByName(User.Identity.Name).StudentId;
-            var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("StatePrimary", (int)studentId).Select(p =>
-            new AssignmentSubmissionViewModel
+            try
             {
-                AssignmentSubmissionId = p.AssignmentSubmissionId,
-                AssignmentId = p.AssignmentId,
-                AssignmentName = p.AssignmentName,
-                StudentId = p.StudentId,
-                DateDue = p.DateDue,
-                DateSubmitted = p.DateSubmitted,
-                Grade = p.Grade,
-                FilePath = p.FilePath,
-                IsSubmitted = p.IsSubmitted,
-                StudentRole = p.StudentRole,
-                TeacherId = p.TeacherId,
-                SubjectId = p.SubjectId,
-                Notes = p.Notes
-            });
-            return View("ViewAssignmentGrades", assignments.ToArray());
+                var studentId = _teacherRepository.GetStudentByName(User.Identity.Name).StudentId;
+                var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("StatePrimary", (int)studentId).Select(p =>
+                new AssignmentSubmissionViewModel
+                {
+                    AssignmentSubmissionId = p.AssignmentSubmissionId,
+                    AssignmentId = p.AssignmentId,
+                    AssignmentName = p.AssignmentName,
+                    StudentId = p.StudentId,
+                    DateDue = p.DateDue,
+                    DateSubmitted = p.DateSubmitted,
+                    Grade = p.Grade,
+                    FilePath = p.FilePath,
+                    IsSubmitted = p.IsSubmitted,
+                    StudentRole = p.StudentRole,
+                    TeacherId = p.TeacherId,
+                    SubjectId = p.SubjectId,
+                    Notes = p.Notes
+                });
+                return View("ViewAssignmentGrades", assignments.ToArray());
+            }
+            catch
+            {
+
+                return View("ViewAssignmentGrades", new AssignmentSubmissionViewModel[] { });
+            }
 
         }
         [HttpGet]
         public ActionResult AssignmentAndSubmissions()
         {
-            var assignments = _teacherRepository.GetCurrentAssignments("StatePrimary");
-            var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
-            var listSubmissions = assignments.Select(p => {
-                var hasPreviouslySubmitted = false;
-                var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
-                var assignmentSubmissionId = 0;
-                if (assignmentSubmission != null)
+            try
+            {
+                var assignments = _teacherRepository.GetCurrentAssignments("StatePrimary");
+                var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
+                var listSubmissions = assignments.Select(p =>
                 {
-                    assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
-                    hasPreviouslySubmitted = true;
-                }
-                return new AssignmentSubmissionViewModel
-                {
-                    AssignmentSubmissionId = assignmentSubmissionId,
-                    AssignmentName = p.AssignmentName,
-                    AssignmentId = p.AssignmentId,
-                    DateDue = p.DateDue,
-                    FilePath = p.FilePath,
-                    StudentId = p.StudentId,
-                    StudentRole = p.StudentRole,
-                    IsSubmitted = hasPreviouslySubmitted,
-                    TeacherId = p.TeacherId,
-                    SubjectId = p.SubjectId,
-                    Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
-                };
-            });
+                    var hasPreviouslySubmitted = false;
+                    var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
+                    var assignmentSubmissionId = 0;
+                    if (assignmentSubmission != null)
+                    {
+                        assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+                        hasPreviouslySubmitted = true;
+                    }
+                    return new AssignmentSubmissionViewModel
+                    {
+                        AssignmentSubmissionId = assignmentSubmissionId,
+                        AssignmentName = p.AssignmentName,
+                        AssignmentId = p.AssignmentId,
+                        DateDue = p.DateDue,
+                        FilePath = p.FilePath,
+                        StudentId = p.StudentId,
+                        StudentRole = p.StudentRole,
+                        IsSubmitted = hasPreviouslySubmitted,
+                        TeacherId = p.TeacherId,
+                        SubjectId = p.SubjectId,
+                        Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
+                    };
+                });
 
-            return View("AssignmentAndSubmissions", listSubmissions.ToArray());
-
+                return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+            }
+            catch
+            {
+                return View("AssignmentAndSubmissions", new AssignmentSubmissionViewModel[] {});
+            }
         }
         [HttpPost]
         public ActionResult SubmitAssignment(AssignmentSubmissionViewModel submissions)
