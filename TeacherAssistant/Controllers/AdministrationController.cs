@@ -809,12 +809,6 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.Message = "Teachers Calendar.";
             var calendars = _repositoryServices.GetTeacherCalendar();
-            if (calendars == null)
-            {
-                ModelState.AddModelError("NoTeacherCalendar", "Teacher hasn't a calendar booking");
-            }
-            if (!ModelState.IsValid)
-                return View();
             var calendarBookingViewModels = new List<CalendarBookingViewModel>();
             var classRooms = _repositoryServices.GetClassrooms();
             if (calendars != null)
@@ -847,7 +841,7 @@ namespace TeacherAssistant.Controllers
             }
             ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
 
-            return PartialView("TeachersCalendar", calendarBookingViewModels.Count() > 0 ? calendarBookingViewModels.ToArray()[calendarBookingViewModels.Count() - 1] : null);
+            return View("TeachersCalendar", calendarBookingViewModels.Count() > 0 ? calendarBookingViewModels.ToArray()[calendarBookingViewModels.Count() - 1] : null);
         }
         [HttpGet]
         public ActionResult ManageTeachersCalendar()
@@ -944,6 +938,7 @@ namespace TeacherAssistant.Controllers
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("CalendarBookingId", "Calendar BookingId required");
+                    return View("ManageTeacherCalendar", bookingTimeViewModel);
                 }
                 if (ModelState.IsValid)
                 {
