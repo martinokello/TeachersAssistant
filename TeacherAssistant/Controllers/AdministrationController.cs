@@ -933,50 +933,7 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             if (ModelState.IsValid)
             {
-                var calendarBookingViewModels = new List<CalendarBookingViewModel>();
-                var calendar = _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
-                Student student = _repositoryServices.GetStudentById(calendar.StudentId);
-                Subject subject = _repositoryServices.GetSubjectById(calendar.SubjectId);
-                bookingTimeViewModel.StudentId = (int)student.StudentId;
-                bookingTimeViewModel.SubjectId = (int)subject.SubjectId;
-                bookingTimeViewModel.CalendarBookingId = calendar.CalendarBookingId;
-                ModelState.Clear();
-
-
-                var calendars = _repositoryServices.GetTeacherCalendar();
-                var classRooms = _repositoryServices.GetClassrooms();
-                var calendarsLeftJoin = from cal in calendars
-                                        join cls in classRooms on
-                                        cal.CalendarBookingId equals cls.CalendarId into res
-                                        from q in res.DefaultIfEmpty()
-                                        select new
-                                        {
-                                            ClassroomId = q == null ? null : q.ClassroomId,
-                                            SubjectId = cal.SubjectId,
-                                            TeacherId = cal.TeacherId,
-                                            StudentId = cal.StudentId,
-                                            BookingTimeId = cal.BookingTimeId
-                                        };
-
-
-                foreach (var cal in calendarsLeftJoin)
-                {
-                    student = _repositoryServices.GetStudentById(cal.StudentId);
-                    subject = _repositoryServices.GetSubjectById(cal.SubjectId);
-                    var teacher = _repositoryServices.GetTeacherByName(User.Identity.Name);
-                    var bookingTime = _repositoryServices.GetBookingById(cal.BookingTimeId);
-
-                    if (bookingTime == null) continue;
-                    calendarBookingViewModels.Add(new CalendarBookingViewModel
-                    {
-                        Teacher = teacher,
-                        Subject = subject,
-                        Student = student,
-                        BookingTime = bookingTime,
-                        ClassroomId = cal.ClassroomId
-                    });
-                }
-                ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
+                ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
             }
             if (bookingTimeViewModel.Select != null)
             {
@@ -1033,11 +990,62 @@ namespace TeacherAssistant.Controllers
                 html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
                 html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
                 emailService.EmailType = EmailType.Html;
+                ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
                 //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
                 return View("SuccessfullCreation");
             }
             return View("ManageTeacherCalendar", bookingTimeViewModel);
         }
+
+        private CalendarBookingViewModel[] GetCalendarListData(TeacherCalendarViewModel bookingTimeViewModel)
+        {
+
+            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendar = _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+            Student student = _repositoryServices.GetStudentById(calendar.StudentId);
+            Subject subject = _repositoryServices.GetSubjectById(calendar.SubjectId);
+            bookingTimeViewModel.StudentId = (int)student.StudentId;
+            bookingTimeViewModel.SubjectId = (int)subject.SubjectId;
+            bookingTimeViewModel.CalendarBookingId = calendar.CalendarBookingId;
+            ModelState.Clear();
+
+
+            var calendars = _repositoryServices.GetTeacherCalendar();
+            var classRooms = _repositoryServices.GetClassrooms();
+            var calendarsLeftJoin = from cal in calendars
+                                    join cls in classRooms on
+                                    cal.CalendarBookingId equals cls.CalendarId into res
+                                    from q in res.DefaultIfEmpty()
+                                    select new
+                                    {
+                                        ClassroomId = q == null ? null : q.ClassroomId,
+                                        SubjectId = cal.SubjectId,
+                                        TeacherId = cal.TeacherId,
+                                        StudentId = cal.StudentId,
+                                        BookingTimeId = cal.BookingTimeId
+                                    };
+
+
+            foreach (var cal in calendarsLeftJoin)
+            {
+                student = _repositoryServices.GetStudentById(cal.StudentId);
+                subject = _repositoryServices.GetSubjectById(cal.SubjectId);
+                var teacher = _repositoryServices.GetTeacherByName(User.Identity.Name);
+                var bookingTime = _repositoryServices.GetBookingById(cal.BookingTimeId);
+
+                if (bookingTime == null) continue;
+                calendarBookingViewModels.Add(new CalendarBookingViewModel
+                {
+                    Teacher = teacher,
+                    Subject = subject,
+                    Student = student,
+                    BookingTime = bookingTime,
+                    ClassroomId = cal.ClassroomId
+                });
+            }
+            return calendarBookingViewModels.ToArray();
+        }
+
         private List<SelectListItem> GetFilteredQASelectList(IEnumerable<QAHelpRequest> qaItems)
         {
 
