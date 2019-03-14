@@ -996,7 +996,46 @@ namespace TeacherAssistant.Controllers
             }
             return View("ManageTeacherCalendar", bookingTimeViewModel);
         }
+        [HttpGet]
+        public ActionResult AssignmentAndSubmissions()
+        {
+            try
+            {
+                var assignments = _repositoryServices.GetCurrentAssignments();
+                var previousSubmissions = _repositoryServices.GetCurrentAssignmentsSubmissions();
+                var listSubmissions = assignments.Select(p =>
+                {
+                    var hasPreviouslySubmitted = false;
+                    var assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.StudentId == p.StudentId && q.AssignmentId == p.AssignmentId);
+                    var assignmentSubmissionId = 0;
+                    if (assignmentSubmission != null)
+                    {
+                        assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
+                        hasPreviouslySubmitted = true;
+                    }
+                    return new AssignmentSubmissionViewModel
+                    {
+                        AssignmentSubmissionId = assignmentSubmissionId,
+                        AssignmentName = p.AssignmentName,
+                        AssignmentId = p.AssignmentId,
+                        DateDue = p.DateDue,
+                        FilePath = p.FilePath,
+                        StudentId = p.StudentId,
+                        StudentRole = p.StudentRole,
+                        IsSubmitted = hasPreviouslySubmitted,
+                        TeacherId = p.TeacherId,
+                        SubjectId = p.SubjectId,
+                        Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
+                    };
+                });
 
+                return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+            }
+            catch
+            {
+                return View("AssignmentAndSubmissions", new AssignmentSubmissionViewModel[] { });
+            }
+        }
         private CalendarBookingViewModel[] GetCalendarListData(TeacherCalendarViewModel bookingTimeViewModel)
         {
 

@@ -750,6 +750,7 @@
     <Content Include="Views\Administration\AssignWork.cshtml" />
     <Content Include="Views\Administration\AddGradesToSubmissions.cshtml" />
     <Content Include="Views\Shared\ViewAssignmentGrades.cshtml" />
+    <Content Include="Views\Administration\AssignmentAndSubmissions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
