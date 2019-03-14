@@ -108,6 +108,11 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
         {
             ViewBag.Message = "Request QA Help From Tutor";
             GetUIDropdownLists();
+            if( qaHelpRequest.StudentId== 0 || qaHelpRequest.SubjectId==0 || qaHelpRequest.TeacherId == 0 || string.IsNullOrEmpty(qaHelpRequest.StudentRole) || string.IsNullOrEmpty(qaHelpRequest.Description))
+            {
+                ModelState.AddModelError("requiredFields","Student, Subject, Teacher, Student Role and Description Required");
+                return View("_SuccessfullCreation", qaHelpRequest);
+            }
             if (ModelState.IsValid)
             {
                 _teacherRepository.RequestQATime(new QAHelpRequest
@@ -185,13 +190,18 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
 
-
+            if (bookingTimeViewModel.StudentId == 0 || bookingTimeViewModel.SubjectId == 0 || bookingTimeViewModel.TeacherId == 0 || string.IsNullOrEmpty(bookingTimeViewModel.Description))
+            {
+                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
+                return View("_SuccessfullCreation", bookingTimeViewModel);
+            }
 
             if (bookingTimeViewModel.Select != null)
             {
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("Select", "Calendar BookingId required");
+                    return View("_SuccessfullCreation", bookingTimeViewModel);
                 }
 
                 if (ModelState.IsValid)
@@ -263,6 +273,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             if (bookingTimeViewModel.SubjectId < 1)
             {
                 ModelState.AddModelError("Subject", "Subject Id is required");
+                return View("_SuccessfullCreation", bookingTimeViewModel);
             }
             if (ModelState.IsValid)
             {

@@ -186,12 +186,19 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
             GetUIDropdownLists();
 
 
+            if (bookingTimeViewModel.StudentId == 0 || bookingTimeViewModel.SubjectId == 0 || bookingTimeViewModel.TeacherId == 0 || string.IsNullOrEmpty(bookingTimeViewModel.Description))
+            {
+                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
+                return View("_SuccessfullCreation", bookingTimeViewModel);
+            }
+
 
             if (bookingTimeViewModel.Select != null)
             {
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("Select", "Calendar BookingId required");
+                    return View("_SuccessfullCreation", bookingTimeViewModel);
                 }
 
                 if (ModelState.IsValid)

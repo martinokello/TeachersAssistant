@@ -156,7 +156,7 @@ namespace TeacherAssistant.Controllers
                     if (assignmentViewModel.AssignmentId < 1)
                     {
                         ModelState.AddModelError("AssignmenId", "Assignment Id Required");
-                        return View( assignmentViewModel);
+                        return View(assignmentViewModel);
                     }
 
 
@@ -178,6 +178,13 @@ namespace TeacherAssistant.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        var dateDue = DateTime.Now;
+                        var dataAssigned = DateTime.Now;
+                        if(string.IsNullOrEmpty(assignmentViewModel.AssignmentName) || string.IsNullOrEmpty(assignmentViewModel.Description))
+                        {
+                            ModelState.AddModelError("assingmentName", "Assignement Name and Description are required!");
+                            return View(assignmentViewModel);
+                        }
                         HttpPostedFileBase file = assignmentViewModel.MediaContent;
 
                         var fileName = file.FileName;
@@ -243,7 +250,9 @@ namespace TeacherAssistant.Controllers
                 if (classRoomViewModel.ClassroomId < 1 || classRoomViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("ClassroomId", "ClassroomId and CalendarId are required");
+                    return View("ManageClassRoom", classRoomViewModel);
                 }
+
                 if (ModelState.IsValid)
                 {
                     var calendar = _repositoryServices.GetTeacherCalendarByBookingId(classRoomViewModel.CalendarBookingId);
@@ -292,6 +301,7 @@ namespace TeacherAssistant.Controllers
                 if (studentViewModel.StudentId < 1)
                 {
                     ModelState.AddModelError("StudentId", "StudentId is required");
+                    return View("ManageStudent", studentViewModel);
                 }
                 if (ModelState.IsValid)
                 {
@@ -338,6 +348,7 @@ namespace TeacherAssistant.Controllers
                 if (subjectViewModel.SubjectId < 1)
                 {
                     ModelState.AddModelError("SubjectId", "SubjectId is required");
+                    return View("ManageSubject", subjectViewModel);
                 }
                 if (ModelState.IsValid)
                 {
@@ -354,6 +365,7 @@ namespace TeacherAssistant.Controllers
                 if (subjectViewModel.SubjectId < 1)
                 {
                     ModelState.AddModelError("SubjectId", "SubjectId is required");
+                    return View("ManageSubject", subjectViewModel);
                 }
                 if (ModelState.IsValid)
                 {
@@ -388,6 +400,7 @@ namespace TeacherAssistant.Controllers
                 if (teacherViewModel.TeacherId < 1)
                 {
                     ModelState.AddModelError("TeacherId", "Teacher Id is required");
+                    return View("ManageTeacher", teacherViewModel);
                 }
                 if (ModelState.IsValid)
                 {
@@ -1001,6 +1014,7 @@ namespace TeacherAssistant.Controllers
             if (bookingTimeViewModel.SubjectId < 1)
             {
                 ModelState.AddModelError("SubjectId", "Subject Id is required");
+                return View("ManageTeacherCalendar", bookingTimeViewModel);
             }
             if (ModelState.IsValid)
             {
@@ -1057,7 +1071,10 @@ namespace TeacherAssistant.Controllers
         {
             GetUIDropdownLists();
             ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
-
+            if (qaHelpRequestViewModel.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequestViewModel.StudentRole) || qaHelpRequestViewModel.SubjectId==0 || qaHelpRequestViewModel.TeacherId == 0)
+            {
+                return View("ManageQAHelpRequest", qaHelpRequestViewModel);
+            }
             if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest {QAHelpRequestId = qaHelpRequestViewModel.QAHelpRequestId, Description = qaHelpRequestViewModel.Description,
@@ -1096,6 +1113,7 @@ namespace TeacherAssistant.Controllers
                 if (productModel.ProductId < 1)
                 {
                     ModelState.AddModelError("ProductId", "Product Id Required");
+                    return View("ManageProducts", productModel);
                 }
                 if (ModelState.IsValid)
                 {
