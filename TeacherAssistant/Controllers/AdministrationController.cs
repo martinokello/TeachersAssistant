@@ -1001,9 +1001,26 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
-                var previousSubmissions = _repositoryServices.GetCurrentAssignmentsSubmissions();
+                var submissions = _repositoryServices.GetCurrentAssignmentsSubmissions().Select(p=> {
+                    return new AssignmentSubmissionViewModel
+                    {
+                        AssignmentId = p.AssignmentId,
+                        AssignmentSubmissionId = p.AssignmentSubmissionId,
+                         DateSubmitted = p.DateSubmitted,
+                        AssignmentName = p.AssignmentName,
+                        Notes = p.Notes,
+                        DateDue = p.DateDue,
+                        Grade = p.Grade,
+                        FilePath = p.FilePath,
+                        StudentId = p.StudentId,
+                        SubjectId =p.SubjectId,
+                        TeacherId = p.TeacherId,
+                        StudentRole = p.StudentRole,
+                        IsSubmitted = p.IsSubmitted
+                    };
+                });
 
-                return View("AssignmentAndSubmissions", previousSubmissions.ToArray());
+                return View("AssignmentAndSubmissions", submissions.ToArray());
             }
             catch
             {
