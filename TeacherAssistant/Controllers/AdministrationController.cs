@@ -1073,6 +1073,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
             if (qaHelpRequestViewModel.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequestViewModel.StudentRole) || qaHelpRequestViewModel.SubjectId==0 || qaHelpRequestViewModel.TeacherId == 0)
             {
+                ModelState.AddModelError("requiredFields", "Student, Role, Subject, and Teacher Required");
                 return View("ManageQAHelpRequest", qaHelpRequestViewModel);
             }
             if (ModelState.IsValid)
