@@ -185,7 +185,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             if (bookingTimeViewModel.StudentId == 0 || bookingTimeViewModel.SubjectId == 0 || bookingTimeViewModel.TeacherId == 0 || string.IsNullOrEmpty(bookingTimeViewModel.Description))
             {
                 ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
-                return View("_SuccessfullCreation", bookingTimeViewModel);
+                return View("BookTeacherHelpTime", bookingTimeViewModel);
             }
 
 
@@ -194,7 +194,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("Select", "Calendar BookingId required");
-                    return View("_SuccessfullCreation", bookingTimeViewModel);
+                    return View("BookTeacherHelpTime", bookingTimeViewModel);
                 }
 
                 if (ModelState.IsValid)
