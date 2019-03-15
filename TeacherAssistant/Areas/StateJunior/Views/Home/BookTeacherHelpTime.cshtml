@@ -13,6 +13,8 @@
             @{ Html.RenderPartial("_TeachersCalendarEditable");}
         </div>
         <div style="background-color: #DADADA;">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div style="padding:5px;">
                 <div class="form-group">
                     @Html.LabelFor(model => model.CalendarBookingId, htmlAttributes: new { @class = "control-label col-md-2", @readonly = true })
