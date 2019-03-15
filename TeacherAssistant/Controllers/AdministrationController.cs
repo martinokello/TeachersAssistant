@@ -949,7 +949,7 @@ namespace TeacherAssistant.Controllers
             if (!string.IsNullOrEmpty(bookingTimeViewModel.Create) && (bookingTimeViewModel.StudentId < 1 || bookingTimeViewModel.SubjectId < 1 || bookingTimeViewModel.TeacherId < 1 || string.IsNullOrEmpty(bookingTimeViewModel.Description)))
             {
                 ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
-                return View("BookTeacherHelpTime", bookingTimeViewModel);
+                return View("ManageTeacherCalendar", bookingTimeViewModel);
             }
 
             if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
@@ -957,7 +957,7 @@ namespace TeacherAssistant.Controllers
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("Select", "Calendar BookingId required");
-                    return View("BookTeacherHelpTime", bookingTimeViewModel);
+                    return View("ManageTeacherCalendar", bookingTimeViewModel);
                 }
             }
 

@@ -108,6 +108,11 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
         {
             ViewBag.Message = "Request QA Help From Tutor";
             GetUIDropdownLists();
+            if (qaHelpRequest.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequest.StudentRole) || qaHelpRequest.SubjectId == 0 || qaHelpRequest.TeacherId == 0 || string.IsNullOrEmpty(qaHelpRequest.Description))
+            {
+                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
+                return View("RequestQAHelp", qaHelpRequest);
+            }
             if (ModelState.IsValid)
             {
                 _teacherRepository.RequestQATime(new QAHelpRequest
@@ -134,7 +139,7 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
             return View();
         }
         [HttpGet]
-        [Authorize(Roles = "Administrator,Grammar11Plus,SecondarySchool,StateJunior")]
+        [Authorize(Roles = "Administrator,Grammar11Plus,StatePrimary,StateJunior,SecondarySchool,CollegeAndPostGraduate")]
         public ViewResult PrivateClass()
         {
             return View("PrivateClass");
