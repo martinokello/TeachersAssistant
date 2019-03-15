@@ -191,7 +191,7 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                 return View("BookTeacherHelpTime", bookingTimeViewModel);
             }
 
-            if (bookingTimeViewModel.Select != null)
+            if (bookingTimeViewModel.Select == null)
             {
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
