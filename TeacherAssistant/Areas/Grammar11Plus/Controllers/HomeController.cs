@@ -188,7 +188,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 return View("BookTeacherHelpTime", bookingTimeViewModel);
             }
 
-            if (bookingTimeViewModel.Select == null)
+            if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
             {
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {

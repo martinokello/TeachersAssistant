@@ -945,8 +945,6 @@ namespace TeacherAssistant.Controllers
             {
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
             }
-            ViewBag.Message = "Book Teacher Time.";
-            GetUIDropdownLists();
 
             if (!string.IsNullOrEmpty(bookingTimeViewModel.Create) && (bookingTimeViewModel.StudentId < 1 || bookingTimeViewModel.SubjectId < 1 || bookingTimeViewModel.TeacherId < 1 || string.IsNullOrEmpty(bookingTimeViewModel.Description)))
             {
@@ -954,7 +952,7 @@ namespace TeacherAssistant.Controllers
                 return View("BookTeacherHelpTime", bookingTimeViewModel);
             }
 
-            if (bookingTimeViewModel.Select == null)
+            if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
             {
                 if (bookingTimeViewModel.CalendarBookingId < 1)
                 {
@@ -962,14 +960,9 @@ namespace TeacherAssistant.Controllers
                     return View("BookTeacherHelpTime", bookingTimeViewModel);
                 }
             }
-            if (bookingTimeViewModel.Select != null)
+
+            if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
             {
-                ModelState.Clear();
-                if (bookingTimeViewModel.CalendarBookingId < 1)
-                {
-                    ModelState.AddModelError("CalendarBookingId", "Calendar BookingId required");
-                    return View("ManageTeacherCalendar", bookingTimeViewModel);
-                }
                 var teacherCalendar =
                     _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                 return View("ManageTeacherCalendar", teacherCalendar);
