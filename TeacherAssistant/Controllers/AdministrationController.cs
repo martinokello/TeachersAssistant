@@ -1,21 +1,21 @@
-﻿using System;
-using System.IO;
+﻿using AutoMapper;
+using CuttingEdge.Conditions;
+using EmailServices.Interfaces;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using TeacherAssistant.Infrastructure.FluentValidation;
 using TeacherAssistant.Models;
+using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
 using TeachersAssistant.Services.Concretes;
-using TeachersAssistant.DataAccess.Interfaces;
-using Microsoft.AspNet.Identity.Owin;
-using AutoMapper;
-using System.Globalization;
-using System.Configuration;
-using EmailServices.Interfaces;
-using CuttingEdge.Conditions;
-using TeacherAssistant.Infrastructure.FluentValidation;
 
 namespace TeacherAssistant.Controllers
 {
@@ -110,8 +110,14 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
+                ViewBag.AssignmentList = GetCurrentAssignmentList();
                 GetUIDropdownLists();
-                if (assignmentViewModel.StudentId < 1 || assignmentViewModel.StudentId < 1 || assignmentViewModel.TeacherId < 1 || string.IsNullOrEmpty(assignmentViewModel.StudentRole))
+                if (assignmentViewModel.AssignmentId < 1 && (!string.IsNullOrEmpty(assignmentViewModel.Select)|| !string.IsNullOrEmpty(assignmentViewModel.Update)|| !string.IsNullOrEmpty(assignmentViewModel.Delete)))
+                {
+                    ModelState.AddModelError("AssignemnentId", "Assignment required");
+                    return View("AssignWork", assignmentViewModel);
+                }
+                if (!string.IsNullOrEmpty(assignmentViewModel.Create)  && assignmentViewModel.StudentId < 1 || assignmentViewModel.StudentId < 1 || assignmentViewModel.TeacherId < 1 || string.IsNullOrEmpty(assignmentViewModel.StudentRole))
                 {
                     ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
                     return View("AssignWork", assignmentViewModel);
@@ -939,6 +945,23 @@ namespace TeacherAssistant.Controllers
             {
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
             }
+            ViewBag.Message = "Book Teacher Time.";
+            GetUIDropdownLists();
+
+            if (!string.IsNullOrEmpty(bookingTimeViewModel.Create) && (bookingTimeViewModel.StudentId < 1 || bookingTimeViewModel.SubjectId < 1 || bookingTimeViewModel.TeacherId < 1 || string.IsNullOrEmpty(bookingTimeViewModel.Description)))
+            {
+                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
+                return View("BookTeacherHelpTime", bookingTimeViewModel);
+            }
+
+            if (bookingTimeViewModel.Select != null)
+            {
+                if (bookingTimeViewModel.CalendarBookingId < 1)
+                {
+                    ModelState.AddModelError("Select", "Calendar BookingId required");
+                    return View("BookTeacherHelpTime", bookingTimeViewModel);
+                }
+            }
             if (bookingTimeViewModel.Select != null)
             {
                 ModelState.Clear();
@@ -947,8 +970,9 @@ namespace TeacherAssistant.Controllers
                     ModelState.AddModelError("CalendarBookingId", "Calendar BookingId required");
                     return View("ManageTeacherCalendar", bookingTimeViewModel);
                 }
-
-                return View("ManageTeacherCalendar", bookingTimeViewModel);
+                var teacherCalendar =
+                    _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+                return View("ManageTeacherCalendar", teacherCalendar);
             }
             if (bookingTimeViewModel.Delete != null)
             {
@@ -1319,16 +1343,17 @@ namespace TeacherAssistant.Controllers
         [HttpPost]
         public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
         {
+            GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
-            if (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole))
+            if (assignmentSubmissions.AssignmentSubmissionId < 1 &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
             {
-                ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
+                ModelState.AddModelError("AssignmentSubmissionId", "AssignmentSubmission Is required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
-            if (assignmentSubmissions.AssignmentId == 0 || assignmentSubmissions.AssignmentSubmissionId == 0)
+            if (!string.IsNullOrEmpty(assignmentSubmissions.Create) && (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole)))
             {
-                ModelState.AddModelError("assignmentInvalid", "AssignmentId and AssignmentSubmissionId is required");
+                ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
             Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);

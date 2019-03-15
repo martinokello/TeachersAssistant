@@ -190,7 +190,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
 
-            if (bookingTimeViewModel.StudentId == 0 || bookingTimeViewModel.SubjectId == 0 || bookingTimeViewModel.TeacherId == 0 || string.IsNullOrEmpty(bookingTimeViewModel.Description))
+            if (!string.IsNullOrEmpty(bookingTimeViewModel.Create) && (bookingTimeViewModel.StudentId < 1 || bookingTimeViewModel.SubjectId < 1 || bookingTimeViewModel.TeacherId < 1 || string.IsNullOrEmpty(bookingTimeViewModel.Description)))
             {
                 ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
                 return View("BookTeacherHelpTime", bookingTimeViewModel);
