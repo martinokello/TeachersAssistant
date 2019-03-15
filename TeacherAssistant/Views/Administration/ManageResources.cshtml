@@ -10,10 +10,10 @@
     <form method="post" action="@Url.Content("~/Administration/ManageStudentResources")" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
-        <div class="form-horizontal"  style="background-color: #DADADA;">
+        <div class="form-horizontal" style="background-color: #DADADA;">
             <h4>Student Reading Resources</h4>
             <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.ValidationSummary("Correct the Errors below", new { @class = "text-danger" })
 
             <div class="form-group">
                 @Html.LabelFor(model => model.StudentResourceId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.FilePath, htmlAttributes: new { @class = "control-label col-md-2"})
+                @Html.LabelFor(model => model.FilePath, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <input type="text" name="FilePath" class="form-control" readonly />
                 </div>

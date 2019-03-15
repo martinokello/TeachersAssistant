@@ -17,7 +17,7 @@
         <div style="background-color: #DADADA;">
             <div style="padding:5px;">
                 <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary("Correct the Errors below", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.ClassroomId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -40,16 +40,16 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SubjectId, htmlAttributes: new {@class = "control-label col-md-2"})
+                    @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new {htmlAttributes = new {@class = "form-control"}})
-                        @Html.ValidationMessageFor(model => model.SubjectId, "", new {@class = "text-danger"})
+                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.StudentType, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("StudentType", (ViewBag.RoleList as List<SelectListItem>).Where(p=>p.Value.ToLower() != "administrator"), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownList("StudentType", (ViewBag.RoleList as List<SelectListItem>).Where(p => p.Value.ToLower() != "administrator"), new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessage("StudentType", "*", new { @class = "text-danger" })
                     </div>
                 </div>

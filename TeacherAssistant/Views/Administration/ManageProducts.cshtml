@@ -17,7 +17,7 @@
         <div style="background-color: #DADADA;">
             <div style="padding:5px;">
                 <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary("Correct the Errors below", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -61,9 +61,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor( model => model.DocumentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.DocumentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <select id="DocumentIdList" class="form-control"  name="DocumentId"></select>
+                        <select id="DocumentIdList" class="form-control" name="DocumentId"></select>
                     </div>
                 </div>
                 <div class="form-group">
