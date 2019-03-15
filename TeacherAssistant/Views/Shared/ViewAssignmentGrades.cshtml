@@ -7,7 +7,7 @@
 
 <h2>View Assignment Grades</h2>
 
-<div style="background-color: #DADADA;" class="row">
+<div style="background-color: #DADADA;width:100% !important;" >
     <ul class="list-group row">
         <h4>Grades Of Assingnment Exercises</h4>
 
@@ -20,10 +20,10 @@
             @Html.Hidden("SubjectId", assSub.SubjectId)
             @Html.Hidden("TeacherId", assSub.TeacherId)
             @Html.Hidden("AssignmentName", assSub.AssignmentName)
-            <a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b>
-            Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
-            Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")<b> | </b>
-            Teacher's Notes: @(string.IsNullOrEmpty(assSub.Notes)?"No Notes": assSub.Notes)
+            <span class="col-lg-3"><a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b></span>
+             <span class="col-lg-3">Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b></span>
+            <span class="col-lg-3"> Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")<b> | </b></span>
+            <span class="col-lg-3">Teacher's Notes: @(string.IsNullOrEmpty(assSub.Notes) ? "No Notes" : assSub.Notes)</span>
         </li>
             }
         }

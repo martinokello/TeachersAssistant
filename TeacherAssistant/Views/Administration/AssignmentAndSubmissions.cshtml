@@ -7,7 +7,7 @@
 
 <h2>Assignments And Submissions</h2>
 <div style="background-color: #DADADA;" class="row">
-    <ul class="list-group">
+    <ul class="list-group col-lg-12" >
         <h4>Items Of Assingnment Exercises</h4>
 
         @foreach (var assSub in Model)
@@ -21,9 +21,9 @@
                     @Html.Hidden("TeacherId", assSub.TeacherId)
                     @Html.Hidden("AssignmentName", assSub.AssignmentName)
                     @Html.Hidden("Notes", assSub.Notes)
-                    <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b>
-                    Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b>
-                    <a class="btn btn-default" style="display:inline !important;"  href="@assSub.FilePath">Download To Mark</a>
+                    <span class="col-lg-4"> <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b></span> 
+                    <span class="col-lg-4">  Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b></span> 
+                    <span class="col-lg-4">  <a class="btn btn-default" style="display:inline !important;" href="@assSub.FilePath">Download To Mark</a></span>
                 </li>
             </form>
         }
