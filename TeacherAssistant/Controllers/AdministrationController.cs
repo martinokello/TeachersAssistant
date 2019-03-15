@@ -111,10 +111,14 @@ namespace TeacherAssistant.Controllers
             try
             {
                 GetUIDropdownLists();
+                if (assignmentViewModel.StudentId < 1 || assignmentViewModel.StudentId < 1 || assignmentViewModel.TeacherId < 1 || string.IsNullOrEmpty(assignmentViewModel.StudentRole))
+                {
+                    ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
+                    return View("AssignWork", assignmentViewModel);
+                }
 
                 ViewBag.AssignmentList = GetCurrentAssignmentList();
                 
-                ModelState.Clear();
 
                 var virtualPath = string.Empty;
 
@@ -1317,6 +1321,11 @@ namespace TeacherAssistant.Controllers
         {
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            if (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole))
+            {
+                ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
+                return View("AddGradesToSubmissions", assignmentSubmissions);
+            }
             if (assignmentSubmissions.AssignmentId == 0 || assignmentSubmissions.AssignmentSubmissionId == 0)
             {
                 ModelState.AddModelError("assignmentInvalid", "AssignmentId and AssignmentSubmissionId is required");
