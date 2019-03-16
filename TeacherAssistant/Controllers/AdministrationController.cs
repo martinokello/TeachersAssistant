@@ -134,7 +134,7 @@ namespace TeacherAssistant.Controllers
                 {
                     if (assignmentViewModel.AssignmentId < 1)
                     {
-                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        ModelState.AddModelError("AssignmentId", "Assignment Id Required");
                         return View(assignmentViewModel);
                     }
                     Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
