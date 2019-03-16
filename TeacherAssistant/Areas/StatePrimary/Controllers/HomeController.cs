@@ -251,8 +251,10 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                             });
                         }
                     ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
+                    ModelState.Clear();
                     return View("BookTeacherHelpTime", bookingTimeViewModel);
                 }
+                ModelState.Clear();
                 return View("BookTeacherHelpTime", bookingTimeViewModel);
             }
             if (bookingTimeViewModel.Delete != null)

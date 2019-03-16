@@ -120,11 +120,11 @@ namespace TeacherAssistant.Controllers
                 }
                 if (!string.IsNullOrEmpty(assignmentViewModel.Create)  && (assignmentViewModel.StudentId < 1 || assignmentViewModel.StudentId < 1 || assignmentViewModel.TeacherId < 1 || string.IsNullOrEmpty(assignmentViewModel.StudentRole)))
                 {
+                    ModelState.Clear();
                     ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
                     return View("AssignWork", assignmentViewModel);
                 }
-
-                ViewBag.AssignmentList = GetCurrentAssignmentList();
+                
                 
 
                 var virtualPath = string.Empty;
@@ -138,6 +138,7 @@ namespace TeacherAssistant.Controllers
                         return View(assignmentViewModel);
                     }
                     Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                    ModelState.Clear();
                     return View(new AssignmentViewModel
                     {
                         AssignmentId = doc.AssignmentId,
@@ -283,8 +284,8 @@ namespace TeacherAssistant.Controllers
                     classRoomViewModel = (ClassroomViewModel)Mapper.Map(classroom, typeof(Classroom), typeof(ClassroomViewModel));
                     classRoomViewModel.CalendarBookingId = (int)calendar.CalendarBookingId;
                     classRoomViewModel.SubjectId = calendar.SubjectId;
-                    ModelState.Clear();
                 }
+                ModelState.Clear();
                 return View("ManageClassRoom", classRoomViewModel);
             }
 
@@ -341,8 +342,8 @@ namespace TeacherAssistant.Controllers
                 {
                     var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
                     studentViewModel = (StudentViewModel)Mapper.Map(student, typeof(Student), typeof(StudentViewModel));
-                    ModelState.Clear();
                 }
+                ModelState.Clear();
                 return View("ManageStudent", studentViewModel);
             }
             if (ModelState.IsValid)
@@ -389,8 +390,8 @@ namespace TeacherAssistant.Controllers
                     var subject = _repositoryServices.GetSubjectById(subjectViewModel.SubjectId);
                     subjectViewModel = (SubjectViewModel)Mapper.Map(subject, typeof(Subject), typeof(SubjectViewModel));
 
-                    ModelState.Clear();
                 }
+                ModelState.Clear();
                 return View("ManageSubject", subjectViewModel);
             }
             if (subjectViewModel.Delete != null)
@@ -443,6 +444,7 @@ namespace TeacherAssistant.Controllers
                     ModelState.Clear();
                     return View("ManageTeacher", teacherViewModel);
                 }
+                ModelState.Clear();
                 return View("ManageTeacher", teacherViewModel);
             }
             var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherViewModel), typeof(Teacher));
@@ -503,6 +505,7 @@ namespace TeacherAssistant.Controllers
                         return View("ManageResources", resourceModel);
                     }
                     StudentResource doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
+                    ModelState.Clear();
                     return View("ManageResources",new StudentResourcesViewModel { StudentResourceId = doc.StudentResourceId, RoleName = doc.RoleName,
                         SubjectId = doc.SubjectId, FilePath=doc.FilePath, StudentResourceName=doc.StudentResourceName });
                     
@@ -714,6 +717,7 @@ namespace TeacherAssistant.Controllers
                             var freeVideo = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
                             return View(new UploadMediaViewModel { MediaId = freeVideo.FreeVideoId, RoleName = freeVideo.RoleName, Name = freeVideo.FilePath });
                     }
+                    ModelState.Clear();
                     return View("UploadMedia", mediaModel);
                 }
                 else if (mediaModel.Delete != null)
@@ -992,7 +996,6 @@ namespace TeacherAssistant.Controllers
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
-            ModelState.Clear();
             if (ModelState.IsValid)
             {
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
@@ -1017,6 +1020,7 @@ namespace TeacherAssistant.Controllers
             {
                 var teacherCalendar =
                     _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+                ModelState.Clear();
                 return View("ManageTeacherCalendar", teacherCalendar);
             }
             if (bookingTimeViewModel.Delete != null)
@@ -1228,9 +1232,11 @@ namespace TeacherAssistant.Controllers
                     var prod = _repositoryServices.GetProductById(productModel.ProductId);
                     productModel = Mapper.Map(prod, typeof(SHOP_PRODS), typeof(ProductViewModel)) as ProductViewModel;
                     productModel.DocumentType = prod.IsPaidDocument ? 0 : prod.IsPaidVideo ? 1 : -1;
+                    ModelState.Clear();
                     return View("ManageProducts", productModel);
                 }
 
+                ModelState.Clear();
                 return View("ManageProducts", productModel);
             }
 
@@ -1425,6 +1431,7 @@ namespace TeacherAssistant.Controllers
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
                     SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = assignmentSubmissions.Notes };
+                ModelState.Clear();
                 return View("AddGradesToSubmissions", assSub);
             }
             else if (assignmentSubmissions.Delete != null)
