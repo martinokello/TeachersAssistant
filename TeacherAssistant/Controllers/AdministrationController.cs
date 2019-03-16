@@ -128,6 +128,30 @@ namespace TeacherAssistant.Controllers
 
                 var virtualPath = string.Empty;
 
+
+                if (assignmentViewModel.Select != null)
+                {
+                    if (assignmentViewModel.AssignmentId < 1)
+                    {
+                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        return View(assignmentViewModel);
+                    }
+                    Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                    return View(new AssignmentViewModel
+                    {
+                        AssignmentId = doc.AssignmentId,
+                        StudentRole = doc.StudentRole,
+                        SubjectId = doc.SubjectId,
+                        StudentId = doc.StudentId,
+                        FilePath = doc.FilePath,
+                        DateAssigned = doc.DateAssigned,
+                        DateDue = doc.DateDue,
+                        Description = doc.Description,
+                        AssignmentName = doc.AssignmentName
+                    });
+
+                }
+
                 //Save file to relevant fileSystem:
                 switch (assignmentViewModel.StudentRole.ToLower())
                 {
@@ -148,20 +172,7 @@ namespace TeacherAssistant.Controllers
                         break;
                 }
 
-
-                if (assignmentViewModel.Select != null)
-                {
-                    if (assignmentViewModel.AssignmentId < 1)
-                    {
-                        ModelState.AddModelError("MediaId", "Media Id Required");
-                        return View(assignmentViewModel);
-                    }
-                    Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
-                    return View( new AssignmentViewModel { AssignmentId = doc.AssignmentId, StudentRole = doc.StudentRole,
-                        SubjectId = doc.SubjectId, StudentId=doc.StudentId, FilePath = doc.FilePath, DateAssigned = doc.DateAssigned, DateDue = doc.DateDue, Description=doc.Description, AssignmentName=doc.AssignmentName });
-
-                }
-                else if (assignmentViewModel.Delete != null)
+                if (assignmentViewModel.Delete != null)
                 {
                     if (assignmentViewModel.AssignmentId < 1)
                     {
@@ -426,12 +437,22 @@ namespace TeacherAssistant.Controllers
             {
                 if (teacherViewModel.Delete != null)
                 {
+                    if (teacherViewModel.TeacherId < 1)
+                    {
+                        ModelState.AddModelError("TeacherId", "Teacher Id is required");
+                        return View("ManageTeacher", teacherViewModel);
+                    }
                     var teacher = _repositoryServices.GetTeacherByName(teacherViewModel.EmailAddress);
                     _repositoryServices.DeleteTeacher(teacher);
                     return View("SuccessfullCreation");
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(teacherViewModel.LastName) || string.IsNullOrEmpty(teacherViewModel.FirsName))
+                    {
+                        ModelState.AddModelError("TeacherId", "Teacher Id is required");
+                        return View("ManageTeacher", teacherViewModel);
+                    }
                     _repositoryServices.ManageTeachers(teacherModel);
                     return View("SuccessfullCreation");
                 }
@@ -1253,6 +1274,11 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(role.RoleName))
+                {
+                    ModelState.AddModelError("RoleName", "Role name is required");
+                    return View(role);
+                }
                 if (ModelState.IsValid && !Roles.RoleExists(role.RoleName))
                 {
                     Roles.CreateRole(role.RoleName);
@@ -1309,7 +1335,11 @@ namespace TeacherAssistant.Controllers
         {
 
             ViewBag.RoleName = GetRolesSelectList();
-
+            if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.UserId))
+            {
+                ModelState.AddModelError("RoleName", "Role name and Username are required");
+                return View(userInRole);
+            }
             if (AssignRoles(userInRole.Username, userInRole.RoleName))
             {
                 return View("SuccessfullCreation");
@@ -1327,6 +1357,11 @@ namespace TeacherAssistant.Controllers
         [HttpPost]
         public ActionResult RemoveUserFromRole(Models.UserRoleViewModel userInRole)
         {
+            if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.UserId))
+            {
+                ModelState.AddModelError("RoleName", "Role name and Username are required");
+                return View(userInRole);
+            }
             var rolesList = new List<string>();
 
             foreach (var role in Roles.GetAllRoles())
