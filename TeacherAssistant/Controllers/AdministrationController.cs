@@ -1413,7 +1413,7 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
-            if (assignmentSubmissions.AssignmentSubmissionId < 1 &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
+            if ((assignmentSubmissions.AssignmentId < 1 || assignmentSubmissions.AssignmentSubmissionId < 1) &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
             {
                 ModelState.Clear();
                 ModelState.AddModelError("AssignmentSubmissionId", "AssignmentSubmission Is required");
