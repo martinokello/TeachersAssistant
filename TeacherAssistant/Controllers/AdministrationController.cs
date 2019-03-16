@@ -1417,6 +1417,7 @@ namespace TeacherAssistant.Controllers
             {
                 ModelState.Clear();
                 ModelState.AddModelError("AssignmentSubmissionId", "AssignmentSubmission Is required");
+                ModelState.AddModelError("AssignmentId", "Assignment Is required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
             if (!string.IsNullOrEmpty(assignmentSubmissions.Create) && (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole)))
