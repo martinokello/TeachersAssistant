@@ -114,6 +114,7 @@ namespace TeacherAssistant.Controllers
                 GetUIDropdownLists();
                 if (assignmentViewModel.AssignmentId < 1 && (!string.IsNullOrEmpty(assignmentViewModel.Select)|| !string.IsNullOrEmpty(assignmentViewModel.Update)|| !string.IsNullOrEmpty(assignmentViewModel.Delete)))
                 {
+                    ModelState.Clear();
                     ModelState.AddModelError("AssignemnentId", "Assignment required");
                     return View("AssignWork", assignmentViewModel);
                 }
@@ -268,6 +269,7 @@ namespace TeacherAssistant.Controllers
             var classRoomModel = (Classroom)Mapper.Map(classRoomViewModel, typeof(ClassroomViewModel), typeof(Classroom));
             if (classRoomViewModel.Select != null)
             {
+                ModelState.Clear();
                 if (classRoomViewModel.ClassroomId < 1 || classRoomViewModel.CalendarBookingId < 1)
                 {
                     ModelState.AddModelError("ClassroomId", "ClassroomId and CalendarId are required");
@@ -290,12 +292,23 @@ namespace TeacherAssistant.Controllers
             {
                 if (classRoomViewModel.Delete != null)
                 {
+                    ModelState.Clear();
+                    if (classRoomViewModel.ClassroomId < 1 || classRoomViewModel.CalendarBookingId < 1)
+                    {
+                        ModelState.AddModelError("ClassroomId", "ClassroomId and CalendarId are required");
+                        return View("ManageClassRoom", classRoomViewModel);
+                    }
                     var classroom = _repositoryServices.GetClassroomById(classRoomViewModel.ClassroomId);
                     _repositoryServices.DeleteClassroom(classroom);
                     return View("SuccessfullCreation");
                 }
                 else
                 {
+                    if(classRoomModel.SubjectId < 0 || classRoomModel.TeacherId <0 || classRoomViewModel.CalendarBookingId < 0)
+                    {
+                        ModelState.AddModelError("ClassroomId", "CalendarBookingId Teacher and Subject are required");
+                        return View("ManageClassRoom", classRoomViewModel);
+                    }
                     var calendar = _repositoryServices.GetTeacherCalendarByBookingId(classRoomViewModel.CalendarBookingId);
                     _repositoryServices.ManageClassRoom(classRoomModel);
                     calendar.SubjectId = classRoomModel.SubjectId;
@@ -979,6 +992,7 @@ namespace TeacherAssistant.Controllers
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
@@ -1161,6 +1175,7 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageQAHelpRequest(QAHelpRequestViewModel qaHelpRequestViewModel)
         {
             GetUIDropdownLists();
+            ModelState.Clear();
             ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
             if (qaHelpRequestViewModel.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequestViewModel.StudentRole) || qaHelpRequestViewModel.SubjectId==0 || qaHelpRequestViewModel.TeacherId == 0)
             {
@@ -1393,6 +1408,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             if (assignmentSubmissions.AssignmentSubmissionId < 1 &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
             {
+                ModelState.Clear();
                 ModelState.AddModelError("AssignmentSubmissionId", "AssignmentSubmission Is required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
