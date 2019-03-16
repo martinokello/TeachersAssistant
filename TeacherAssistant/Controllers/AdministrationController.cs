@@ -450,35 +450,15 @@ namespace TeacherAssistant.Controllers
             try
             {
                 GetUIDropdownLists();
-                ModelState.Clear();
 
                 ViewBag.StudentResourcesList = GetStudentResourcesList();
                 ViewBag.RoleList = GetRolesSelectList();
                 ViewBag.SubjectList = GetSubjectList();
 
-                var subject = _repositoryServices.GetSubjectById(resourceModel.SubjectId);
-
                 var virtualPath = string.Empty;
 
                 //Save file to relevant fileSystem:
-                switch (resourceModel.RoleName.ToLower())
-                {
-                    case "collegeandpostgraduate":
-                        virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/{0}", subject.SubjectName);
-                        break;
-                    case "secondaryschool":
-                        virtualPath = string.Format("~/StudentResources/SecondarySchool/{0}", subject.SubjectName);
-                        break;
-                    case "grammar11plus":
-                        virtualPath = string.Format("~/StudentResources/Grammar11Plus/{0}", subject.SubjectName); 
-                        break;
-                    case "stateprimary":
-                        virtualPath = string.Format("~/StudentResources/StatePrimary/{0}", subject.SubjectName);
-                        break;
-                    case "statejunior":
-                        virtualPath = string.Format("~/StudentResources/StateJunior/{0}", subject.SubjectName);
-                        break;
-                }
+
 
 
                 if (resourceModel.Select != null)
@@ -500,7 +480,6 @@ namespace TeacherAssistant.Controllers
                         ModelState.AddModelError("MediaId", "Media Id Required");
                         return View("ManageResources", resourceModel);
                     }
-
                     
                     var doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
                     if (doc != null)
@@ -518,6 +497,19 @@ namespace TeacherAssistant.Controllers
                 }
                 else
                 {
+                    if (resourceModel.StudentResourceId < 1 && !string.IsNullOrEmpty(resourceModel.Update))
+                    {
+                        ModelState.AddModelError("StudentResourceId", "Student Resource Id Required");
+                        return View("ManageResources", resourceModel);
+                    }
+                    else if(string.IsNullOrEmpty(resourceModel.StudentResourceName) || string.IsNullOrEmpty(resourceModel.RoleName) || resourceModel.SubjectId < 1 || resourceModel.MediaContent == null)
+                    {
+                        ModelState.AddModelError("StudentResourcesCreate", "Student Resource Name,  RoleName, Subject and Media Content Required");
+                        return View("ManageResources", resourceModel);
+                    }
+                    var subj = _repositoryServices.GetSubjectById(resourceModel.SubjectId);
+                    virtualPath = GetResourcesFilePath(resourceModel.RoleName, subj);
+
                     if (ModelState.IsValid)
                     {
                         HttpPostedFileBase file = resourceModel.MediaContent;
@@ -571,6 +563,31 @@ namespace TeacherAssistant.Controllers
                 ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
                 return View("ManageResources", resourceModel);
             }
+        }
+
+        private string GetResourcesFilePath(string roleName,Subject subject)
+        {
+            var virtualPath = string.Empty;
+
+            switch (roleName.ToLower())
+            {
+                case "collegeandpostgraduate":
+                    virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/{0}", subject.SubjectName);
+                    break;
+                case "secondaryschool":
+                    virtualPath = string.Format("~/StudentResources/SecondarySchool/{0}", subject.SubjectName);
+                    break;
+                case "grammar11plus":
+                    virtualPath = string.Format("~/StudentResources/Grammar11Plus/{0}", subject.SubjectName);
+                    break;
+                case "stateprimary":
+                    virtualPath = string.Format("~/StudentResources/StatePrimary/{0}", subject.SubjectName);
+                    break;
+                case "statejunior":
+                    virtualPath = string.Format("~/StudentResources/StateJunior/{0}", subject.SubjectName);
+                    break;
+            }
+            return virtualPath;
         }
 
         [HttpGet]
