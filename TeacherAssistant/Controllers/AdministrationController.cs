@@ -1021,7 +1021,8 @@ namespace TeacherAssistant.Controllers
                 var teacherCalendar =
                     _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                 ModelState.Clear();
-                return View("ManageTeacherCalendar", new TeacherCalendarViewModel { CalendarBookingId= teacherCalendar.CalendarBookingId, ClassId= teacherCalendar .ClassId, Description = teacherCalendar.Description, StudentFullName = teacherCalendar.StudentFullName, StudentId= teacherCalendar.StudentId, TeacherId= teacherCalendar.TeacherId, TeacherFullName = teacherCalendar.TeacherFullName, SubjectId = teacherCalendar.SubjectId });
+                return View("ManageTeacherCalendar", new TeacherCalendarViewModel { CalendarBookingId = teacherCalendar.CalendarBookingId, ClassId = teacherCalendar.ClassId, Description = teacherCalendar.Description, StudentFullName = teacherCalendar.StudentFullName, StudentId = teacherCalendar.StudentId, TeacherId = teacherCalendar.TeacherId, TeacherFullName = teacherCalendar.TeacherFullName, SubjectId = teacherCalendar.SubjectId
+                    /*,BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = teacherCalendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime =teacherCalendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }*/ } );
             }
             if (bookingTimeViewModel.Delete != null)
             {
