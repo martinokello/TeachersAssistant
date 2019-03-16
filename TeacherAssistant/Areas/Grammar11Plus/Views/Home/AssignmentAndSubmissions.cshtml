@@ -12,7 +12,7 @@
         @foreach (var assSub in Model)
         {
 
-            <form method="post" action="@Url.Content(" ~/Grammar11Plus/Home/SubmitAssignment")" enctype="multipart/form-data">
+            <form method="post" action="@Url.Content("~/Grammar11Plus/Home/SubmitAssignment")" enctype="multipart/form-data">
                 <li class="list-group-item row">
                     @Html.Hidden("AssignmentSubmissionId", assSub.AssignmentSubmissionId)
                     @Html.Hidden("AssignmentId", assSub.AssignmentId)
