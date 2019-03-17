@@ -307,7 +307,18 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                 ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
                 ModelState.Clear();
 
-                return View("BookTeacherHelpTime", new TeacherCalendarViewModel { TeacherId = calendar.TeacherId, SubjectId = calendar.SubjectId, CalendarBookingId = calendar.CalendarBookingId, Description = calendar.Description, ClassId = calendar.ClassId, StudentId = calendar.StudentId, StudentFullName = calendar.StudentFullName, TeacherFullName = calendar.TeacherFullName });
+                return View("BookTeacherHelpTime", new TeacherCalendarViewModel
+                {
+                    TeacherId = calendar.TeacherId,
+                    SubjectId = calendar.SubjectId,
+                    CalendarBookingId = calendar.CalendarBookingId,
+                    Description = calendar.Description,
+                    ClassId = calendar.ClassId,
+                    StudentId = calendar.StudentId,
+                    StudentFullName = calendar.StudentFullName,
+                    TeacherFullName = calendar.TeacherFullName,
+                    BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = calendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = calendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
+                });
             }
             else
             {

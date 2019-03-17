@@ -1021,8 +1021,12 @@ namespace TeacherAssistant.Controllers
                 var teacherCalendar =
                     _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                 ModelState.Clear();
-                return View("ManageTeacherCalendar", new TeacherCalendarViewModel { CalendarBookingId = teacherCalendar.CalendarBookingId, ClassId = teacherCalendar.ClassId, Description = teacherCalendar.Description, StudentFullName = teacherCalendar.StudentFullName, StudentId = teacherCalendar.StudentId, TeacherId = teacherCalendar.TeacherId, TeacherFullName = teacherCalendar.TeacherFullName, SubjectId = teacherCalendar.SubjectId
-                    /*,BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = teacherCalendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime =teacherCalendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }*/ } );
+                return View("ManageTeacherCalendar", new TeacherCalendarViewModel { CalendarBookingId = teacherCalendar.CalendarBookingId, ClassId = teacherCalendar.ClassId,
+                    Description = teacherCalendar.Description, StudentFullName = teacherCalendar.StudentFullName, StudentId = teacherCalendar.StudentId,
+                    TeacherId = teacherCalendar.TeacherId, TeacherFullName = teacherCalendar.TeacherFullName, SubjectId = teacherCalendar.SubjectId,
+                    BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = teacherCalendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = teacherCalendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
+
+                });
             }
             if (bookingTimeViewModel.Delete != null)
             {
@@ -1433,6 +1437,8 @@ namespace TeacherAssistant.Controllers
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
                     SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = assignmentSubmissions.Notes };
+                ViewBag.DateSubmittedString = assSub.DateSubmitted.ToString("yyyy-MM-dd HH:mm");
+                ViewBag.DateDueString = assSub.DateDue.ToString("yyyy-MM-dd HH:mm");
                 ModelState.Clear();
                 return View("AddGradesToSubmissions", assSub);
             }
