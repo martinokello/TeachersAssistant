@@ -193,18 +193,22 @@
                         <li>
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <span class="opener"><a href="~/Account/LogOff">LogOut</a></span>
+                                <span class="opener"><a href="~/Account/LogOff">LogOut</a></span> 
+                                <ul>
+                                    <li><a href="~/Home/PublicClass">Public Class Room</a></li>
+                                    <li><a href="~/Account/ResetPassword">Reset Password</a></li>
+                                </ul>
                             }
                             else
                             {
                                 <span class="opener"><a href="#">Login</a></span>
+                                <ul>
+                                    <li><a href="~/Account/Login?Role=Grammar11Plus">11+ (Grammar)</a></li>
+                                    <li><a href="~/Account/Login?Role=CollegeAndPostGraduate">State Primary</a></li>
+                                    <li><a href="~/Account/Login?Role=StateJunior">State Junior</a></li>
+                                    <li><a href="~/Account/Login?Role=Administrator">Administrator</a></li>
+                                </ul>
                             }
-                            <ul>
-                                <li><a href="~/Account/Login?Role=Grammar11Plus">11+ (Grammar)</a></li>
-                                <li><a href="~/Account/Login?Role=CollegeAndPostGraduate">State Primary</a></li>
-                                <li><a href="~/Account/Login?Role=StateJunior">State Junior</a></li>
-                                <li><a href="~/Account/Login?Role=Administrator">Administrator</a></li>
-                            </ul>
                         </li>
                         <li>
                             <span class="opener"><a href="#">Student Functions</a></span>
