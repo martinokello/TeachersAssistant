@@ -14,7 +14,7 @@ namespace  TeachersAssistant.DataAccess.Concretes
     {
         public override CalendarBooking GetById(int id)
         {
-            return DbContextTeachersAssistant.CalendarBookings.SingleOrDefault(p=> p.CalendarBookingId == id);
+            return DbContextTeachersAssistant.CalendarBookings.Include("BookingTime").SingleOrDefault(p=> p.CalendarBookingId == id);
         }
 
         public override bool Update(CalendarBooking item)
