@@ -93,7 +93,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.DateSubmitted, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.Editor("DateSubmitted", new { htmlAttributes = new { @class = "form-control", @id = "dateAssigned", @tooltip = "YYYY-MM-dd HH:mm" } })
+                        @Html.Editor("DateSubmitted", new { htmlAttributes = new { @class = "form-control", @id = "dateSubmitted", @tooltip = "YYYY-MM-dd HH:mm" } })
                         @Html.ValidationMessageFor(model => model.DateSubmitted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -119,12 +119,9 @@
 
 <script type="text/javascript">
     jQuery('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+    jQuery('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
     $(document).ready(function () {
-        if (@ViewBag.DateDueString) {
-            $('#dateDue').val('@ViewBag.DateDueString');
-        }
-        if (@ViewBag.DateAssignedString) {
-            $('#dateAssigned').val('@ViewBag.DateDueString');
-        }
+        $('#dateSubmitted').val('@ViewBag.DateSubmittedString.ToString("yyyy-MM-dd HH:mm")');
+        $('#dateDue').val('@ViewBag.DateDueString.ToString("yyyy-MM-dd HH:mm")');
     });
 </script>

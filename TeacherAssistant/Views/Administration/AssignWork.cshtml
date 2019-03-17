@@ -112,6 +112,9 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#dateAssigned').datetimepicker({format:'YYYY-MM-DD HH:mm'});
-        $('#dateDue').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+        $('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+        
+        $('#dateAssigned').val('@ViewBag.DateAssignedString.ToString("yyyy-MM-dd HH:mm")');
+        $('#dateDue').val('@ViewBag.DateDueString.ToString("yyyy-MM-dd HH:mm")');
     });
 </script>

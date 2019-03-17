@@ -102,6 +102,8 @@ namespace TeacherAssistant.Controllers
         public ActionResult AssignWork()
         {
             GetUIDropdownLists();
+            ViewBag.DateAssignedString = DateTime.Now;
+            ViewBag.DateDueString = DateTime.Now;
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             return View("AssignWork");
         }
@@ -110,6 +112,8 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
+                ViewBag.DateAssignedString = DateTime.Now;
+                ViewBag.DateDueString = DateTime.Now;
                 ViewBag.AssignmentList = GetCurrentAssignmentList();
                 GetUIDropdownLists();
                 if (assignmentViewModel.AssignmentId < 1 && (!string.IsNullOrEmpty(assignmentViewModel.Select)|| !string.IsNullOrEmpty(assignmentViewModel.Update)|| !string.IsNullOrEmpty(assignmentViewModel.Delete)))
@@ -139,6 +143,8 @@ namespace TeacherAssistant.Controllers
                     }
                     Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
                     ModelState.Clear();
+                    ViewBag.DateDueString = doc.DateDue;
+                    ViewBag.DateAssignedString = doc.DateAssigned;
                     return View(new AssignmentViewModel
                     {
                         AssignmentId = doc.AssignmentId,
@@ -1406,6 +1412,8 @@ namespace TeacherAssistant.Controllers
         public ActionResult AddGradesToSubmissions()
         {
             GetUIDropdownLists();
+            ViewBag.DateSubmittedString = DateTime.Now;
+            ViewBag.DateDueString = DateTime.Now;
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             return View();
@@ -1414,6 +1422,8 @@ namespace TeacherAssistant.Controllers
         [HttpPost]
         public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
         {
+            ViewBag.DateSubmittedString = DateTime.Now;
+            ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
             ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
@@ -1437,8 +1447,8 @@ namespace TeacherAssistant.Controllers
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
                     FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
                     SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = assignmentSubmissions.Notes };
-                ViewBag.DateSubmittedString = assSub.DateSubmitted.ToString("yyyy-MM-dd HH:mm");
-                ViewBag.DateDueString = assSub.DateDue.ToString("yyyy-MM-dd HH:mm");
+                ViewBag.DateSubmittedString = assSub.DateSubmitted;
+                ViewBag.DateDueString = assSub.DateDue;
                 ModelState.Clear();
                 return View("AddGradesToSubmissions", assSub);
             }
