@@ -199,67 +199,13 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
 
             if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
             {
-                if (bookingTimeViewModel.CalendarBookingId < 1)
-                {
-                    ModelState.AddModelError("Select", "Calendar BookingId required");
-                    return View("BookTeacherHelpTime", bookingTimeViewModel);
-                }
 
-                var calendarBookingViewModels = new List<CalendarBookingViewModel>();
-                var calendar =
-                    _teacherRepository.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
-                Student student = _teacherRepository.GetStudentById(calendar.StudentId);
-                Subject subject = _teacherRepository.GetSubjectById(calendar.SubjectId);
-                bookingTimeViewModel.StudentId = (int)student.StudentId;
-                bookingTimeViewModel.SubjectId = (int)subject.SubjectId;
-                bookingTimeViewModel.CalendarBookingId = calendar.CalendarBookingId;
-                ModelState.Clear();
-
-                var calendars = _teacherRepository.GetTeacherCalendar();
-                var classRooms = _teacherRepository.GetClassrooms();
-
-                var calendarsLeftJoin = from cal in calendars
-                                        join cls in classRooms on
-                                        cal.CalendarBookingId equals cls.CalendarId into res
-                                        from q in res.DefaultIfEmpty()
-                                        select new
-                                        {
-                                            ClassroomId = q == null ? null : q.ClassroomId,
-                                            SubjectId = cal.SubjectId,
-                                            TeacherId = cal.TeacherId,
-                                            StudentId = cal.StudentId,
-                                            BookingTimeId = cal.BookingTimeId
-                                        };
-
-                if (calendarsLeftJoin != null)
-                    foreach (var cal in calendarsLeftJoin)
-                    {
-                        student = _teacherRepository.GetStudentById(cal.StudentId);
-                        subject = _teacherRepository.GetSubjectById(cal.SubjectId);
-                        var teacher = _teacherRepository.GetTeacherById(cal.TeacherId);
-                        var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
-
-                        if (bookingTime == null) continue;
-                        calendarBookingViewModels.Add(new CalendarBookingViewModel
-                        {
-                            Teacher = teacher,
-                            Subject = subject,
-                            Student = student,
-                            BookingTime = bookingTime,
-                            ClassroomId = cal.ClassroomId
-                        });
-                    }
-                ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
-                ModelState.Clear();
-                return View("BookTeacherHelpTime", new TeacherCalendarViewModel { TeacherId = calendar.TeacherId, SubjectId = calendar.SubjectId, CalendarBookingId = calendar.CalendarBookingId, Description = calendar.Description, ClassId = calendar.ClassId, StudentId = calendar.StudentId, StudentFullName = calendar.StudentFullName, TeacherFullName = calendar.TeacherFullName });
+                SetCalendarValues(bookingTimeViewModel);
 
             }
             if (bookingTimeViewModel.Delete != null)
             {
-                if (bookingTimeViewModel.CalendarBookingId < 1)
-                {
-                    ModelState.AddModelError("Select", "Calendar BookingId required");
-                }
+                var viewResult = SetCalendarValues(bookingTimeViewModel);
                 if (ModelState.IsValid)
                 {
                     var teacherCalendar =
@@ -267,7 +213,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                     _teacherRepository.DeleteTeacherCalendarByBooking(teacherCalendar);
                     return View("SuccessfullCreation");
                 }
-                return View("BookTeacherHelpTime", bookingTimeViewModel);
+                return viewResult;
             }
             if (bookingTimeViewModel.SubjectId < 1)
             {
@@ -300,6 +246,65 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             }
             return View("BookTeacherHelpTime", bookingTimeViewModel);
         }
+
+        private ViewResult SetCalendarValues(TeacherCalendarViewModel bookingTimeViewModel)
+        {
+            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendar =
+                _teacherRepository.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+            Student student = _teacherRepository.GetStudentById(calendar.StudentId);
+            Subject subject = _teacherRepository.GetSubjectById(calendar.SubjectId);
+            bookingTimeViewModel.StudentId = (int)student.StudentId;
+            bookingTimeViewModel.SubjectId = (int)subject.SubjectId;
+            bookingTimeViewModel.CalendarBookingId = calendar.CalendarBookingId;
+            ModelState.Clear();
+
+            var calendars = _teacherRepository.GetTeacherCalendar();
+            var classRooms = _teacherRepository.GetClassrooms();
+
+            var calendarsLeftJoin = from cal in calendars
+                                    join cls in classRooms on
+                                    cal.CalendarBookingId equals cls.CalendarId into res
+                                    from q in res.DefaultIfEmpty()
+                                    select new
+                                    {
+                                        ClassroomId = q == null ? null : q.ClassroomId,
+                                        SubjectId = cal.SubjectId,
+                                        TeacherId = cal.TeacherId,
+                                        StudentId = cal.StudentId,
+                                        BookingTimeId = cal.BookingTimeId
+                                    };
+
+            if (calendarsLeftJoin != null)
+                foreach (var cal in calendarsLeftJoin)
+                {
+                    student = _teacherRepository.GetStudentById(cal.StudentId);
+                    subject = _teacherRepository.GetSubjectById(cal.SubjectId);
+                    var teacher = _teacherRepository.GetTeacherById(cal.TeacherId);
+                    var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
+
+                    if (bookingTime == null) continue;
+                    calendarBookingViewModels.Add(new CalendarBookingViewModel
+                    {
+                        Teacher = teacher,
+                        Subject = subject,
+                        Student = student,
+                        BookingTime = bookingTime,
+                        ClassroomId = cal.ClassroomId
+                    });
+                }
+            ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
+            ModelState.Clear();
+
+            if (bookingTimeViewModel.CalendarBookingId < 1)
+            {
+                ModelState.AddModelError("Select", "Calendar BookingId required");
+            }
+
+            return View("BookTeacherHelpTime", new TeacherCalendarViewModel { TeacherId = calendar.TeacherId, SubjectId = calendar.SubjectId, CalendarBookingId = calendar.CalendarBookingId, Description = calendar.Description, ClassId = calendar.ClassId, StudentId = calendar.StudentId, StudentFullName = calendar.StudentFullName, TeacherFullName = calendar.TeacherFullName });
+
+        }
+
         [HttpGet]
         public ActionResult TeachersCalendar()
         {
@@ -353,62 +358,58 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             if (teacherId < 1)
             {
                 ModelState.AddModelError("NoTeacher", "You need to pick a teacher");
-                return View("TeachersCalendar");
             }
             ViewBag.Message = "Teachers Calendar.";
             var calendars = _teacherRepository.GetTeacherCalendar(teacherId);
             if (calendars == null)
             {
+                calendars = _teacherRepository.GetTeacherCalendar();
+
                 ModelState.AddModelError("NoTeacherCalendar", "Teacher hasn't a calendar booking");
-                return View("TeachersCalendar");
             }
-            if (ModelState.IsValid)
+            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var classRooms = _teacherRepository.GetClassrooms();
+
+            var calendarsLeftJoin = from cal in calendars
+                                    join cls in classRooms on
+                                    cal.CalendarBookingId equals cls.CalendarId into res
+                                    from q in res.DefaultIfEmpty()
+                                    select new
+                                    {
+                                        ClassroomId = q == null ? null : q.ClassroomId,
+                                        SubjectId = cal.SubjectId,
+                                        TeacherId = cal.TeacherId,
+                                        StudentId = cal.StudentId,
+                                        BookingTimeId = cal.BookingTimeId
+                                    };
+            if (calendarsLeftJoin != null)
             {
-                var calendarBookingViewModels = new List<CalendarBookingViewModel>();
-                var classRooms = _teacherRepository.GetClassrooms();
-
-                var calendarsLeftJoin = from cal in calendars
-                                        join cls in classRooms on
-                                        cal.CalendarBookingId equals cls.CalendarId into res
-                                        from q in res.DefaultIfEmpty()
-                                        select new
-                                        {
-                                            ClassroomId = q == null ? null : q.ClassroomId,
-                                            SubjectId = cal.SubjectId,
-                                            TeacherId = cal.TeacherId,
-                                            StudentId = cal.StudentId,
-                                            BookingTimeId = cal.BookingTimeId
-                                        };
-                if (calendarsLeftJoin != null)
+                foreach (var cal in calendarsLeftJoin)
                 {
-                    foreach (var cal in calendarsLeftJoin)
+                    var student = _teacherRepository.GetStudentByName(User.Identity.Name);
+                    if (student == null || student.StudentId != cal.StudentId) continue;
+                    var subject = _teacherRepository.GetSubjectById(cal.SubjectId);
+                    var teacher = _teacherRepository.GetTeacherById(teacherId);
+                    var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
+
+                    if (bookingTime == null) continue;
+                    calendarBookingViewModels.Add(new CalendarBookingViewModel
                     {
-                        var student = _teacherRepository.GetStudentByName(User.Identity.Name);
-                        if (student == null || student.StudentId != cal.StudentId) continue;
-                        var subject = _teacherRepository.GetSubjectById(cal.SubjectId);
-                        var teacher = _teacherRepository.GetTeacherById(teacherId);
-                        var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
-
-                        if (bookingTime == null) continue;
-                        calendarBookingViewModels.Add(new CalendarBookingViewModel
-                        {
-                            Teacher = teacher,
-                            Subject = subject,
-                            Student = student,
-                            BookingTime = bookingTime,
-                            ClassroomId = cal.ClassroomId
-                        });
-                    }
-
+                        Teacher = teacher,
+                        Subject = subject,
+                        Student = student,
+                        BookingTime = bookingTime,
+                        ClassroomId = cal.ClassroomId
+                    });
                 }
-                ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
-                return View("TeachersCalendar",
-                    calendarBookingViewModels.Count() > 0
-                        ? calendarBookingViewModels.ToArray()[calendarBookingViewModels.Count() - 1]
-                        : null);
-            }
 
-            return View("TeachersCalendar");
+            }
+            ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
+
+            return View("TeachersCalendar",
+                calendarBookingViewModels.Count() > 0
+                    ? calendarBookingViewModels.ToArray()[calendarBookingViewModels.Count() - 1]
+                    : null);
         }
         public ActionResult DownloadFreeDocuments()
         {
