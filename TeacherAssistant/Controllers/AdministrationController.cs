@@ -344,11 +344,9 @@ namespace TeacherAssistant.Controllers
                     ModelState.AddModelError("StudentId", "StudentId is required");
                     return View("ManageStudent", studentViewModel);
                 }
-                if (ModelState.IsValid)
-                {
-                    var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
-                    studentViewModel = (StudentViewModel)Mapper.Map(student, typeof(Student), typeof(StudentViewModel));
-                }
+                var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
+                studentViewModel = (StudentViewModel)Mapper.Map(student, typeof(Student), typeof(StudentViewModel));
+
                 ModelState.Clear();
                 return View("ManageStudent", studentViewModel);
             }
@@ -443,13 +441,8 @@ namespace TeacherAssistant.Controllers
                     ModelState.AddModelError("TeacherId", "Teacher Id is required");
                     return View("ManageTeacher", teacherViewModel);
                 }
-                if (ModelState.IsValid)
-                {
-                    var teacher = _repositoryServices.GetTeacherById(teacherViewModel.TeacherId);
-                    teacherViewModel = (TeacherViewModel)Mapper.Map(teacher, typeof(Teacher), typeof(TeacherViewModel));
-                    ModelState.Clear();
-                    return View("ManageTeacher", teacherViewModel);
-                }
+                var teacher = _repositoryServices.GetTeacherById(teacherViewModel.TeacherId);
+                teacherViewModel = (TeacherViewModel)Mapper.Map(teacher, typeof(Teacher), typeof(TeacherViewModel));
                 ModelState.Clear();
                 return View("ManageTeacher", teacherViewModel);
             }
@@ -501,26 +494,24 @@ namespace TeacherAssistant.Controllers
 
                 //Save file to relevant fileSystem:
 
-
-
                 if (resourceModel.Select != null)
                 {
                     if (resourceModel.StudentResourceId < 1)
                     {
-                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        ModelState.AddModelError("StudentResourceId", "StudentResource Id Required");
                         return View("ManageResources", resourceModel);
                     }
                     StudentResource doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
                     ModelState.Clear();
                     return View("ManageResources",new StudentResourcesViewModel { StudentResourceId = doc.StudentResourceId, RoleName = doc.RoleName,
-                        SubjectId = doc.SubjectId, FilePath=doc.FilePath, StudentResourceName=doc.StudentResourceName });
+                    SubjectId = doc.SubjectId, FilePath=doc.FilePath, StudentResourceName=doc.StudentResourceName });
                     
                 }
                 else if (resourceModel.Delete != null)
                 {
                     if (resourceModel.StudentResourceId < 1)
                     {
-                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        ModelState.AddModelError("StudentResourceId", "StudentResource Id Required");
                         return View("ManageResources", resourceModel);
                     }
                     
@@ -586,6 +577,7 @@ namespace TeacherAssistant.Controllers
 
                         var studentResource = new StudentResource()
                         {
+                            StudentResourceId = resourceModel.StudentResourceId,
                             FilePath = Url.Content(virtualPath + "/" + file.FileName),
                             SubjectId = resourceModel.SubjectId,
                             RoleName = resourceModel.RoleName,
