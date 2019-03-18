@@ -703,16 +703,19 @@ namespace TeacherAssistant.Controllers
                     {
                         case "paiddocument":
                             var paidDoc = _repositoryServices.GetPaidDocumentById(mediaModel.MediaId);
+                            ModelState.Clear();
                             return View(new UploadMediaViewModel { MediaId = paidDoc.PaidDocumentId, RoleName = paidDoc.RoleName, Name = paidDoc.FilePath });
                         case "freedocument":
                             var freeDoc = _repositoryServices.GetFreeDocumentById(mediaModel.MediaId);
+                            ModelState.Clear();
                             return View(new UploadMediaViewModel { MediaId = freeDoc.FreeDocumentId, RoleName = freeDoc.RoleName, Name = freeDoc.FilePath });
-
                         case "paidvideo":
                             var paidVideo = _repositoryServices.GetPaidVideoById(mediaModel.MediaId);
+                            ModelState.Clear();
                             return View(new UploadMediaViewModel { MediaId = paidVideo.PaidVideoId, RoleName = paidVideo.RoleName, Name = paidVideo.FilePath });
                         case "freevideo":
                             var freeVideo = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
+                            ModelState.Clear();
                             return View(new UploadMediaViewModel { MediaId = freeVideo.FreeVideoId, RoleName = freeVideo.RoleName, Name = freeVideo.FilePath });
                     }
                     ModelState.Clear();
