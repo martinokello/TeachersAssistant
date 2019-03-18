@@ -30,15 +30,16 @@ namespace TeachersAssistant.App_Start
                 docsFvid.ReverseMap();
                 var docsPvid = cfg.CreateMap<PaidDocument, PaidVideo>();
                 docsPvid.ReverseMap();
-
-                var map = cfg.CreateMap<ProductViewModel, SHOP_PRODS>();
-                map.ForAllMembers(opt => opt.Ignore());
-                map.ForMember(dest => dest.prodName, opt => opt.MapFrom(src => src.ProductName));
-                map.ForMember(dest => dest.prodId, opt => opt.MapFrom(src => src.ProductId));
-                map.ForMember(dest => dest.prodPrice, opt => opt.MapFrom(src => src.ProductPrice));
-                map.ForMember(dest => dest.prodDesc, opt => opt.MapFrom(src => src.ProductDescription));
-                map.ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentId));
-                map.ReverseMap();
+                var mp = cfg.CreateMap<ProductViewModel, SHOP_PRODS>();
+                //map.ForAllMembers(opt => opt.Ignore());
+                mp.ForMember(dest => dest.prodName, opt => opt.MapFrom(src => src.ProductName));
+                mp.ForMember(dest => dest.prodId, opt => opt.MapFrom(src => src.ProductId));
+                mp.ForMember(dest => dest.prodPrice, opt => opt.MapFrom(src => src.ProductPrice));
+                mp.ForMember(dest => dest.prodDesc, opt => opt.MapFrom(src => src.ProductDescription));
+                mp.ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentId));
+                mp.ForMember(dest => dest.IsPaidDocument, opt => opt.MapFrom(src => src.IsPaidDocument));
+                mp.ForMember(dest => dest.IsPaidVideo, opt => opt.MapFrom(src => src.IsPaidVideo));
+                mp.ReverseMap();
             });
         }
     }

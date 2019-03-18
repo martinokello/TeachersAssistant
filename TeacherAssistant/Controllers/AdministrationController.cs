@@ -1237,18 +1237,12 @@ namespace TeacherAssistant.Controllers
                     ModelState.AddModelError("ProductId", "Product Id Required");
                     return View("ManageProducts", productModel);
                 }
-                if (ModelState.IsValid)
-                {
-                    ModelState.Clear();
-                    var prod = _repositoryServices.GetProductById(productModel.ProductId);
-                    productModel = Mapper.Map(prod, typeof(SHOP_PRODS), typeof(ProductViewModel)) as ProductViewModel;
-                    productModel.DocumentType = prod.IsPaidDocument ? 0 : prod.IsPaidVideo ? 1 : -1;
-                    ModelState.Clear();
-                    return View("ManageProducts", productModel);
-                }
-
                 ModelState.Clear();
-                return View("ManageProducts", productModel);
+                var prod = _repositoryServices.GetProductById(productModel.ProductId);
+                var actProd = Mapper.Map(prod, typeof(SHOP_PRODS), typeof(ProductViewModel)) as ProductViewModel;
+                actProd.DocumentType = prod.IsPaidDocument ? 0 : prod.IsPaidVideo ? 1 : -1;
+                ModelState.Clear();
+                return View("ManageProducts", actProd);
             }
 
             if (ModelState.IsValid)
