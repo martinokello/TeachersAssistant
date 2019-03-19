@@ -31,6 +31,8 @@ namespace TeachersAssistant.DataAccess.Concretes
                 freeDoc.SubjectId = item.SubjectId;
                 freeDoc.TeacherId = item.TeacherId;
                 freeDoc.Notes = item.Notes;
+                freeDoc.Grade = item.Grade;
+                freeDoc.GradeNumeric = item.GradeNumeric;
                 return true;
             }
             catch (Exception e)

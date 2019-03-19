@@ -1434,7 +1434,7 @@ namespace TeacherAssistant.Controllers
             {
                 var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = submission.Grade, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
+                    FilePath = submission.FilePath, Grade = submission.Grade, GradeNumeric = submission.GradeNumeric, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
                     SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = assignmentSubmissions.Notes };
                 ViewBag.DateSubmittedString = assSub.DateSubmitted;
                 ViewBag.DateDueString = assSub.DateDue;
@@ -1451,7 +1451,9 @@ namespace TeacherAssistant.Controllers
             {
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
                     AssignmentId = submission.AssignmentId, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade, AssignmentName = assignment.AssignmentName,
+                    FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade,
+                    GradeNumeric = submission.GradeNumeric,
+                    AssignmentName = assignment.AssignmentName,
                     IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
                     TeacherId = assignment.TeacherId,
                     SubjectId = assignment.SubjectId,

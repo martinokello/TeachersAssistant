@@ -22,7 +22,7 @@
                     @Html.Hidden("AssignmentName", assSub.AssignmentName)
                     <span class="col-lg-3"><a href="@assSub.FilePath">Assignment: @assSub.AssignmentName</a> <b> | </b></span>
                     <span class="col-lg-3">Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b></span>
-                    <span class="col-lg-3"> Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades")<b> | </b></span>
+                    <span class="col-lg-3"> Graded as: @(!string.IsNullOrEmpty(assSub.Grade) ? assSub.Grade : "Awaiting Grades") also @(assSub.GradeNumeric > 0? assSub.GradeNumeric.ToString(): "")<b> | </b></span>
                     <span class="col-lg-3">Teacher's Notes: @(string.IsNullOrEmpty(assSub.Notes) ? "No Notes" : assSub.Notes)</span>
                 </li>
             }

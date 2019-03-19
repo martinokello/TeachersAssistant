@@ -556,6 +556,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                     DateDue = p.DateDue,
                     DateSubmitted = p.DateSubmitted,
                     Grade = p.Grade,
+                    GradeNumeric = p.GradeNumeric,
                     FilePath = p.FilePath,
                     IsSubmitted = p.IsSubmitted,
                     StudentRole = p.StudentRole,

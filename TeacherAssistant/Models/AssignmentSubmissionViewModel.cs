@@ -21,6 +21,7 @@ namespace TeacherAssistant.Models
         public bool IsSubmitted { get; set; }
         public string Notes { get; set; }
         public string Grade { get; set; }
+        public decimal GradeNumeric { get; set; }
         public string Select { get; set; }
         public string Update { get; set; }
         public string Create { get; set; }

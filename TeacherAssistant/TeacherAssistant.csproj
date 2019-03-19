@@ -615,12 +615,15 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="sql-StoredProcedures\GroupSubmissionsBySubjectRoleAndYear.sql" />
     <Content Include="Views\Shared\_RequestQAHelp.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\RequestQAHelp.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\RequestQAHelp.cshtml" />
