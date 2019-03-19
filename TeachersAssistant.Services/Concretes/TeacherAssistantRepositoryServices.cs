@@ -654,6 +654,7 @@ namespace TeachersAssistant.Services.Concretes
                     submission.SubjectId = actualSubmission.SubjectId;
                     submission.IsSubmitted = true;
                     submission.Grade = actualSubmission.Grade;
+                    submission.GradeNumeric = actualSubmission.GradeNumeric;
                     submission.Notes = actualSubmission.Notes;
                 }
                 assignment.IsSubmitted = true;
