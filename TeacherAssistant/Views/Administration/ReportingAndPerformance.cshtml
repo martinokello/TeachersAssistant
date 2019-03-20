@@ -9,5 +9,182 @@
 
 <div class="form-horizontal">
     <h4>Student Reporting And Performance</h4>
+    <div class="form-group">
+        @Html.Label("Subject", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "subjectId" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Year Start", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("", new { htmlAttributes = new { @class = "form-control", @id = "yearStart" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Year End", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("", new { htmlAttributes = new { @class = "form-control", @id = "yearEnd" } })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" name="Select" value="Select" class="btn btn-default" />
+        </div>
+    </div>
+    <div class="row">
+        <canvas  id="submissions">
 
+        </canvas>
+        <canvas  id="averages">
+
+        </canvas>
+        <canvas  id="medians">
+
+        </canvas>
+    </div>
 </div>
+
+<script type="text/javascript">
+    function PrintGraphsSubmissions(submissions) {
+        if (submissions.Length > 0) {
+            //print submissions
+            var submissionsBarChart = new Chart(document.getElementById("submission"), {
+                type: 'bar',
+                data: {
+                    labels: submissions.YearDue,
+                    datasets: [
+                        {
+                            label: "Year Of Assignments",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            data: submissions.NumberOfStudents
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Not On Time Submissions Over The years'
+                    }
+                }
+            });
+        }
+    }
+    function PrintGraphsAverages(averages) {
+        if (averages.Length > 0) {
+            //print averages
+            var averageGradeBarChart = new Chart(document.getElementById("submission"), {
+                type: 'bar',
+                data: {
+                    labels: submissions.YearDue,
+                    datasets: [
+                        {
+                            label: "Year Of Assignments",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            data: averages.AverageGrade
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Average Grades Over The years'
+                    }
+                }
+            });
+        }
+    }
+    function PrintGraphsMedians(medians) {
+        if (medians.Length > 0) {
+            //print medians            
+            var medianGradeBarChart = new Chart(document.getElementById("submission"), {
+            type: 'bar',
+                data: {
+                labels: submissions.YearDue,
+                    datasets: [
+                        {
+                            label: "Year Of Assignments",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            data: averages.MedianGrade
+                        }
+                    ]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                        text: 'Average Grades Over The years'
+                }
+            }
+        });
+        }
+    }
+    $(document).ready(function () {
+        var submissions = [];
+        var medians = [];
+        var averages = [];
+
+        $('#subjectId').change(function () {
+            var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission?")";
+            var baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+            var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+
+            var subject = $('subjectId').val();
+            var yearStart = $('dateStart').val();
+            var yearEnd = $('dateEnd').val();
+
+            if (subject != "") {
+                baseSubmissionsUrl + "SubjectName="+subject;
+                baseAveragesUr + "SubjectName=" + subject;
+                baseMedianUrl + "SubjectName=" + subject;
+
+                if (dateState != "") {
+
+                    baseSubmissionsUrl += "&YearStart=" + yearStart;
+                    baseAveragesUr += "&YearStart=" + yearStart;
+                    baseMedianUrl += "&YearStart=" + yearStart;
+                    if (dateState != "") {
+
+                        baseSubmissionsUrl += "&YearEnd=" + yearEnd;
+                        baseAveragesUr += "&YearEnd=" + yearEnd;
+                        baseMedianUrl += "&YearEnd=" + yearEnd;
+                    }
+                    else {
+
+                        baseSubmissionsUrl += "&YearEnd=" + yearStart;
+                        baseAveragesUr += "&YearEnd=" + yearStart;
+                        baseMedianUrl += "&YearEnd=" + yearStart;
+                    }
+                }
+            }
+            $.ajax({
+                url: baseSubmissionsUrl,
+                method: "GET",
+                success: function (data) {
+                    submissions = data;
+                }
+            });
+            $('#subjectId').change(function () {
+                $.ajax({
+                url: baseAveragesUrl,
+                    method: "GET",
+                    success: function (data) {
+                        averages = data;
+                    }
+                });
+                $('#subjectId').change(function () {
+                    $.ajax({
+                        url: baseMedialUrl,
+                        method: "GET",
+                        success: function (data) {
+                            medians = data;
+                        }
+                    });
+                    PrintGraphsSubmissions(submissions);
+                    PrintGraphsAverages(averages);
+                    PrintGraphsMedians(medians);
+                });
+            });
+</script>

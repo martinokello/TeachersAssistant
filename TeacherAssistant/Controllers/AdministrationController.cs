@@ -1320,6 +1320,7 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
+                if(!Roles.IsUserInRole(role))
                 Roles.AddUserToRole(user, role);
                 return true;
             }
@@ -1356,7 +1357,7 @@ namespace TeacherAssistant.Controllers
         {
 
             ViewBag.RoleName = GetRolesSelectList();
-            if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.UserId))
+            if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.Username))
             {
                 ModelState.AddModelError("RoleName", "Role name and Username are required");
                 return View(userInRole);
@@ -1378,7 +1379,7 @@ namespace TeacherAssistant.Controllers
         [HttpPost]
         public ActionResult RemoveUserFromRole(Models.UserRoleViewModel userInRole)
         {
-            if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.UserId))
+            if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.Username))
             {
                 ModelState.AddModelError("RoleName", "Role name and Username are required");
                 return View(userInRole);
@@ -1468,6 +1469,7 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
+                if(Roles.IsUserInRole(roleName))
                 Roles.RemoveUserFromRole(username, roleName);
                 return true;
             }
