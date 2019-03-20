@@ -52,7 +52,7 @@
             var percentilesBarChart = new Chart(document.getElementById("submission"), {
                 type: 'bar',
                 data: {
-                    labels: submissions.YearDue,
+                    labels: percentiles.YearDue,
                     datasets: [
                         {
                             label: "Year Of Assignments",
@@ -102,7 +102,7 @@
             var averageGradeBarChart = new Chart(document.getElementById("submission"), {
                 type: 'bar',
                 data: {
-                    labels: submissions.YearDue,
+                    labels: averages.YearDue,
                     datasets: [
                         {
                             label: "Year Of Assignments",
@@ -127,12 +127,12 @@
             var medianGradeBarChart = new Chart(document.getElementById("submission"), {
             type: 'bar',
                 data: {
-                labels: submissions.YearDue,
+                    labels: medians.YearDue,
                     datasets: [
                         {
                             label: "Year Of Assignments",
                             backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                            data: averages.MedianGrade
+                            data: medians.MedianGrade
                         }
                     ]
             },
