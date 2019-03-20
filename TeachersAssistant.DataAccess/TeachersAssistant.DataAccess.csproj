@@ -59,8 +59,10 @@
     <Compile Include="Abstracts\AbstractRepository.cs" />
     <Compile Include="Concretes\AssignmentRepository.cs" />
     <Compile Include="Concretes\AssignmentSubmissionRepository.cs" />
+    <Compile Include="Concretes\AdhocPatchAndReportingRepository.cs" />
     <Compile Include="Concretes\QAHelpRequestRepository.cs" />
     <Compile Include="Concretes\StudentResourcesRepository.cs" />
+    <Compile Include="Interfaces\IAdhocPatchAndReportingMarker.cs" />
     <Compile Include="Interfaces\IAssignmentRepositoryMarker.cs" />
     <Compile Include="Interfaces\IAssignmentSubmissionRepositoryMarker.cs" />
     <Compile Include="Interfaces\IBookingTimeRepositoryMarker.cs" />
@@ -136,6 +138,10 @@
     <Compile Include="Migrations\201903112059500_AddNotesToSubmission.Designer.cs">
       <DependentUpon>201903112059500_AddNotesToSubmission.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903191329284_AddGradeDecimalColumnToSubmissions.cs" />
+    <Compile Include="Migrations\201903191329284_AddGradeDecimalColumnToSubmissions.Designer.cs">
+      <DependentUpon>201903191329284_AddGradeDecimalColumnToSubmissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeachersAssistantDbContext.cs" />
@@ -182,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903112059500_AddNotesToSubmission.resx">
       <DependentUpon>201903112059500_AddNotesToSubmission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903191329284_AddGradeDecimalColumnToSubmissions.resx">
+      <DependentUpon>201903191329284_AddGradeDecimalColumnToSubmissions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

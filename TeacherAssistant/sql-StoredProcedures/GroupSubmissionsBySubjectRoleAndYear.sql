@@ -68,7 +68,7 @@ drop procedure dbo.PercentileGroupedByGradeAndSubjectAndyear
 go
 create procedure dbo.PercentileGroupedByGradeAndSubjectAndyear 
 AS
-select count(stds.StudentId) * 100/(select count(*) from dbo.Students st inner join dbo.AssignmentSubmissions sb on st.StudentId = sb.StudentId inner join dbo.Subject sj on sj.SubjectId = sb.SubjectId) as Percentile, sbj.SubjectName, subms.StudentRole, subms.Grade, Year(subms.DateDue) as YearDue
+select count(stds.StudentId) * 100/(select count(*) from dbo.Students st inner join dbo.AssignmentSubmissions sb on st.StudentId = sb.StudentId inner join dbo.Subjects sj on sj.SubjectId = sb.SubjectId) as Percentile, sbj.SubjectName, subms.StudentRole, subms.Grade, Year(subms.DateDue) as YearDue
 from dbo.Students stds inner join dbo.AssignmentSubmissions subms
 on stds.StudentId = subms.StudentId 
 inner join dbo.Subjects sbj 
@@ -85,7 +85,7 @@ create procedure dbo.PercentileGroupedByGradeAndSubjectAndyearBtwnYears(
  @subjecName nvarchar
 ) 
 AS
-select count(stds.StudentId) * 100/(select count(*) from dbo.Students st inner join dbo.AssignmentSubmissions sb on st.StudentId = sb.StudentId inner join dbo.Subject sj on sj.SubjectId = sb.SubjectId) as Percentile, sbj.SubjectName, subms.StudentRole, subms.Grade, Year(subms.DateDue) as YearDue
+select count(stds.StudentId) * 100/(select count(*) from dbo.Students st inner join dbo.AssignmentSubmissions sb on st.StudentId = sb.StudentId inner join dbo.Subjects sj on sj.SubjectId = sb.SubjectId) as Percentile, sbj.SubjectName, subms.StudentRole, subms.Grade, Year(subms.DateDue) as YearDue
 from dbo.Students stds inner join dbo.AssignmentSubmissions subms
 on stds.StudentId = subms.StudentId 
 inner join dbo.Subjects sbj 
