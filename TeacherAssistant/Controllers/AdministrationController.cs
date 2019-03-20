@@ -1405,7 +1405,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateSubmittedString = DateTime.Now;
             ViewBag.DateDueString = DateTime.Now;
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            ViewBag.AssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+            ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
             return View();
         }
 
@@ -1416,13 +1416,12 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            if (assignmentSubmissions.Graded)
+            if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
             {
                 ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
             }
-            else if (assignmentSubmissions.UnGraded)
+            else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
             {
-
                 ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
             }
             else
