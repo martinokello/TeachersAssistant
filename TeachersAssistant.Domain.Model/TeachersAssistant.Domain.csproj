@@ -64,6 +64,7 @@
     <Compile Include="Models\PaidVideo.cs" />
     <Compile Include="Models\PaidVideoStudent.cs" />
     <Compile Include="Models\QAHelpRequest.cs" />
+    <Compile Include="Models\ReportingGroupSubmission.cs" />
     <Compile Include="Models\SHOP_PRODS.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentResource.cs" />
