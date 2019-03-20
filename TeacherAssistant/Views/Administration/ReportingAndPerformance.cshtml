@@ -157,11 +157,13 @@
             $.ajax({
                 url: baseSubmissionsUrl,
                 method: "GET",
-                dataType:"json",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
                         submissions.NumberOfStudents.push(data[i].NumberOfStudents);
                         submissions.YearDue.push(data[i].YearDue);
+                    },
+                    error: function (xHttpReq, error, msg) {
+
                     }
                 }
             });
@@ -169,24 +171,28 @@
                 $.ajax({
                     url: baseAveragesUrl,
                     method: "GET",
-                    dataType: "json",
                     success: function (data) {
                         for (let i = 0; i < data.length; i++) {
                             averages.NumberOfStudents.push(data[i].AverageGrade);
                             averages.YearDue.push(data[i].YearDue);
                         }
+                    },
+                    error: function (xHttpReq, error, msg) {
+
                     }
                 });
                 $('#subjectId').change(function () {
                     $.ajax({
                         url: baseMedialUrl,
                         method: "GET",
-                        dataType: "json",
                         success: function (data) {
                             for (let i = 0; i < data.length; i++) {
                                 medians.NumberOfStudents.push(data[i].MedianGrade);
                                 medians.YearDue.push(data[i].YearDue);
                             }
+                        },
+                        error: function (xHttpReq, error,msg) {
+
                         }
                     });
                     PrintGraphsSubmissions(submissions);
