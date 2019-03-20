@@ -33,19 +33,44 @@
         </div>
     </div>
     <div class="container-fluid">
-        <canvas  id="submissions">
-
-        </canvas>
-        <canvas  id="averages">
-
-        </canvas>
-        <canvas  id="medians">
-
-        </canvas>
+        <canvas id="percentiles"></canvas>
+        <canvas id="submissions"></canvas>
+        <canvas id="averages"></canvas>
+        <canvas id="medians"></canvas>
     </div>
 </div>
 
 <script type="text/javascript">
+    var submissions = { YearDue: [], NumberOfStudents: [] };
+    var medians = { YearDue: [], MedianGrade: [] };
+    var averages = { YearDue: [], AverageGrade: [] };
+    var percentiles = { YearDue: [], Percentile: [] };
+
+    function PrintGraphPercentiles(percentiles) {
+        if (submissions.Length > 0) {
+            //print submissions
+            var submissionsBarChart = new Chart(document.getElementById("submission"), {
+                type: 'bar',
+                data: {
+                    labels: submissions.YearDue,
+                    datasets: [
+                        {
+                            label: "Year Of Assignments",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            data: percentiles.Percentile
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Percentile Of Performances Over The years'
+                    }
+                }
+            });
+        }
+    }
     function PrintGraphsSubmissions(submissions) {
         if (submissions.Length > 0) {
             //print submissions
@@ -122,89 +147,101 @@
         }
     }
     function CallCharting() {
-         var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission?")";
-            var baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
-            var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+        var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission?")";
+        var baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+        var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+        var percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear?")";
+        var subject = $('subjectId').text();
+        var yearStart = $('dateStart').val();
+        var yearEnd = $('dateEnd').val();
 
-            var subject = $('subjectId').text();
-            var yearStart = $('dateStart').val();
-            var yearEnd = $('dateEnd').val();
+        if (subject != "") {
+            baseSubmissionsUrl + "SubjectName=" + subject;
+            baseAveragesUr + "SubjectName=" + subject;
+            baseMedianUrl + "SubjectName=" + subject;
+            percentilesUrl + "SubjectName=" + subject;
 
-            if (subject != "") {
-                baseSubmissionsUrl + "SubjectName=" + subject;
-                baseAveragesUr + "SubjectName=" + subject;
-                baseMedianUrl + "SubjectName=" + subject;
+            if (dateState != "") {
 
+                baseSubmissionsUrl += "&YearStart=" + yearStart;
+                baseAveragesUr += "&YearStart=" + yearStart;
+                baseMedianUrl += "&YearStart=" + yearStart;
+                percentilesUrl + "&YearStart=" + yearStart;
                 if (dateState != "") {
 
-                    baseSubmissionsUrl += "&YearStart=" + yearStart;
-                    baseAveragesUr += "&YearStart=" + yearStart;
-                    baseMedianUrl += "&YearStart=" + yearStart;
-                    if (dateState != "") {
+                    baseSubmissionsUrl += "&YearEnd=" + yearEnd;
+                    baseAveragesUr += "&YearEnd=" + yearEnd;
+                    baseMedianUrl += "&YearEnd=" + yearEnd;
+                    percentilesUrl + "&YearStart=" + yearEnd;
+                }
+                else {
 
-                        baseSubmissionsUrl += "&YearEnd=" + yearEnd;
-                        baseAveragesUr += "&YearEnd=" + yearEnd;
-                        baseMedianUrl += "&YearEnd=" + yearEnd;
-                    }
-                    else {
-
-                        baseSubmissionsUrl += "&YearEnd=" + yearStart;
-                        baseAveragesUr += "&YearEnd=" + yearStart;
-                        baseMedianUrl += "&YearEnd=" + yearStart;
-                    }
+                    baseSubmissionsUrl += "&YearEnd=" + yearStart;
+                    baseAveragesUr += "&YearEnd=" + yearStart;
+                    baseMedianUrl += "&YearEnd=" + yearStart;
+                    percentilesUrl + "&YearEnd=" + yearStart;
                 }
             }
-            $.ajax({
-                url: baseSubmissionsUrl,
-                method: "GET",
-                success: function (data) {
-                    for (let i = 0; i < data.length; i++) {
-                        submissions.NumberOfStudents.push(data[i].NumberOfStudents);
-                        submissions.YearDue.push(data[i].YearDue);
-                    },
-                    error: function (xHttpReq, error, msg) {
-
-                    }
+        }
+        $.ajax({
+            url: percentilesUrl,
+            method: "GET",
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    percentiles.Percentile.push(data[i].Percentile);
+                    percentiles.YearDue.push(data[i].YearDue);
                 }
-            });
-            $('#subjectId').change(function () {
-                $.ajax({
-                    url: baseAveragesUrl,
-                    method: "GET",
-                    success: function (data) {
-                        for (let i = 0; i < data.length; i++) {
-                            averages.NumberOfStudents.push(data[i].AverageGrade);
-                            averages.YearDue.push(data[i].YearDue);
-                        }
-                    },
-                    error: function (xHttpReq, error, msg) {
+            },
+            error: function (xHttpReq, error, msg) {
 
-                    }
-                });
-                $('#subjectId').change(function () {
-                    $.ajax({
-                        url: baseMedianUrl,
-                        method: "GET",
-                        success: function (data) {
-                            for (let i = 0; i < data.length; i++) {
-                                medians.NumberOfStudents.push(data[i].MedianGrade);
-                                medians.YearDue.push(data[i].YearDue);
-                            }
-                        },
-                        error: function (xHttpReq, error,msg) {
+            }
+        });
+        $.ajax({
+            url: baseSubmissionsUrl,
+            method: "GET",
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    submissions.NumberOfStudents.push(data[i].NumberOfStudents);
+                    submissions.YearDue.push(data[i].YearDue);
+                }
+            },
+            error: function (xHttpReq, error, msg) {
 
-                        }
-                    });
-                    PrintGraphsSubmissions(submissions);
-                    PrintGraphsAverages(averages);
-                    PrintGraphsMedians(medians);
-                });
-            });
+            }
+        });
+        $.ajax({
+            url: baseAveragesUrl,
+            method: "GET",
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    averages.NumberOfStudents.push(data[i].AverageGrade);
+                    averages.YearDue.push(data[i].YearDue);
+                }
+            },
+            error: function (xHttpReq, error, msg) {
+
+            }
+        });
+        $.ajax({
+            url: baseMedianUrl,
+            method: "GET",
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    medians.NumberOfStudents.push(data[i].MedianGrade);
+                    medians.YearDue.push(data[i].YearDue);
+                }
+            },
+            error: function (xHttpReq, error,msg) {
+
+            }
+        });
+
+        PrintGraphPercentiles(percentiles);
+        PrintGraphsSubmissions(submissions);
+        PrintGraphsAverages(averages);
+        PrintGraphsMedians(medians);
     }
     $(document).ready(function () {
-        var submissions = { YearDue: [], NumberOfStudents:[]};
-        var medians = { YearDue: [], MedianGrade: [] };
-        var averages = { YearDue: [], AverageGrade: [] };
 
         $('#subjectId').change(function () {
             CallCharting();
