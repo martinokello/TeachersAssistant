@@ -157,6 +157,7 @@
             $.ajax({
                 url: baseSubmissionsUrl,
                 method: "GET",
+                dataType:"json",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
                         submissions.NumberOfStudents.push(data[i].NumberOfStudents);
@@ -168,6 +169,7 @@
                 $.ajax({
                     url: baseAveragesUrl,
                     method: "GET",
+                    dataType: "json",
                     success: function (data) {
                         for (let i = 0; i < data.length; i++) {
                             averages.NumberOfStudents.push(data[i].AverageGrade);
@@ -179,6 +181,7 @@
                     $.ajax({
                         url: baseMedialUrl,
                         method: "GET",
+                        dataType: "json",
                         success: function (data) {
                             for (let i = 0; i < data.length; i++) {
                                 medians.NumberOfStudents.push(data[i].MedianGrade);
