@@ -19,6 +19,9 @@ namespace TeacherAssistant.Models
         public HttpPostedFileBase MediaContent { get; set; }
         public string StudentRole { get; set; }
         public bool IsSubmitted { get; set; }
+        public bool Graded { get; set; }
+        public bool UnGraded { get; set; }
+        public bool BothGradedAndUnGraded { get; set; }
         public string Notes { get; set; }
         public string Grade { get; set; }
         public decimal GradeNumeric { get; set; }

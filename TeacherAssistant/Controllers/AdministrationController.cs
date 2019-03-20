@@ -1405,7 +1405,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateSubmittedString = DateTime.Now;
             ViewBag.DateDueString = DateTime.Now;
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            ViewBag.AssignmentSubmissionList = GetAllAssignmentSubmissionsList();
             return View();
         }
 
@@ -1416,7 +1416,19 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            if (assignmentSubmissions.Graded)
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
+            }
+            else if (assignmentSubmissions.UnGraded)
+            {
+
+                ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            }
+            else
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+            }
             if ((assignmentSubmissions.AssignmentId < 1 || assignmentSubmissions.AssignmentSubmissionId < 1) &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
             {
                 ModelState.Clear();
@@ -1626,7 +1638,23 @@ namespace TeacherAssistant.Controllers
             assingnmentList.AddRange(_repositoryServices.GetUngradedSubmittedAssignments().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString() }).ToList());
             return assingnmentList;
         }
+        private List<SelectListItem> GetAllAssignmentSubmissionsList()
+        {
+            var assingnmentList = new List<SelectListItem>();
+            assingnmentList.Add(new SelectListItem { Text = "Pick Assignment Submissions", Value = 0.ToString() });
 
+            assingnmentList.AddRange(_repositoryServices.GetCurrentAssignmentsSubmissions().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString() }).ToList());
+            return assingnmentList;
+        }
+
+        private List<SelectListItem> GetGradedAssignmentSubmissionsList()
+        {
+            var assingnmentList = new List<SelectListItem>();
+            assingnmentList.Add(new SelectListItem { Text = "Pick Assignment Submissions", Value = 0.ToString() });
+
+            assingnmentList.AddRange(_repositoryServices.GetGradedAssignmentsSubmissions().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString() }).ToList());
+            return assingnmentList;
+        }
         [HttpGet]
         public JsonResult GetMediaDocumentIdsFor(string mediaType, string role)
         {

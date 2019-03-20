@@ -1033,6 +1033,16 @@ namespace TeachersAssistant.Services.Concretes
                 return results;
             }
         }
+        public IEnumerable<AssignmentSubmission> GetGradedAssignmentsSubmissions()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var results = _unitOfWork._assignmentSubmissionRepository.GetAll().Where(p => p.IsSubmitted && !string.IsNullOrEmpty(p.Grade));
+                return results;
+            }
+        }
+        
 
         public AssignmentSubmission GetAssignmentSubmissionsById(int assignmentSubmissionId)
         {
