@@ -18,13 +18,13 @@
     <div class="form-group">
         @Html.Label("Year Start", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("YearStart", "", new { htmlAttributes = new { @class = "form-control", @id = "yearStart" } })
+            @Html.TextBox("YearStart", "", new { htmlAttributes = new { @class = "form-control", @id = "yearStart", @type = "number" } })
         </div>
     </div>
     <div class="form-group">
         @Html.Label("Year End", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("YearEnd","", new { htmlAttributes = new { @class = "form-control", @id = "yearEnd" } })
+            @Html.TextBox("YearEnd","", new { htmlAttributes = new { @class = "form-control", @id = "yearEnd", @type="number" } })
         </div>
     </div>
     <div class="form-group">
@@ -197,6 +197,8 @@
                     percentiles.Percentile.push(data[i].Percentile);
                     percentiles.YearDue.push(data[i].YearDue);
                 }
+
+                PrintGraphPercentiles(percentiles);
             },
             error: function (xHttpReq, error, msg) {
 
@@ -210,6 +212,7 @@
                     submissions.NumberOfStudents.push(data[i].NumberOfStudents);
                     submissions.YearDue.push(data[i].YearDue);
                 }
+                PrintGraphsSubmissions(submissions);
             },
             error: function (xHttpReq, error, msg) {
 
@@ -223,6 +226,7 @@
                     averages.NumberOfStudents.push(data[i].AverageGrade);
                     averages.YearDue.push(data[i].YearDue);
                 }
+                PrintGraphsAverages(averages);
             },
             error: function (xHttpReq, error, msg) {
 
@@ -236,16 +240,13 @@
                     medians.NumberOfStudents.push(data[i].MedianGrade);
                     medians.YearDue.push(data[i].YearDue);
                 }
+                PrintGraphsMedians(medians);
             },
             error: function (xHttpReq, error,msg) {
 
             }
         });
 
-        PrintGraphPercentiles(percentiles);
-        PrintGraphsSubmissions(submissions);
-        PrintGraphsAverages(averages);
-        PrintGraphsMedians(medians);
     }
     $(document).ready(function () {
 
