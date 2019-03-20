@@ -122,9 +122,9 @@
         }
     }
     $(document).ready(function () {
-        var submissions = [];
-        var medians = [];
-        var averages = [];
+        var submissions = { YearDue: [], NumberOfStudents:[]};
+        var medians = { YearDue: [], MedianGrade: [] };
+        var averages = { YearDue: [], AverageGrade: [] };
 
         $('#subjectId').change(function () {
             var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission?")";
@@ -163,7 +163,10 @@
                 url: baseSubmissionsUrl,
                 method: "GET",
                 success: function (data) {
-                    submissions = data;
+                    for (let i = 0; i < data.length; i++) {
+                        submissions.NumberOfStudents.push(data[i].NumberOfStudents);
+                        submissions.YearDue.push(data[i].YearDue);
+                    }
                 }
             });
             $('#subjectId').change(function () {
@@ -171,7 +174,10 @@
                 url: baseAveragesUrl,
                     method: "GET",
                     success: function (data) {
-                        averages = data;
+                        for (let i = 0; i < data.length; i++) {
+                            averages.NumberOfStudents.push(data[i].AverageGrade);
+                            averages.YearDue.push(data[i].YearDue);
+                        }
                     }
                 });
                 $('#subjectId').change(function () {
@@ -179,7 +185,10 @@
                         url: baseMedialUrl,
                         method: "GET",
                         success: function (data) {
-                            medians = data;
+                            for (let i = 0; i < data.length; i++) {
+                                medians.NumberOfStudents.push(data[i].MedianGrade);
+                                medians.YearDue.push(data[i].YearDue);
+                            }
                         }
                     });
                     PrintGraphsSubmissions(submissions);
