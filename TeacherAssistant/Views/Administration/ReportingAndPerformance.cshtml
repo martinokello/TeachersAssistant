@@ -148,7 +148,7 @@
     }
     function CallCharting() {
         var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission?")";
-        var baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+        var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear?")";
         var subject = $('#subjectId').text();
@@ -157,27 +157,27 @@
 
         if (subject != 'Pick a Subject') {
             baseSubmissionsUrl + "SubjectName=" + subject;
-            baseAveragesUr + "SubjectName=" + subject;
+            baseAveragesUrl + "SubjectName=" + subject;
             baseMedianUrl + "SubjectName=" + subject;
             percentilesUrl + "SubjectName=" + subject;
 
             if (yearStart != "") {
 
                 baseSubmissionsUrl += "&YearStart=" + yearStart;
-                baseAveragesUr += "&YearStart=" + yearStart;
+                baseAveragesUrl += "&YearStart=" + yearStart;
                 baseMedianUrl += "&YearStart=" + yearStart;
                 percentilesUrl + "&YearStart=" + yearStart;
                 if (yearEnd != "") {
 
                     baseSubmissionsUrl += "&YearEnd=" + yearEnd;
-                    baseAveragesUr += "&YearEnd=" + yearEnd;
+                    baseAveragesUrl += "&YearEnd=" + yearEnd;
                     baseMedianUrl += "&YearEnd=" + yearEnd;
                     percentilesUrl + "&YearStart=" + yearEnd;
                 }
                 else {
 
                     baseSubmissionsUrl += "&YearEnd=" + yearStart;
-                    baseAveragesUr += "&YearEnd=" + yearStart;
+                    baseAveragesUrl += "&YearEnd=" + yearStart;
                     baseMedianUrl += "&YearEnd=" + yearStart;
                     percentilesUrl + "&YearEnd=" + yearStart;
                 }
@@ -185,7 +185,7 @@
         }
         else {
             baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
-            baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+            baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
             baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
             percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear")";
         }
