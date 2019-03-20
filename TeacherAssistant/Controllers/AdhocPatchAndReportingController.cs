@@ -47,14 +47,14 @@ namespace TeacherAssistant.Controllers
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult GroupSubmissionsBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, string subject)
+        public JsonResult GroupSubmissionsBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
             ReportingGroupSubmission[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
             {
                 adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
-                reportSubmissions = adhocPatchAndReportingRepository.GroupSubmissionsBySubjectRoleAndYearBtwnYearsForParticularSubject(yearStart, yearEnd, subject);
+                reportSubmissions = adhocPatchAndReportingRepository.GroupSubmissionsBySubjectRoleAndYearBtwnYearsForParticularSubject(yearStart, yearEnd, subjectId);
             }
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
@@ -72,37 +72,37 @@ namespace TeacherAssistant.Controllers
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult PercentileGradeBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, string subject)
+        public JsonResult PercentileGradeBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
             PercentileGradeSubjectYear[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
                 adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
-                reportSubmissions = adhocPatchAndReportingRepository.PercentileGradeBySubjectRoleAndYearBtwnYears(yearStart, yearEnd, subject);
+                reportSubmissions = adhocPatchAndReportingRepository.PercentileGradeBySubjectRoleAndYearBtwnYears(yearStart, yearEnd, subjectId);
             }
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, string subject)
+        public JsonResult AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
             {
                 adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
-                reportSubmissions = adhocPatchAndReportingRepository.AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(yearStart, yearEnd, subject);
+                reportSubmissions = adhocPatchAndReportingRepository.AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(yearStart, yearEnd, subjectId);
             }
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, string subject)
+        public JsonResult MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
                 adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
-                reportSubmissions = adhocPatchAndReportingRepository.MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(yearStart, yearEnd, subject);
+                reportSubmissions = adhocPatchAndReportingRepository.MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(yearStart, yearEnd, subjectId);
             }
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
