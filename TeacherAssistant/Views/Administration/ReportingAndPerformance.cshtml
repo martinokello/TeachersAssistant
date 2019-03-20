@@ -47,9 +47,9 @@
     var percentiles = { YearDue: [], Percentile: [] };
 
     function PrintGraphPercentiles(percentiles) {
-        if (submissions.Length > 0) {
+        if (percentiles.Percentile.length > 0) {
             //print submissions
-            var percentilesBarChart = new Chart(document.getElementById("submission"), {
+            var percentilesBarChart = new Chart(document.getElementById("percentiles"), {
                 type: 'bar',
                 data: {
                     labels: percentiles.YearDue,
@@ -72,9 +72,9 @@
         }
     }
     function PrintGraphsSubmissions(submissions) {
-        if (submissions.Length > 0) {
+        if (submissions.NumberOfStudents.length > 0) {
             //print submissions
-            var submissionsBarChart = new Chart(document.getElementById("submission"), {
+            var submissionsBarChart = new Chart(document.getElementById("submissions"), {
                 type: 'bar',
                 data: {
                     labels: submissions.YearDue,
@@ -97,9 +97,9 @@
         }
     }
     function PrintGraphsAverages(averages) {
-        if (averages.Length > 0) {
+        if (averages.AverageGrade.length > 0) {
             //print averages
-            var averageGradeBarChart = new Chart(document.getElementById("submission"), {
+            var averageGradeBarChart = new Chart(document.getElementById("averages"), {
                 type: 'bar',
                 data: {
                     labels: averages.YearDue,
@@ -122,9 +122,9 @@
         }
     }
     function PrintGraphsMedians(medians) {
-        if (medians.Length > 0) {
+        if (medians.MedianGrade.length > 0) {
             //print medians            
-            var medianGradeBarChart = new Chart(document.getElementById("submission"), {
+            var medianGradeBarChart = new Chart(document.getElementById("medians"), {
             type: 'bar',
                 data: {
                     labels: medians.YearDue,
