@@ -1468,7 +1468,8 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public ViewResult ViewGraphsAndReports()
         {
-           return View("ReportingAndPerformance");
+            GetUIDropdownLists();
+            return View("ReportingAndPerformance");
         }
         private bool RemoveUserFromRole(string username, string roleName)
         {
