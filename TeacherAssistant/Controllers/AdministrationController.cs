@@ -1465,6 +1465,11 @@ namespace TeacherAssistant.Controllers
             }
             return View(assignmentSubmissions);
         }
+        [HttpGet]
+        public ViewResult ViewGraphsAndReports()
+        {
+           return View("ReportingAndPerformance");
+        }
         private bool RemoveUserFromRole(string username, string roleName)
         {
             try
