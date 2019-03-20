@@ -316,6 +316,7 @@
     <Compile Include="Areas\StatePrimary\Models\UserRoleViewModel.cs" />
     <Compile Include="Areas\StatePrimary\StatePrimaryAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdhocPatchAndReportingController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -754,6 +755,7 @@
     <Content Include="Views\Administration\AddGradesToSubmissions.cshtml" />
     <Content Include="Views\Shared\ViewAssignmentGrades.cshtml" />
     <Content Include="Views\Administration\AssignmentAndSubmissions.cshtml" />
+    <Content Include="Views\Administration\ReportingAndPerformance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -771,6 +773,7 @@
     <Folder Include="StudentResources\Grammar11Plus\Assignments\" />
     <Folder Include="StudentResources\StateJunior\Assignments\" />
     <Folder Include="StudentResources\StatePrimary\Assignments\" />
+    <Folder Include="Views\AdhocPatchAndReporting\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
