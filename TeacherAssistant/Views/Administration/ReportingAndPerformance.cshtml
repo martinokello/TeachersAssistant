@@ -49,7 +49,7 @@
     function PrintGraphPercentiles(percentiles) {
         if (submissions.Length > 0) {
             //print submissions
-            var submissionsBarChart = new Chart(document.getElementById("submission"), {
+            var percentilesBarChart = new Chart(document.getElementById("submission"), {
                 type: 'bar',
                 data: {
                     labels: submissions.YearDue,
@@ -151,11 +151,11 @@
         var baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear?")";
-        var subject = $('subjectId').text();
-        var yearStart = $('dateStart').val();
-        var yearEnd = $('dateEnd').val();
+        var subject = $('#subjectId').text();
+        var yearStart = $('#yearStart').val();
+        var yearEnd = $('#yearEnd').val();
 
-        if (subject != "") {
+        if (subject != 'Pick a Subject') {
             baseSubmissionsUrl + "SubjectName=" + subject;
             baseAveragesUr + "SubjectName=" + subject;
             baseMedianUrl + "SubjectName=" + subject;
@@ -182,6 +182,12 @@
                     percentilesUrl + "&YearEnd=" + yearStart;
                 }
             }
+        }
+        else {
+            baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
+            baseAveragesUr = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+            baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+            percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear")";
         }
         $.ajax({
             url: percentilesUrl,
