@@ -1,3 +1,11 @@
+exec dbo.GroupSubmissionsBySubjectRoleAndYear
+go
+exec dbo.PercentileGroupedByGradeAndSubjectAndyear
+go
+exec dbo.AverageAttainedGradesGroupedByGradeAndSubjectAndyearBtwnYears 2019,2019,5
+go
+exec dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears 2019,2019,3
+go
 if OBJECT_ID('GroupSubmissionsBySubjectRoleAndYear') IS NOT NULL
 drop procedure dbo.GroupSubmissionsBySubjectRoleAndYear
 go
@@ -121,7 +129,7 @@ create procedure dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears
  @subjectId int
 ) 
 AS
-select (select top 1 percentile_cont(0.5) within group(order by subms.GradeNumeric) over (partition by  Year(subms.DateDue))) as MedianGrade, sbj.SubjectName, subms.StudentRole, Year(subms.DateDue) as YearDue
+select cast((select top 1 percentile_cont(0.5) within group(order by subms.GradeNumeric) over (partition by  Year(subms.DateDue))) as decimal) as MedianGrade, sbj.SubjectName, subms.StudentRole, Year(subms.DateDue) as YearDue
 from dbo.Students stds inner join dbo.AssignmentSubmissions subms
 on stds.StudentId = subms.StudentId 
 inner join dbo.Subjects sbj 

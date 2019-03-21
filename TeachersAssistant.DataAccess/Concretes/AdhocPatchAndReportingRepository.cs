@@ -36,7 +36,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                         NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0: (int) reader["NumberOfStudents"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
@@ -51,9 +51,11 @@ namespace TeachersAssistant.DataAccess.Concretes
                 var cmd = con.CreateCommand();
                 cmd.CommandText = "dbo.GroupSubmissionsBySubjectRoleAndYearBtwnYears";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
 
-                cmd.Parameters.Add(new SqlParameter("YearStart",System.Data.SqlDbType.Int).Value = yearStart);
-                cmd.Parameters.Add(new SqlParameter("YearEnd", System.Data.SqlDbType.Int).Value = yearEnd);
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -64,7 +66,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                         NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0 : (int)reader["NumberOfStudents"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
@@ -80,10 +82,12 @@ namespace TeachersAssistant.DataAccess.Concretes
                 var cmd = con.CreateCommand();
                 cmd.CommandText = "dbo.GroupSubmissionsBySubjectRoleAndYearBtwnYearsBySubject";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new SqlParameter("YearStart", System.Data.SqlDbType.Int).Value = yearStart);
-                cmd.Parameters.Add(new SqlParameter("YearEnd", System.Data.SqlDbType.Int).Value = yearEnd);
-                cmd.Parameters.Add(new SqlParameter("subjectId", System.Data.SqlDbType.Int).Value = subjectId);
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -94,7 +98,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                         NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0 : (int)reader["NumberOfStudents"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
@@ -120,7 +124,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                         Percentile = reader["Percentile"] == DBNull.Value ? 0 : (int)reader["Percentile"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
@@ -136,9 +140,12 @@ namespace TeachersAssistant.DataAccess.Concretes
                 var cmd = con.CreateCommand();
                 cmd.CommandText = "dbo.PercentileGroupedByGradeAndSubjectAndyearBtwnYears";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("YearStart", System.Data.SqlDbType.Int).Value = yearStart);
-                cmd.Parameters.Add(new SqlParameter("YearEnd", System.Data.SqlDbType.Int).Value = yearEnd);
-                cmd.Parameters.Add(new SqlParameter("subjectId", System.Data.SqlDbType.Int).Value = subjectId);
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -149,7 +156,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                         Percentile = reader["Percentile"] == DBNull.Value ? 0 : (int)reader["Percentile"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
@@ -164,9 +171,12 @@ namespace TeachersAssistant.DataAccess.Concretes
                 var cmd = con.CreateCommand();
                 cmd.CommandText = "dbo.AverageAttainedGradesGroupedByGradeAndSubjectAndyearBtwnYears";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("YearStart", System.Data.SqlDbType.Int).Value = yearStart);
-                cmd.Parameters.Add(new SqlParameter("YearEnd", System.Data.SqlDbType.Int).Value = yearEnd);
-                cmd.Parameters.Add(new SqlParameter("subjectId", System.Data.SqlDbType.Int).Value = subjectId);
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -177,7 +187,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                         AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (int)reader["AverageGrade"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
@@ -191,22 +201,27 @@ namespace TeachersAssistant.DataAccess.Concretes
             using (var con = DataBase().Connection)
             {
                 var cmd = con.CreateCommand();
-                cmd.CommandText = "dbo.PercentileGroupedByGradeAndSubjectAndyearBtwnYears";
+                cmd.CommandText = "dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("YearStart", System.Data.SqlDbType.Int).Value = yearStart);
-                cmd.Parameters.Add(new SqlParameter("YearEnd", System.Data.SqlDbType.Int).Value = yearEnd);
-                cmd.Parameters.Add(new SqlParameter("subjectId", System.Data.SqlDbType.Int).Value = subjectId);
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
+                    var type = reader["MedianGrade"].GetType();
                     listItems.Add(new MedianGradeAttainedGrade
                     {
-                        MedianGrade = reader["MedianGrade"] == DBNull.Value ? 0 : (int)reader["MedianGrade"],
+                        MedianGrade = reader["MedianGrade"] == DBNull.Value ? 0 : (decimal)reader["MedianGrade"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)(int)reader["YearDue"]
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }
             }
