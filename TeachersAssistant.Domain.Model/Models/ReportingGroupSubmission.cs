@@ -37,14 +37,14 @@ namespace TeachersAssistant.Domain.Model.Models
 
         public string StudentRole { get; set; }
         public string SubjectName { get; set; }
-        public int AverageGrade { get; set; }
+        public decimal AverageGrade { get; set; }
         public int YearDue { get; set; }
     }
     public class MedianGradeAttainedGrade
     {
         public string StudentRole { get; set; }
         public string SubjectName { get; set; }
-        public int MedianGrade { get; set; }
+        public decimal MedianGrade { get; set; }
         public int YearDue { get; set; }
     }
 }

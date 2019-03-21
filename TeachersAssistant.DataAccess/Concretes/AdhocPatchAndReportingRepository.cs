@@ -184,7 +184,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                 {
                     listItems.Add(new AverageGradeSubjectYear
                     {
-                        AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (int)reader["AverageGrade"],
+                        AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (decimal)reader["AverageGrade"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
                         YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]

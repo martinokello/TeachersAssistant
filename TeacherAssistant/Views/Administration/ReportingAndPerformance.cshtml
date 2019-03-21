@@ -242,7 +242,7 @@
             method: "GET",
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    averages.NumberOfStudents.push(data[i].AverageGrade);
+                    averages.AverageGrade.push(data[i].AverageGrade);
                     averages.YearDue.push(data[i].YearDue);
                 }
                 PrintGraphsAverages(averages);
@@ -256,7 +256,7 @@
             method: "GET",
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    medians.NumberOfStudents.push(data[i].MedianGrade);
+                    medians.MedianGrade.push(data[i].MedianGrade);
                     medians.YearDue.push(data[i].YearDue);
                 }
                 PrintGraphsMedians(medians);
