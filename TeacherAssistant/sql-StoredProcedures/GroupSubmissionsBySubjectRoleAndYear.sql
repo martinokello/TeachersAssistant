@@ -111,7 +111,7 @@ create procedure dbo.AverageAttainedGradesGroupedByGradeAndSubjectAndyearBtwnYea
  @subjectId int
 ) 
 AS
-select Avg(subms.GradeNumeric) as AverageGrade, sbj.SubjectName, subms.StudentRole, Year(subms.DateDue) as YearDue
+select cast(Avg(subms.GradeNumeric) as decimal) as AverageGrade, sbj.SubjectName, subms.StudentRole, Year(subms.DateDue) as YearDue
 from dbo.Students stds inner join dbo.AssignmentSubmissions subms
 on stds.StudentId = subms.StudentId 
 inner join dbo.Subjects sbj 
@@ -137,3 +137,4 @@ on sbj.SubjectId = subms.SubjectId
 where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd 
 group by sbj.SubjectName, subms.GradeNumeric, subms.StudentRole, Year(subms.DateDue)
 go
+--select * from dbo.AssignmentSubmissions
