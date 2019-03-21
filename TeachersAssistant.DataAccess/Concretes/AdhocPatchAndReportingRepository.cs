@@ -42,7 +42,7 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
-        public ReportingGroupSubmission[] GroupSubmissionsBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd)
+        public ReportingGroupSubmission[] GroupSubmissionsBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, string studentRole)
         {
             var listItems = new List<ReportingGroupSubmission>();
 
@@ -53,9 +53,11 @@ namespace TeachersAssistant.DataAccess.Concretes
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
 
                 cmd.Parameters["@YearBegin"].Value = yearStart;
                 cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -72,7 +74,7 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
-        public ReportingGroupSubmission[] GroupSubmissionsBySubjectRoleAndYearBtwnYearsForParticularSubject(int yearStart, int yearEnd, int subjectId)
+        public ReportingGroupSubmission[] GroupSubmissionsBySubjectRoleAndYearBtwnYearsForParticularSubject(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
 
             var listItems = new List<ReportingGroupSubmission>();
@@ -85,9 +87,11 @@ namespace TeachersAssistant.DataAccess.Concretes
                 cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
                 cmd.Parameters["@YearBegin"].Value = yearStart;
                 cmd.Parameters["@YearEnd"].Value = yearEnd;
                 cmd.Parameters["@subjectId"].Value = subjectId;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -130,7 +134,7 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
-        public PercentileGradeSubjectYear[] PercentileGradeBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        public PercentileGradeSubjectYear[] PercentileGradeBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
 
             var listItems = new List<PercentileGradeSubjectYear>();
@@ -143,9 +147,11 @@ namespace TeachersAssistant.DataAccess.Concretes
                 cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
                 cmd.Parameters["@YearBegin"].Value = yearStart;
                 cmd.Parameters["@YearEnd"].Value = yearEnd;
                 cmd.Parameters["@subjectId"].Value = subjectId;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -162,7 +168,7 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
-        public AverageGradeSubjectYear[] AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId)
+        public AverageGradeSubjectYear[] AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
             var listItems = new List<AverageGradeSubjectYear>();
 
@@ -174,9 +180,11 @@ namespace TeachersAssistant.DataAccess.Concretes
                 cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
                 cmd.Parameters["@YearBegin"].Value = yearStart;
                 cmd.Parameters["@YearEnd"].Value = yearEnd;
                 cmd.Parameters["@subjectId"].Value = subjectId;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
@@ -193,7 +201,7 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
-        public MedianGradeAttainedGrade[] MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId)
+        public MedianGradeAttainedGrade[] MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
 
             var listItems = new List<MedianGradeAttainedGrade>();
@@ -206,10 +214,12 @@ namespace TeachersAssistant.DataAccess.Concretes
                 cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
 
                 cmd.Parameters["@YearBegin"].Value = yearStart;
                 cmd.Parameters["@YearEnd"].Value = yearEnd;
                 cmd.Parameters["@subjectId"].Value = subjectId;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
                 con.Open();
                 var reader = cmd.ExecuteReader();
 

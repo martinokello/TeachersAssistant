@@ -14,6 +14,13 @@
         <div class="col-md-10">
             @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "SubjectId" } })
         </div>
+    </div>                
+    <div class="form-group">
+        @Html.Label("StudentRole", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("StudentRole", ViewBag.RoleList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id="StudentRole" } })
+            @Html.ValidationMessage("StudentRole", "", new { @class = "text-danger" })
+        </div>
     </div>
     <div class="form-group">
         @Html.Label("Year Start", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -24,7 +31,7 @@
     <div class="form-group">
         @Html.Label("Year End", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("YearEnd","", new { htmlAttributes = new { @class = "form-control", @id = "YearEnd", @type="number" } })
+            @Html.TextBox("YearEnd", "", new { htmlAttributes = new { @class = "form-control", @id = "YearEnd", @type = "number" } })
         </div>
     </div>
     <div class="form-group">
@@ -154,12 +161,18 @@
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
-
+        var studentRole = $('#StudentRole').val();
         if (subject > 0) {
             baseSubmissionsUrl += "subjectId=" + subject;
             baseAveragesUrl += "subjectId=" + subject;
             baseMedianUrl += "subjectId=" + subject;
             percentilesUrl += "subjectId=" + subject;
+
+
+            baseSubmissionsUrl += "&studentRole=" + studentRole;
+            baseAveragesUrl += "&studentRole=" + studentRole;
+            baseMedianUrl += "&studentRole=" + studentRole;
+            percentilesUrl += "&studentRole=" + studentRole;
 
             if (yearStart != "") {
 
