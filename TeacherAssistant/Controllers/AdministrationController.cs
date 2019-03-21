@@ -1446,8 +1446,8 @@ namespace TeacherAssistant.Controllers
             {
                 var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
                     AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = submission.Grade, GradeNumeric = submission.GradeNumeric, StudentId = submission.StudentId, TeacherId= assignment.TeacherId,
-                    SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = assignmentSubmissions.Notes };
+                    FilePath = submission.FilePath, Grade = submission.Grade, GradeNumeric = submission.GradeNumeric, StudentId = submission.StudentId, TeacherId= submission.TeacherId,
+                    SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = submission.Notes };
                 ViewBag.DateSubmittedString = assSub.DateSubmitted;
                 ViewBag.DateDueString = assSub.DateDue;
                 ModelState.Clear();
@@ -1461,14 +1461,19 @@ namespace TeacherAssistant.Controllers
             }
             else if (ModelState.IsValid)
             {
-                _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission { AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
-                    AssignmentId = submission.AssignmentId, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = assignmentSubmissions.Grade,
-                    GradeNumeric = submission.GradeNumeric,
+                _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission {
+                    AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
+                    AssignmentId = assignmentSubmissions.AssignmentId,
+                    DateDue = submission.DateDue,
+                    DateSubmitted = submission.DateSubmitted,
+                    FilePath = submission.FilePath,
+                    Grade = assignmentSubmissions.Grade,
+                    GradeNumeric = assignmentSubmissions.GradeNumeric,
                     AssignmentName = assignment.AssignmentName,
-                    IsSubmitted = assignmentSubmissions.IsSubmitted, StudentId = assignmentSubmissions.StudentId,
-                    TeacherId = assignment.TeacherId,
-                    SubjectId = assignment.SubjectId,
+                    IsSubmitted = submission.IsSubmitted,
+                    StudentId = submission.StudentId,
+                    TeacherId = assignmentSubmissions.TeacherId,
+                    SubjectId = assignmentSubmissions.SubjectId,
                     StudentRole = assignment.StudentRole,
                     Notes = assignmentSubmissions.Notes
                 });
