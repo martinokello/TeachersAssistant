@@ -144,25 +144,32 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
-        public PercentileGradeSubjectYear[] PercentileGradeBySubjectRoleAndYear()
+        public ReportingGroupSubmission[] NumberOfStudentsGradedInSubjectAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
 
-            var listItems = new List<PercentileGradeSubjectYear>();
+            var listItems = new List<ReportingGroupSubmission>();
 
             using (var con = DataBase().Connection)
             {
                 var cmd = con.CreateCommand();
                 cmd.CommandText = "dbo.PercentileGroupedByGradeAndSubjectAndyear";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
+
                 con.Open();
                 var reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    listItems.Add(new PercentileGradeSubjectYear
+                    listItems.Add(new ReportingGroupSubmission
                     {
-                        Percentile = reader["Percentile"] == DBNull.Value ? 0 : (int)reader["Percentile"],
-                        StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
+                        NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0 : (int)reader["NumberOfStudents"],
+                        Grade = reader["Grade"] == DBNull.Value ? "" : (string)reader["Grade"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
                         YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });

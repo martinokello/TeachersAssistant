@@ -60,13 +60,13 @@ namespace TeacherAssistant.Controllers
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult PercentileGradeBySubjectRoleAndYear()
+        public JsonResult NumberOfStudentsGradedInSubjectAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
-            PercentileGradeSubjectYear[] reportSubmissions = null;
+            ReportingGroupSubmission[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
                 adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
-                reportSubmissions = adhocPatchAndReportingRepository.PercentileGradeBySubjectRoleAndYear();
+                reportSubmissions = adhocPatchAndReportingRepository.NumberOfStudentsGradedInSubjectAndyearBtwnYears(yearStart, yearEnd, subjectId);
             }
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);

@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="container-fluid">
-        <canvas id="percentiles"></canvas>
+        <canvas id="studentGrades"></canvas>
         <canvas id="submissions"></canvas>
         <canvas id="averages"></canvas>
         <canvas id="medians"></canvas>
@@ -51,20 +51,20 @@
     var submissions = { YearDue: [], NumberOfStudents: []};
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
-    var percentiles = { YearDue: [], Percentile: [] };
+    var studentGrades = { YearDue: [], NumberOfStudents: [] };
 
-    function PrintGraphPercentiles(percentiles) {
-        if (percentiles.Percentile.length > 0) {
+    function PrintGraphStudentGrades(studentGrades) {
+        if (studentGrades.Percentile.length > 0) {
             //print submissions
-            var percentilesBarChart = new Chart(document.getElementById("percentiles"), {
+            var percentilesBarChart = new Chart(document.getElementById("studentGrades"), {
                 type: 'bar',
                 data: {
-                    labels: percentiles.YearDue,
+                    labels: studentGrades.YearDue,
                     datasets: [
                         {
                             label: "Year Of Assignments",
                             backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                            data: percentiles.Percentile
+                            data: studentGrades.NumberOfStudents
                         }
                     ]
                 },
@@ -72,7 +72,7 @@
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: 'Percentile Of Performances Over The years'
+                        text: 'Number Of Students Achieving Grades, Across all Roles Over The years'
                     }
                 }
             });
@@ -157,42 +157,41 @@
         var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
         var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
-        var percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear?")";
+        var studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
         var studentRole = $('#StudentRole').val();
+
         if (subject > 0) {
             baseSubmissionsUrl += "subjectId=" + subject;
             baseAveragesUrl += "subjectId=" + subject;
             baseMedianUrl += "subjectId=" + subject;
-            percentilesUrl += "subjectId=" + subject;
-
+            studentGradesUrl += "subjectId=" + subject;
 
             baseSubmissionsUrl += "&studentRole=" + studentRole;
             baseAveragesUrl += "&studentRole=" + studentRole;
             baseMedianUrl += "&studentRole=" + studentRole;
-            percentilesUrl += "&studentRole=" + studentRole;
 
             if (yearStart != "") {
 
                 baseSubmissionsUrl += "&yearStart=" + yearStart;
                 baseAveragesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
-                percentilesUrl + "&yearStart=" + yearStart;
+                studentGradesUrl += "&yearStart=" + yearStart;
                 if (yearEnd != "") {
 
                     baseSubmissionsUrl += "&yearEnd=" + yearEnd;
                     baseAveragesUrl += "&yearEnd=" + yearEnd;
                     baseMedianUrl += "&yearEnd=" + yearEnd;
-                    percentilesUrl + "&yearEnd=" + yearEnd;
+                    studentGradesUrl += "&yearEnd=" + yearEnd;
                 }
                 else {
 
                     baseSubmissionsUrl += "&yearEnd=" + yearStart;
                     baseAveragesUrl += "&yearEnd=" + yearStart;
                     baseMedianUrl += "&yearEnd=" + yearStart;
-                    percentilesUrl + "&yearEnd=" + yearStart;
+                    studentGradesUrl += "&yearEnd=" + yearStart;
                 }
             }
             else {
@@ -200,37 +199,37 @@
                 baseSubmissionsUrl += "subjectId=" + subject;
                 baseAveragesUrl += "subjectId=" + subject;
                 baseMedianUrl += "subjectId=" + subject;
-                percentilesUrl += "subjectId=" + subject;
+                studentGradesUrl += "subjectId=" + subject;
 
                 var yearStart = '@DateTime.Now.Year';
                 var yearEnd = '@DateTime.Now.Year';
                 baseSubmissionsUrl += "&yearStart=" + yearStart;
                 baseAveragesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
-                percentilesUrl + "&yearStart=" + yearStart;
+                studentGradesUrl += "&yearStart=" + yearStart;
 
                 baseSubmissionsUrl += "&yearEnd=" + yearEnd;
                 baseAveragesUrl += "&yearEnd=" + yearEnd;
                 baseMedianUrl += "&yearEnd=" + yearEnd;
-                percentilesUrl + "&yearEnd=" + yearEnd;
+                studentGradesUrl += "&yearEnd=" + yearEnd;
             }
         }
         else {
             baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
             baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
             baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
-            percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear")";
+            studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
         }
         $.ajax({
-            url: percentilesUrl,
+            url: studentGradesUrl,
             method: "GET",
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    percentiles.Percentile.push(data[i].Percentile);
-                    percentiles.YearDue.push(data[i].YearDue);
+                    studentGrades.NumberOfStudents.push(data[i].NumberOfStudents);
+                    studentGrades.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
                 }
 
-                PrintGraphPercentiles(percentiles);
+                PrintGraphStudentGrades(studentGrades);
             },
             error: function (xHttpReq, error, msg) {
 
