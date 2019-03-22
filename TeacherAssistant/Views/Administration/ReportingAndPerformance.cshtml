@@ -54,7 +54,7 @@
     var studentGrades = { YearDue: [], NumberOfStudents: [] };
 
     function PrintGraphStudentGrades(studentGrades) {
-        if (studentGrades.Percentile.length > 0) {
+        if (studentGrades.NumberOfStudents.length > 0) {
             //print submissions
             var percentilesBarChart = new Chart(document.getElementById("studentGrades"), {
                 type: 'bar',
