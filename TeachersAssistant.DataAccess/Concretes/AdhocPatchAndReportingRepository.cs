@@ -17,11 +17,12 @@ namespace TeachersAssistant.DataAccess.Concretes
         {
             return DbContextTeachersAssistant.Database;
         }
-        public ReportingGroupSubmission[] GroupSubmissionsBySubjectRoleAndYear() {
+        public ReportingGroupSubmission[] GroupSubmissionsBySubjectRoleAndYear()
+        {
 
             var listItems = new List<ReportingGroupSubmission>();
 
-            using(var con = DataBase().Connection)
+            using (var con = DataBase().Connection)
             {
                 var cmd = con.CreateCommand();
                 cmd.CommandText = "dbo.GroupSubmissionsBySubjectRoleAndYear";
@@ -33,9 +34,44 @@ namespace TeachersAssistant.DataAccess.Concretes
                 {
                     listItems.Add(new ReportingGroupSubmission
                     {
-                        NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0: (int) reader["NumberOfStudents"],
+                        NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0 : (int)reader["NumberOfStudents"],
                         StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
                         SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
+                    });
+                }
+            }
+            return listItems.ToArray();
+        }
+        public ReportingGroupSubmission[] GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn(int yearStart, int yearEnd, int subjectId, string studentRole)
+        {
+            var listItems = new List<ReportingGroupSubmission>();
+
+            using (var con = DataBase().Connection)
+            {
+                var cmd = con.CreateCommand();
+                cmd.CommandText = "dbo.GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn";
+
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
+                con.Open();
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    listItems.Add(new ReportingGroupSubmission
+                    {
+                        NumberOfStudents = reader["NumberOfStudents"] == DBNull.Value ? 0 : (int)reader["NumberOfStudents"],
+                        StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
+                        SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
+                        Grade = reader["Grade"] == DBNull.Value ? "" : (string)reader["Grade"],
                         YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
                     });
                 }

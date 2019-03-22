@@ -12,6 +12,7 @@ namespace TeachersAssistant.Domain.Model.Models
         public string SubjectName { get; set; }
         public int NumberOfStudents { get; set; }
         public int YearDue { get; set; }
+        public string Grade { get; set; }
     }
 
     public class ReportingGroupSubmissionBtwnYears: ReportingGroupSubmission

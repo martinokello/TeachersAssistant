@@ -83,6 +83,19 @@ namespace TeacherAssistant.Controllers
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
+        
+       [HttpGet]
+        public JsonResult GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn(int yearStart, int yearEnd, int subjectId, string studentRole)
+        {
+            ReportingGroupSubmission[] reportSubmissions = null;
+
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn(yearStart, yearEnd, subjectId, studentRole);
+            }
+            return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {

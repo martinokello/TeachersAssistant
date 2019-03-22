@@ -48,7 +48,7 @@
 </div>
 
 <script type="text/javascript">
-    var submissions = { YearDue: [], NumberOfStudents: [] };
+    var submissions = { YearDue: [], NumberOfStudents: []};
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
     var percentiles = { YearDue: [], Percentile: [] };
@@ -97,7 +97,7 @@
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: 'Not On Time Submissions Over The years'
+                        text: 'Grades Achieved by Student Number, Over The years'
                     }
                 }
             });
@@ -154,7 +154,7 @@
         }
     }
     function CallCharting() {
-        var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission?")";
+        var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
         var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var percentilesUrl =  "@Url.Content("~/AdhocPatchAndReporting/PercentileGradeBySubjectRoleAndYear?")";
@@ -242,7 +242,7 @@
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
                     submissions.NumberOfStudents.push(data[i].NumberOfStudents);
-                    submissions.YearDue.push(data[i].YearDue);
+                    submissions.YearDue.push(data[i].YearDue +", "+data[i].Grade);
                 }
                 PrintGraphsSubmissions(submissions);
             },
