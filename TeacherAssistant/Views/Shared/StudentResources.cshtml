@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "StudentResources";
     Layout = "~/Views/Shared/_NewLayout.cshtml";
-    var role = User.IsInRole("Grammar11Plus") ? "Grammar 11 Plus" : User.IsInRole("StatePrimary")?"StatePrimary":"State Junior";
+    var role = User.IsInRole("Grammar11Plus") ? "Grammar 11 Plus" : User.IsInRole("StatePrimary")?"State Primary" : User.IsInRole("SecondarySchool")?"Secondary School" : User.IsInRole("CollegeAndPostGraduate") ? "College And Post Graduate":"State Junior";
 
 
 }

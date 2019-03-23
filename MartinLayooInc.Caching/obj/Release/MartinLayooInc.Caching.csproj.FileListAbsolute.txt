@@ -22,3 +22,4 @@ C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\bin\Release\
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Release\MartinLayooInc.Caching.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Release\MartinLayooInc.Caching.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Release\MartinLayooInc.Caching.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\MartinLayooInc.Caching\obj\Release\MartinLayooInc.Caching.csprojAssemblyReference.cache
