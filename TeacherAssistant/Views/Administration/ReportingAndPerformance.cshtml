@@ -241,7 +241,7 @@
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
                     submissions.NumberOfStudents.push(data[i].NumberOfStudents);
-                    submissions.YearDue.push(data[i].YearDue +", "+data[i].Grade);
+                    submissions.YearDue.push(data[i].YearDue +", "+data[i].Grade+", "+datap[i].SubjectName);
                 }
                 PrintGraphsSubmissions(submissions);
             },
