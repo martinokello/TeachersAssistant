@@ -154,6 +154,10 @@
         }
     }
     function CallCharting() {
+        submissions = { YearDue: [], NumberOfStudents: [] };
+        medians = { YearDue: [], MedianGrade: [] };
+        averages = { YearDue: [], AverageGrade: [] };
+        studentGrades = { YearDue: [], NumberOfStudents: [] };
         var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
         var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
@@ -241,7 +245,7 @@
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
                     submissions.NumberOfStudents.push(data[i].NumberOfStudents);
-                    submissions.YearDue.push(data[i].YearDue +", "+data[i].Grade+", "+datap[i].SubjectName);
+                    submissions.YearDue.push(data[i].YearDue +", "+data[i].Grade);
                 }
                 PrintGraphsSubmissions(submissions);
             },
