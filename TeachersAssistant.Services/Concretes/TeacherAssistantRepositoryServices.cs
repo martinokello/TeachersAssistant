@@ -514,6 +514,7 @@ namespace TeachersAssistant.Services.Concretes
                     var calendar = _unitOfWork._calendarBookingRepository.GetAll().SingleOrDefault(p => p.BookingTimeId == bookedTime.BookingTimeId);
                     bookedTime.StartTime = bookingTime.StartTime;
                     bookedTime.EndTime = bookingTime.EndTime;
+                    calendar.BookingTime = bookedTime;
                     calendar.Description = description;
                     _unitOfWork.SaveChanges();
                 }
