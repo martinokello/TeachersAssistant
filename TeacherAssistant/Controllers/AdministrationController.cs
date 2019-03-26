@@ -1052,12 +1052,15 @@ namespace TeacherAssistant.Controllers
             }
             if (ModelState.IsValid)
             {
+                var teacherCalendar =
+                    _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                 Teacher teacher = _repositoryServices.GetTeacherById(bookingTimeViewModel.TeacherId);
                 Student student = _repositoryServices.GetStudentById(bookingTimeViewModel.StudentId);
                 Subject subject = _repositoryServices.GetSubjectById(bookingTimeViewModel.SubjectId);
+                var bookingTimeId = teacherCalendar.BookingTime.BookingTimeId;
                 foreach (var bookingTime in bookingTimeViewModel.BookingTimes)
                 {
-                    _repositoryServices.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
+                    _repositoryServices.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
                         bookingTimeViewModel.Description);
                 }
 

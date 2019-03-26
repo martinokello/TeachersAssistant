@@ -489,15 +489,15 @@ namespace TeachersAssistant.Services.Concretes
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
             {
                 _unitOfWork.InitializeDbContext(dbContext);
-                var bookedTime = _unitOfWork._bookingTimeRepository.GetById((int)(bookingTime.BookingTimeId ?? Int32.Parse("-1")));
+                var calendar = _unitOfWork._calendarBookingRepository.GetAll().SingleOrDefault(p => p.BookingTimeId == bookingTime.BookingTimeId);
 
-                if (bookedTime == null)
+                if (calendar == null)
                 {
                     var bookingTimes = new BookingTime { StartTime = bookingTime.StartTime, EndTime = bookingTime.EndTime };
 
                     _unitOfWork._bookingTimeRepository.Add(bookingTimes);
                     _unitOfWork.SaveChanges();
-                    var calendar = new CalendarBooking
+                    calendar = new CalendarBooking
                     {
                         StudentId = (int)student.StudentId,
                         SubjectId = (int)subject.SubjectId,
@@ -511,10 +511,10 @@ namespace TeachersAssistant.Services.Concretes
                 }
                 else
                 {
-                    var calendar = _unitOfWork._calendarBookingRepository.GetAll().SingleOrDefault(p => p.BookingTimeId == bookedTime.BookingTimeId);
-                    bookedTime.StartTime = bookingTime.StartTime;
-                    bookedTime.EndTime = bookingTime.EndTime;
-                    calendar.BookingTime = bookedTime;
+                    var bkTime=_unitOfWork._bookingTimeRepository.GetById((int)bookingTime.BookingTimeId);
+                    bkTime.StartTime = bookingTime.StartTime;
+                    bkTime.EndTime = bookingTime.EndTime;
+                    calendar.BookingTime = bkTime;
                     calendar.Description = description;
                     _unitOfWork.SaveChanges();
                 }
