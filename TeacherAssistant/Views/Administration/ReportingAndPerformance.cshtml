@@ -314,10 +314,12 @@
     function handleDownload(downloadUrl) {
         var a = document.createElement("a");
         a.href = downloadUrl;
+        a.setAttribute('target', '_blank');
         document.body.appendChild(a);
         a.click();
         // cleanup
         document.body.remove(a); 
+        document.location.href = '@Url.Content("~/Administration/ViewGraphsAndReports")';
     }
 
     $(document).ready(function () {
