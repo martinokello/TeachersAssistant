@@ -311,24 +311,13 @@
         });
 
     }
-    function handleDownload(request) {
-
-        // Try to find out the filename from the content disposition `filename` value
-        var disposition = request.getResponseHeader('content-disposition');
-        var matches = /"([^"]*)"/.exec(disposition);
-        var filename = (matches != null && matches[1] ? matches[1] : 'file.xlsx');
-
-        // The actual download
-        var blob = new Blob([request.response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        var link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = filename;
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
+    function handleDownload(downloadUrl) {
+        var a = document.createElement("a");
+        a.href = downloadUrl;
+        document.body.appendChild(a);
+        a.click();
+        // cleanup
+        document.body.remove(a); 
     }
 
     $(document).ready(function () {
@@ -353,74 +342,19 @@
 
             switch(parseInt(reportType)) {
                 case 1:
-                    $.ajax({
-                        url: baseAveragesUrl,
-                        method: "GET",
-                        success: function (data, status, request) {
-                            if (data) {
-                                handleDownload(request);
-                            }
-                        },
-                        error: function (xHttpReq, error, msg) {
-
-                        }
-                    });
+                    handleDownload(baseSubmissionsUrl);
                 break;
                 case 2:
-                    $.ajax({
-                        url: baseMedianUrl,
-                        method: "GET",
-                        success: function (data, status, request) {
-                            if (data) {
-                                handleDownload(request);
-                            }
-                        },
-                        error: function (xHttpReq, error, msg) {
-
-                        }
-                    });
+                    handleDownload(baseMedianUrl);
                 break;
                 case 3:
-                    $.ajax({
-                        url: baseSubmissionsUrl,
-                        method: "GET",
-                        success: function (data, status, request) {
-                            if (data) {
-                                handleDownload(request);
-                            }
-                        },
-                        error: function (xHttpReq, error, msg) {
-
-                        }
-                    });
+                    handleDownload(baseSubmissionsUrl);
                 break;
                 case 4:
-                    $.ajax({
-                        url: studentGradesUrl,
-                        method: "GET",
-                        success: function (data, status, request) {
-                            if (data) {
-                                handleDownload(request);
-                            }
-                        },
-                        error: function (xHttpReq, error, msg) {
-
-                        }
-                    });
+                    handleDownload(studentGradesUrl);
                 break;
                 default:
-                $.ajax({
-                    url: baseSubmissionsUrl,
-                    method: "GET",
-                    success: function (data, status, request) {
-                        if (data) {
-                            handleDownload(request);
-                        }
-                    },
-                    error: function (xHttpReq, error, msg) {
-
-                    }
-                });
+                    handleDownload(baseSubmissionsUrl);
             }
         });
     });
