@@ -311,6 +311,26 @@
         });
 
     }
+    function handleDownload(request) {
+
+        // Try to find out the filename from the content disposition `filename` value
+        var disposition = request.getResponseHeader('content-disposition');
+        var matches = /"([^"]*)"/.exec(disposition);
+        var filename = (matches != null && matches[1] ? matches[1] : 'file.xlsx');
+
+        // The actual download
+        var blob = new Blob([request.response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+    }
+
     $(document).ready(function () {
 
         $('#subjectId').change(function () {
@@ -336,12 +356,10 @@
                     $.ajax({
                         url: baseAveragesUrl,
                         method: "GET",
-                        success: function (data) {
-                            for (let i = 0; i < data.length; i++) {
-                                averages.AverageGrade.push(data[i].AverageGrade);
-                                averages.YearDue.push(data[i].YearDue);
+                        success: function (data, status, request) {
+                            if (data) {
+                                handleDownload(request);
                             }
-                            PrintGraphsAverages(averages);
                         },
                         error: function (xHttpReq, error, msg) {
 
@@ -352,12 +370,10 @@
                     $.ajax({
                         url: baseMedianUrl,
                         method: "GET",
-                        success: function (data) {
-                            for (let i = 0; i < data.length; i++) {
-                                medians.MedianGrade.push(data[i].MedianGrade);
-                                medians.YearDue.push(data[i].YearDue);
+                        success: function (data, status, request) {
+                            if (data) {
+                                handleDownload(request);
                             }
-                            PrintGraphsMedians(medians);
                         },
                         error: function (xHttpReq, error, msg) {
 
@@ -368,12 +384,10 @@
                     $.ajax({
                         url: baseSubmissionsUrl,
                         method: "GET",
-                        success: function (data) {
-                            for (let i = 0; i < data.length; i++) {
-                                submissions.NumberOfStudents.push(data[i].NumberOfStudents);
-                                submissions.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                        success: function (data, status, request) {
+                            if (data) {
+                                handleDownload(request);
                             }
-                            PrintGraphsSubmissions(submissions);
                         },
                         error: function (xHttpReq, error, msg) {
 
@@ -384,13 +398,10 @@
                     $.ajax({
                         url: studentGradesUrl,
                         method: "GET",
-                        success: function (data) {
-                            for (let i = 0; i < data.length; i++) {
-                                studentGrades.NumberOfStudents.push(data[i].NumberOfStudents);
-                                studentGrades.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                        success: function (data, status, request) {
+                            if (data) {
+                                handleDownload(request);
                             }
-
-                            PrintGraphStudentGrades(studentGrades);
                         },
                         error: function (xHttpReq, error, msg) {
 
@@ -401,12 +412,10 @@
                 $.ajax({
                     url: baseSubmissionsUrl,
                     method: "GET",
-                    success: function (data) {
-                        for (let i = 0; i < data.length; i++) {
-                            submissions.NumberOfStudents.push(data[i].NumberOfStudents);
-                            submissions.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                    success: function (data, status, request) {
+                        if (data) {
+                            handleDownload(request);
                         }
-                        PrintGraphsSubmissions(submissions);
                     },
                     error: function (xHttpReq, error, msg) {
 
