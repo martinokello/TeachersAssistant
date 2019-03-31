@@ -9,16 +9,17 @@
 
 <div class="form-horizontal">
     <h4>Student Reporting And Performance</h4>
+
     <div class="form-group">
         @Html.Label("Subject", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "SubjectId" } })
         </div>
-    </div>                
+    </div>
     <div class="form-group">
         @Html.Label("StudentRole", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("StudentRole", ViewBag.RoleList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id="StudentRole" } })
+            @Html.DropDownList("StudentRole", ViewBag.RoleList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "StudentRole" } })
             @Html.ValidationMessage("StudentRole", "", new { @class = "text-danger" })
         </div>
     </div>
@@ -39,19 +40,40 @@
             <input type="submit" id="select" value="Select" class="btn btn-default" />
         </div>
     </div>
+    <div class="form-group">
+        @Html.Label("Download Reports in Excel", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownList("Reports", new List<SelectListItem>(){
+                new SelectListItem { Text="Select Report Type", Value="-1"},
+                 new SelectListItem { Text = "Average Grade Over Roles", Value = "1" },
+                 new SelectListItem { Text = "Median Grade Over Roles", Value = "2" },
+                 new SelectListItem { Text = "Student Grades Over All Roles", Value = "3" },
+                 new SelectListItem { Text = "Student Grades Over Particular Role", Value = "4" }
+                 }
+            , new { htmlAttributes = new { @class = "form-control", @id = "Reports" } })
+        </div>
+        <div class="col-md-2">
+            <input type="button" value="Download Report" id="generateReport" />
+        </div>
+    </div>
     <div class="container-fluid">
         <canvas id="studentGrades"></canvas>
         <canvas id="submissions"></canvas>
         <canvas id="averages"></canvas>
         <canvas id="medians"></canvas>
     </div>
-</div>
 
+</div>
 <script type="text/javascript">
     var submissions = { YearDue: [], NumberOfStudents: []};
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
     var studentGrades = { YearDue: [], NumberOfStudents: [] };
+
+    var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
+    var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+    var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+    var studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
 
     function PrintGraphStudentGrades(studentGrades) {
         if (studentGrades.NumberOfStudents.length > 0) {
@@ -130,7 +152,7 @@
     }
     function PrintGraphsMedians(medians) {
         if (medians.MedianGrade.length > 0) {
-            //print medians            
+            //print medians
             var medianGradeBarChart = new Chart(document.getElementById("medians"), {
             type: 'bar',
                 data: {
@@ -153,15 +175,8 @@
         });
         }
     }
-    function CallCharting() {
-        submissions = { YearDue: [], NumberOfStudents: [] };
-        medians = { YearDue: [], MedianGrade: [] };
-        averages = { YearDue: [], AverageGrade: [] };
-        studentGrades = { YearDue: [], NumberOfStudents: [] };
-        var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
-        var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
-        var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
-        var studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
+    function ComputeUrlPortions() {
+
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
@@ -199,7 +214,7 @@
                 }
             }
             else {
-               
+
                 baseSubmissionsUrl += "subjectId=" + subject;
                 baseAveragesUrl += "subjectId=" + subject;
                 baseMedianUrl += "subjectId=" + subject;
@@ -224,6 +239,19 @@
             baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
             studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
         }
+    }
+    function CallCharting() {
+        submissions = { YearDue: [], NumberOfStudents: [] };
+        medians = { YearDue: [], MedianGrade: [] };
+        averages = { YearDue: [], AverageGrade: [] };
+        studentGrades = { YearDue: [], NumberOfStudents: [] };
+
+        baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
+        baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+        baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+        studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
+
+        ComputeUrlPortions();
         $.ajax({
             url: studentGradesUrl,
             method: "GET",
@@ -287,9 +315,104 @@
 
         $('#subjectId').change(function () {
             CallCharting();
-        });        
+        });
         $('#select').click(function () {
                 CallCharting();
+        });
+
+        $('#generateReport').click(function(){
+
+            var reportType = $('#Reports').val();
+
+            baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportGroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
+            baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+            baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportMedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+            studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportNumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
+
+            ComputeUrlPortions();
+
+            switch(parseInt(reportType)) {
+                case 1:
+                    $.ajax({
+                        url: baseAveragesUrl,
+                        method: "GET",
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                averages.AverageGrade.push(data[i].AverageGrade);
+                                averages.YearDue.push(data[i].YearDue);
+                            }
+                            PrintGraphsAverages(averages);
+                        },
+                        error: function (xHttpReq, error, msg) {
+
+                        }
+                    });
+                break;
+                case 2:
+                    $.ajax({
+                        url: baseMedianUrl,
+                        method: "GET",
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                medians.MedianGrade.push(data[i].MedianGrade);
+                                medians.YearDue.push(data[i].YearDue);
+                            }
+                            PrintGraphsMedians(medians);
+                        },
+                        error: function (xHttpReq, error, msg) {
+
+                        }
+                    });
+                break;
+                case 3:
+                    $.ajax({
+                        url: baseSubmissionsUrl,
+                        method: "GET",
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                submissions.NumberOfStudents.push(data[i].NumberOfStudents);
+                                submissions.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                            }
+                            PrintGraphsSubmissions(submissions);
+                        },
+                        error: function (xHttpReq, error, msg) {
+
+                        }
+                    });
+                break;
+                case 4:
+                    $.ajax({
+                        url: studentGradesUrl,
+                        method: "GET",
+                        success: function (data) {
+                            for (let i = 0; i < data.length; i++) {
+                                studentGrades.NumberOfStudents.push(data[i].NumberOfStudents);
+                                studentGrades.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                            }
+
+                            PrintGraphStudentGrades(studentGrades);
+                        },
+                        error: function (xHttpReq, error, msg) {
+
+                        }
+                    });
+                break;
+                default:
+                $.ajax({
+                    url: baseSubmissionsUrl,
+                    method: "GET",
+                    success: function (data) {
+                        for (let i = 0; i < data.length; i++) {
+                            submissions.NumberOfStudents.push(data[i].NumberOfStudents);
+                            submissions.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                        }
+                        PrintGraphsSubmissions(submissions);
+                    },
+                    error: function (xHttpReq, error, msg) {
+
+                    }
+                });
+            }
         });
     });
 </script>

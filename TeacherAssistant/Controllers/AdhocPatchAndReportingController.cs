@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TeacherAssistant.Infrastructure;
 using TeachersAssistant.DataAccess;
 using TeachersAssistant.DataAccess.Concretes;
 using TeachersAssistant.DataAccess.Interfaces;
@@ -72,6 +74,20 @@ namespace TeacherAssistant.Controllers
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public FileResult ReportNumberOfStudentsGradedInSubjectAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+            ReportingGroupSubmission[] reportSubmissions = null;
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.NumberOfStudentsGradedInSubjectAndyearBtwnYears(yearStart, yearEnd, subjectId);
+            }
+
+            var fileName = string.Format("NumberOfStudentsReceivedGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+
+            return File(ReportingFacilities.ReportNumberOfStudentsReceivedGradeBySubjectRoleAndYear(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        [HttpGet]
         public JsonResult PercentileGradeBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
             PercentileGradeSubjectYear[] reportSubmissions = null;
@@ -97,6 +113,20 @@ namespace TeacherAssistant.Controllers
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public FileResult ReportGroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn(int yearStart, int yearEnd, int subjectId, string studentRole)
+        {
+            ReportingGroupSubmission[] reportSubmissions = null;
+
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn(yearStart, yearEnd, subjectId, studentRole);
+            }
+            var fileName = string.Format("NumberOfStudentsGroupReceivedGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+
+            return File(ReportingFacilities.ReportNumberOfStudentsReceivedGradeBySubjectRoleAndYear(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",fileName);
+        }
+        [HttpGet]
         public JsonResult AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
             AverageGradeSubjectYear[] reportSubmissions = null;
@@ -109,6 +139,19 @@ namespace TeacherAssistant.Controllers
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public FileResult ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
+        {
+            AverageGradeSubjectYear[] reportSubmissions = null;
+
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(yearStart, yearEnd, subjectId, studentRole);
+            }
+            var fileName = string.Format("AverageGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+            return File(ReportingFacilities.ReportAverageGradeAttainedGradeBySubjectRoleAndYear(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        [HttpGet]
         public JsonResult MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
             MedianGradeAttainedGrade[] reportSubmissions = null;
@@ -119,6 +162,19 @@ namespace TeacherAssistant.Controllers
             }
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public FileResult ReportMedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
+        {
+            MedianGradeAttainedGrade[] reportSubmissions = null;
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(yearStart, yearEnd, subjectId, studentRole);
+            }
+            
+            var fileName = string.Format("MedaianGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd,DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+            return File(ReportingFacilities.ReportMedianGradeAttainedGradeBySubjectRoleAndYear(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
         // GET: AdhocPatchAndReporting
         public ActionResult Index()

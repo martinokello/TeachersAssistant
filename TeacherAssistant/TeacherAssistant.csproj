@@ -63,6 +63,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\..\vbShare\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="FluentValidation, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
       <Private>True</Private>
@@ -331,6 +334,7 @@
     <Compile Include="Infrastructure\Interfaces\ICachable.cs" />
     <Compile Include="Infrastructure\Interfaces\IChartService.cs" />
     <Compile Include="Infrastructure\MartinLayooIncChat.cs" />
+    <Compile Include="Infrastructure\ReportingFacilities.cs" />
     <Compile Include="Models\AssignmentSubmissionViewModel.cs" />
     <Compile Include="Models\AssignmentViewModel.cs" />
     <Compile Include="Models\BookingTimeViewModel.cs" />
