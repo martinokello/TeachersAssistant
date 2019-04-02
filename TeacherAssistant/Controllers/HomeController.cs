@@ -15,7 +15,6 @@ using TeacherAssistant.Infrastructure;
 using TeacherAssistant.Models;
 using TeachersAssistant.DataAccess.Interfaces;
 using TeachersAssistant.Domain.Model.Models;
-using TeacherAssistant.Models;
 using TeachersAssistant.Services.Concretes;
 using System.Globalization;
 using CuttingEdge.Conditions;

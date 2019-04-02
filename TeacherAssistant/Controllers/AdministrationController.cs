@@ -1323,7 +1323,7 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
-                if(!Roles.IsUserInRole(role))
+                if(!Roles.IsUserInRole(user,role))
                 Roles.AddUserToRole(user, role);
                 return true;
             }
