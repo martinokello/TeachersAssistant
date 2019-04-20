@@ -108,7 +108,7 @@
                     datasets: [
                         {
                             label: "Year Of Assignments",
-                            backgroundColor: GetActualColourScheme(studentGrades),
+                            backgroundColor: GetActualColourScheme(studentGrades.YearDue),
                             data: studentGrades.NumberOfStudents
                         }
                     ]
@@ -133,7 +133,7 @@
                     datasets: [
                         {
                             label: "Year Of Assignments",
-                            backgroundColor: GetActualColourScheme(submissions),
+                            backgroundColor: GetActualColourScheme(submissions.YearDue),
                             data: submissions.NumberOfStudents
                         }
                     ]
@@ -158,7 +158,7 @@
                     datasets: [
                         {
                             label: "Year Of Assignments",
-                            backgroundColor: GetActualColourScheme(averages),
+                            backgroundColor: GetActualColourScheme(averages.YearDue),
                             data: averages.AverageGrade
                         }
                     ]
@@ -183,7 +183,7 @@
                     datasets: [
                         {
                             label: "Year Of Assignments",
-                            backgroundColor: GetActualColourScheme(medians),
+                            backgroundColor: GetActualColourScheme(medians.YearDue),
                             data: medians.MedianGrade
                         }
                     ]
