@@ -30,11 +30,10 @@
             <div style="width:100%;">
                 <div style="background-color: #DADADA; margin-left: 0px; margin-right: 0px;width:100%;">
                     <div style="float: left; width:67%;">
-                        <div id="txtMessages" style="border: solid 1px #999999; padding: 5px 5px 5px 5px;  	margin-top: 15px; margin-left: 10px; width: 96%; height: 240px; overflow-y: auto; overflow-x: hidden;  	font-family: Times New Roman; font-size: small; color: blue; background-color: White;">
+                        <div id="txtMessages" style="border: solid 1px #999999; padding: 5px 5px 5px 5px;  	margin-top: 15px; margin-left: 10px; width: 95%; height: 240px; overflow-y: auto; overflow-x: hidden;  	font-family: Times New Roman; font-size: small; color: blue; background-color: White;">
                         </div>
-                        <div style="margin-left: 10px; width:100%;">
-                            <textarea id="txtTypeHere" style="margin-top: 10px; width: 95%; height: 240px;" placeholder="Type messages here and click return or send button" title="type messages here and click return or send button" onkeyup="keyDownMessage(event);return false;"></textarea>
-                        </div>
+                        <textarea id="txtTypeHere" style="margin-top: 10px;margin-left: 10px;  width: 95%; height: 240px;" placeholder="Type messages here and click return or send button" title="type messages here and click return or send button" onkeyup="keyDownMessage(event);return false;"></textarea>
+                       
                         <div style="margin-top: 10px; margin-left: 10px; margin-bottom: 10px;">
                             <input type="button" id="btnSubmit" onclick="wasClicked();" value="Send" class="oneRowButton" />
                             <input type="button" id="btnInvite" value="Invite Friend" class="oneRowButton" onclick="InviteClient(); return false;" />
