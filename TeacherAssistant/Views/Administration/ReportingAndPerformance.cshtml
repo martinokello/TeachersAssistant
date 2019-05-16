@@ -225,7 +225,7 @@
             baseAveragesUrl += "&studentRole=" + studentRole;
             baseMedianUrl += "&studentRole=" + studentRole;
 
-            if (yearStart != "") {
+            if (yearStart) {
 
                 baseAveragesAcrossAllRolesUrl += "&yearStart=" + yearStart;
                 baseMedianAcrossAllRolesUrl += "&yearStart=" + yearStart;
@@ -233,7 +233,7 @@
                 baseAveragesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
                 studentGradesUrl += "&yearStart=" + yearStart;
-                if (yearEnd != "") {
+                if (yearEnd) {
 
                     baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
                     baseMedianAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
