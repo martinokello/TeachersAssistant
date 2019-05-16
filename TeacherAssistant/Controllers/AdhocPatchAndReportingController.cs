@@ -183,7 +183,7 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpGet]
-        public FileResult AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        public FileResult ReportAverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
             AverageGradeSubjectYear[] reportSubmissions = null;
 
@@ -194,6 +194,31 @@ namespace TeacherAssistant.Controllers
             }
             var fileName = string.Format("AverageGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
             return File(ReportingFacilities.ReportAverageGradeAttainedGradeBySubjectRoleAndYearAcrossAllRoles(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        [HttpGet]
+        public FileResult ReportMedianGradeAttainedGradeBySubjectAcrossAllRolesAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+            MedianGradeAttainedGrade[] reportSubmissions = null;
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(yearStart, yearEnd, subjectId);
+            }
+
+            var fileName = string.Format("MedaianGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+            return File(ReportingFacilities.ReportMedianGradeAttainedGradeBySubjectRoleAndYearAcrossAllRoles(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        [HttpGet]
+        public JsonResult AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+            AverageGradeSubjectYear[] reportSubmissions = null;
+
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(yearStart, yearEnd, subjectId);
+            }
+            return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
