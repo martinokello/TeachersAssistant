@@ -2,6 +2,10 @@ exec dbo.GroupSubmissionsBySubjectRoleAndYear
 go
 exec dbo.PercentileGroupedByGradeAndSubjectAndyear
 go
+exec dbo.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears 2019,2019,3
+go
+exec dbo.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears 2019,2019,5
+go
 exec dbo.AverageAttainedGradesGroupedByGradeAndSubjectAndyearBtwnYears 2019,2019,3,N'Gammar11Plus'
 go
 exec dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears 2019,2019,5,N'Grammar11Plus'
@@ -149,3 +153,39 @@ where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year
 group by sbj.SubjectName, subms.GradeNumeric, subms.StudentRole, Year(subms.DateDue)
 go
 --select * from dbo.AssignmentSubmissions
+
+if OBJECT_ID('AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears') IS NOT NULL
+drop procedure dbo.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears
+go
+create procedure dbo.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(
+ @YearBegin int,
+ @YearEnd int,
+ @subjectId int
+) 
+AS
+select cast(Avg(subms.GradeNumeric) as decimal) as AverageGrade, subms.Grade, sbj.SubjectName, Year(subms.DateDue) as YearDue
+from dbo.Students stds inner join dbo.AssignmentSubmissions subms
+on stds.StudentId = subms.StudentId 
+inner join dbo.Subjects sbj 
+on sbj.SubjectId = subms.SubjectId
+where sbj.SubjectId = @subjectId and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
+group by sbj.SubjectName, Year(subms.DateDue), subms.Grade
+go
+
+if OBJECT_ID('MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears') IS NOT NULL
+drop procedure dbo.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears
+go
+create procedure dbo.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(
+ @YearBegin int,
+ @YearEnd int,
+ @subjectId int
+) 
+AS
+select cast((select top 1 percentile_cont(0.5) within group(order by subms.GradeNumeric) over (partition by  Year(subms.DateDue))) as decimal) as MedianGrade,subms.Grade, sbj.SubjectName, Year(subms.DateDue) as YearDue
+from dbo.Students stds inner join dbo.AssignmentSubmissions subms
+on stds.StudentId = subms.StudentId 
+inner join dbo.Subjects sbj 
+on sbj.SubjectId = subms.SubjectId
+where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
+group by sbj.SubjectName, subms.GradeNumeric, Year(subms.DateDue), subms.Grade
+go
