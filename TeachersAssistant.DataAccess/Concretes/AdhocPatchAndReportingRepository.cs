@@ -277,6 +277,41 @@ namespace TeachersAssistant.DataAccess.Concretes
             return listItems.ToArray();
         }
 
+        public AverageMedianAttainedGrade[] AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole = "")
+        {
+            var listItems = new List<AverageMedianAttainedGrade>();
+
+            using (var con = DataBase().Connection)
+            {
+                var cmd = con.CreateCommand();
+                cmd.CommandText = "dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@StudentRole", System.Data.SqlDbType.NVarChar));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
+                cmd.Parameters["@StudentRole"].Value = studentRole;
+                con.Open();
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    listItems.Add(new AverageMedianAttainedGrade
+                    {
+                        MedianGrade = reader["MedianGrade"] == DBNull.Value ? 0 : (decimal)reader["MedianGrade"],
+                        AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (decimal)reader["AverageGrade"],
+                        StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
+                        SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
+                    });
+                }
+            }
+            return listItems.ToArray();
+        }
+
         public MedianGradeAttainedGrade[] MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
 

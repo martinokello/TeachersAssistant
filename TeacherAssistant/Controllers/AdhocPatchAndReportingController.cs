@@ -232,5 +232,31 @@ namespace TeacherAssistant.Controllers
 
             return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
         }
+        
+        [HttpGet]
+        public JsonResult AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole = "")
+        {
+            AverageMedianAttainedGrade[] reportSubmissions = null;
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(yearStart, yearEnd, subjectId, studentRole);
+            }
+
+            return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public FileResult ReportAverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole = "")
+        {
+            AverageMedianAttainedGrade[] reportSubmissions = null;
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(yearStart, yearEnd, subjectId, studentRole);
+            }
+
+            var fileName = string.Format("MedaianGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+            return File(ReportingFacilities.ReportAverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
     }
 }

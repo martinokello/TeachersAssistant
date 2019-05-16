@@ -59,6 +59,7 @@
         </div>
     </div>
     <div class="container-fluid">
+        <canvas id="averageMedian"></canvas>
         <canvas id="studentGrades"></canvas>
         <canvas id="submissions"></canvas>
         <canvas id="averages"></canvas>
@@ -71,6 +72,7 @@
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
     var studentGrades = { YearDue: [], NumberOfStudents: [] };
+    var averageMedianGrades = { YearDue: [], AverageGrade: [], MedianGrade: [] };
     var ignoreRoles = false;
 
     var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
@@ -79,6 +81,7 @@
     var baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
     var baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
     var studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
+    var averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears")";
     function GetActualColourScheme(data) {
         let result = [];
         for (var n = 0; n < data.length; n++) {
@@ -203,6 +206,54 @@
         });
         }
     }
+    function PrintGraphAverageMedianGrades(averageMedianGrades) {
+        if (averageMedianGrades.MedianGrade.length > 0) {
+            //print medians
+            var medianAverageGradeBarChart1 = new Chart(document.getElementById("averageMedian"), {
+                type: 'bar',
+                data: {
+                    labels: medians.YearDue,
+                    datasets: [
+                        {
+                            label: "Year Of Assignments",
+                            backgroundColor: GetActualColourScheme(medians.YearDue),
+                            data: medians.MedianGrade
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Median Grades Over The years'
+                    }
+                }
+            });
+        } if (averageMedianGrades.AverageGrade.length > 0) {
+            //print medians
+            var medianAverageGradeBarChart2 = new Chart(document.getElementById("averageMedian"), {
+                type: 'bar',
+                data: {
+                    labels: medians.YearDue,
+                    datasets: [
+                        {
+                            label: "Year Of Assignments",
+                            backgroundColor: GetActualColourScheme(medians.YearDue),
+                            data: medians.AverageGrade
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Average Grades Over The years'
+                    }
+                }
+            });
+        }
+    }
+
     function ComputeUrlPortions() {
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
@@ -220,10 +271,12 @@
             studentGradesUrl += "subjectId=" + subject;
             baseAveragesAcrossAllRolesUrl += "subjectId=" + subject;
             baseMedianAcrossAllRolesUrl += "subjectId=" + subject;
+            averageAndMedianUrl += "&subjectId=" + subject;
 
             baseSubmissionsUrl += "&studentRole=" + studentRole;
             baseAveragesUrl += "&studentRole=" + studentRole;
             baseMedianUrl += "&studentRole=" + studentRole;
+            averageAndMedianUrl += "&studentRole==" + studentRole;
 
             if (yearStart) {
 
@@ -233,6 +286,7 @@
                 baseAveragesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
                 studentGradesUrl += "&yearStart=" + yearStart;
+                averageAndMedianUrl += "&yearStart=" + yearStart;
                 if (yearEnd) {
 
                     baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
@@ -241,6 +295,7 @@
                     baseAveragesUrl += "&yearEnd=" + yearEnd;
                     baseMedianUrl += "&yearEnd=" + yearEnd;
                     studentGradesUrl += "&yearEnd=" + yearEnd;
+                    averageAndMedianUrl += "&yearEnd=" + yearEnd;
                 }
                 else {
                     baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearStart;
@@ -249,6 +304,7 @@
                     baseAveragesUrl += "&yearEnd=" + yearStart;
                     baseMedianUrl += "&yearEnd=" + yearStart;
                     studentGradesUrl += "&yearEnd=" + yearStart;
+                    averageAndMedianUrl += "&yearEnd=" + yearStart;
                 }
             }
             else {
@@ -261,6 +317,7 @@
                 baseMedianAcrossAllRolesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
                 studentGradesUrl += "&yearStart=" + yearStart;
+                averageAndMedianUrl += "&yearStart=" + yearStart;
 
                 baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
                 baseMedianAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
@@ -268,6 +325,7 @@
                 baseAveragesUrl += "&yearEnd=" + yearEnd;
                 baseMedianUrl += "&yearEnd=" + yearEnd;
                 studentGradesUrl += "&yearEnd=" + yearEnd;
+                averageAndMedianUrl += "&yearStart=" + yearEnd;
             }
         }
         else {
@@ -277,6 +335,7 @@
              baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
              baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
              studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
+            averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears")";
         }
     }
     function CallCharting() {
@@ -284,6 +343,7 @@
         medians = { YearDue: [], MedianGrade: [] };
         averages = { YearDue: [], AverageGrade: [] };
         studentGrades = { YearDue: [], NumberOfStudents: [] };
+        averageMedianGrades = { YearDue: [], AverageGrade: [], MedianGrade: [] };
 
         baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
         baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
@@ -291,6 +351,7 @@
         studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
         baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
         baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
+        averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears?")";
 
         ComputeUrlPortions();
         $.ajax({
@@ -303,6 +364,23 @@
                 }
 
                 PrintGraphStudentGrades(studentGrades);
+            },
+            error: function (xHttpReq, error, msg) {
+
+            }
+        });
+        $.ajax({
+            url: averageAndMedianUrl,
+            method: "GET",
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    
+                    averageMedianGrades.AverageGrade.push(data[i].AverageGrade);
+                    averageMedianGrades.MedianGrade.push(data[i].MedianGrade);
+                    averageMedianGrades.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
+                }
+
+                PrintGraphAverageMedianGrades(averageMedianGrades);
             },
             error: function (xHttpReq, error, msg) {
 
@@ -415,6 +493,7 @@
             studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportNumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
             baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportAverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
             baseMedianAcrossAllRolesUrl =  "@Url.Content("~/ReportMedianGradeAttainedGradeBySubjectAcrossAllRolesAndYearForParticualarSubjectBtwnYears?")";
+            averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears?")";
 
             ComputeUrlPortions();
 
@@ -436,6 +515,9 @@
                     break;
                 case 6:
                     handleDownload(baseMedianAcrossAllRolesUrl);
+                    break;
+                case 7:
+                    handleDownload(averageAndMedianUrl);
                     break;
                 default:
                     handleDownload(baseSubmissionsUrl);
