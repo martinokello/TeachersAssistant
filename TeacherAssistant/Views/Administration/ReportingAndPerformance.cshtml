@@ -209,7 +209,8 @@
         var yearEnd = $('#YearEnd').val();
         var studentRole = $('#StudentRole').val();
         //Compute BaseSubmissionsUrls:
-        if (!studentRole) ignoreRoles = true;
+        if (studentRole) ignoreRoles = false;
+        else ignoreRoles = true;
         
 
         if (subject > 0) {
