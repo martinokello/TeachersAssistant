@@ -4,6 +4,8 @@ exec dbo.NumberOfStudentsGradedInSubjectAndyearBtwnYears
 go
 exec dbo.PercentileGroupedByGradeAndSubjectAndyear 2019,2019, 1, N'StatePrimary'
 go
+exec dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears 2019,2019,1,''
+go
 exec dbo.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears 2019,2019,3
 go
 exec dbo.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears 2019,2019,5
@@ -210,6 +212,7 @@ from
 where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
 group by SubjectName,YearDue, Grade
 go
+
 if OBJECT_ID('AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears') IS NOT NULL
 drop procedure dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears
 go
@@ -221,10 +224,15 @@ create procedure dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyear
 ) 
 AS
 if @StudentRole = ''
-select Avg(GradeNumeric) as MedianGrade, Avg(AverageGrade) as AverageGrade, SubjectName, YearDue
+select Avg(GradeNumeric) as MedianGrade, AverageGrade as AverageGrade, SubjectName, YearDue
 from
 	(
-		select subms.GradeNumeric as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
+		select (select Avg(subms.GradeNumeric) from (
+				dbo.Students stds inner join dbo.AssignmentSubmissions subms
+				on stds.StudentId = subms.StudentId 
+				inner join dbo.Subjects sbj 
+				on sbj.SubjectId = subms.SubjectId
+			)) as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
 		row_number() over(order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
 		row_number() over(order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
 		from (
@@ -236,9 +244,14 @@ from
 		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
 	) as x
 where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
-group by SubjectName,YearDue
+group by SubjectName,YearDue, AverageGrade
 else
-select Avg(GradeNumeric) as MedianGrade, Avg(AverageGrade) as AverageGrade, SubjectName, YearDue
+select (select Avg(subms.GradeNumeric) from (
+				dbo.Students stds inner join dbo.AssignmentSubmissions subms
+				on stds.StudentId = subms.StudentId 
+				inner join dbo.Subjects sbj 
+				on sbj.SubjectId = subms.SubjectId
+			)) as AverageGrade, Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue
 from
 	(
 		select subms.GradeNumeric as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
@@ -253,5 +266,5 @@ from
 		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd and subms.StudentRole = @StudentRole 
 	) as x
 where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
-group by SubjectName,YearDue
+group by SubjectName,YearDue,AverageGrade
 go
