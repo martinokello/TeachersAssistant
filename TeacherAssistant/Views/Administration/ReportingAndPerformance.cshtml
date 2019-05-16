@@ -48,7 +48,9 @@
                  new SelectListItem { Text = "Average Grade Over Roles", Value = "1" },
                  new SelectListItem { Text = "Median Grade Over Roles", Value = "2" },
                  new SelectListItem { Text = "Student Grades Over All Roles", Value = "3" },
-                 new SelectListItem { Text = "Student Grades Over Particular Role", Value = "4" }
+                 new SelectListItem { Text = "Student Grades Over Particular Role", Value = "4" },
+                 new SelectListItem { Text = "Average Grades Across All Roles", Value = "5" },
+                 new SelectListItem { Text = "Median Grades Across All Roles", Value = "6" }
                  }
             , new { htmlAttributes = new { @class = "form-control", @id = "Reports" } })
         </div>
@@ -417,6 +419,8 @@
             baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
             baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportMedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
             studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportNumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
+            baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
+            baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
 
             ComputeUrlPortions();
 
@@ -432,7 +436,13 @@
                 break;
                 case 4:
                     handleDownload(studentGradesUrl);
-                break;
+                    break;
+                case 5:
+                    handleDownload(baseAveragesAcrossAllRolesUrl);
+                    break;
+                case 6:
+                    handleDownload(baseMedianAcrossAllRolesUrl);
+                    break;
                 default:
                     handleDownload(baseSubmissionsUrl);
             }
