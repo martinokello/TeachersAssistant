@@ -361,9 +361,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\left-sidebar.html" />
-    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\no-sidebar.html" />
-    <Content Include="Areas\CollegeAndPostGraduate\Views\Shared\right-sidebar.html" />
     <Content Include="Areas\Grammar11Plus\Views\Home\BookTeacherHelpTime.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\ContactUs.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\FreeDocuments.cshtml" />
@@ -371,12 +368,6 @@
     <Content Include="Areas\Grammar11Plus\Views\Home\OnlineClassRoom.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\PaidDocuments.cshtml" />
     <Content Include="Areas\Grammar11Plus\Views\Home\TeachersCalendar.cshtml" />
-    <Content Include="Areas\Grammar11Plus\Views\Shared\left-sidebar.html" />
-    <Content Include="Areas\Grammar11Plus\Views\Shared\no-sidebar.html" />
-    <Content Include="Areas\Grammar11Plus\Views\Shared\right-sidebar.html" />
-    <Content Include="Areas\SecondarySchool\Views\Shared\left-sidebar.html" />
-    <Content Include="Areas\SecondarySchool\Views\Shared\no-sidebar.html" />
-    <Content Include="Areas\SecondarySchool\Views\Shared\right-sidebar.html" />
     <Content Include="Areas\StateJunior\Views\Home\BookTeacherHelpTime.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\ContactUs.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\FreeDocuments.cshtml" />
@@ -384,12 +375,6 @@
     <Content Include="Areas\StateJunior\Views\Home\OnlineClassRoom.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\PaidDocuments.cshtml" />
     <Content Include="Areas\StateJunior\Views\Home\TeachersCalendar.cshtml" />
-    <Content Include="Areas\StateJunior\Views\Shared\left-sidebar.html" />
-    <Content Include="Areas\StateJunior\Views\Shared\no-sidebar.html" />
-    <Content Include="Areas\StateJunior\Views\Shared\right-sidebar.html" />
-    <Content Include="Areas\StatePrimary\Views\Shared\left-sidebar.html" />
-    <Content Include="Areas\StatePrimary\Views\Shared\no-sidebar.html" />
-    <Content Include="Areas\StatePrimary\Views\Shared\right-sidebar.html" />
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\ie8.css" />
     <Content Include="assets\css\ie9.css" />
@@ -587,7 +572,6 @@
     </Content>
     <Content Include="Areas\Grammar11Plus\Views\web.config" />
     <Content Include="Areas\Grammar11Plus\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Grammar11Plus\Views\Shared\SuccessfullCreation.cshtml" />
     <Content Include="Areas\StateJunior\Views\Shared\SuccessfullCreation.cshtml" />
     <Content Include="Areas\StatePrimary\Views\Shared\SuccessfullCreation.cshtml" />
     <Content Include="Documents\Grammar11Plus\PaidDocuments\FluxRenewalInsurance.pdf" />

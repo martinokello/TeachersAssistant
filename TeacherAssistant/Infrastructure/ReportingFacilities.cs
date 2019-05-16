@@ -130,5 +130,10 @@ namespace TeacherAssistant.Infrastructure
             fileInfo.Position = 0;
             return fileInfo;
         }
+
+        internal static byte[] ReportAverageGradeAttainedGradeBySubjectRoleAndYearAcrossAllRoles(string fileName, AverageGradeSubjectYear[] reportSubmissions)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

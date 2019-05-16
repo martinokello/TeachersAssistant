@@ -211,6 +211,38 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
+
+        public AverageGradeSubjectYear[] AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+            var listItems = new List<AverageGradeSubjectYear>();
+
+            using (var con = DataBase().Connection)
+            {
+                var cmd = con.CreateCommand();
+                cmd.CommandText = "dbo.AverageAttainedGradesGroupedByGradeAndSubjectAndyearBtwnYears";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
+                con.Open();
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    listItems.Add(new AverageGradeSubjectYear
+                    {
+                        AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (decimal)reader["AverageGrade"],
+                        SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
+                    });
+                }
+            }
+            return listItems.ToArray();
+        }
+
         public AverageGradeSubjectYear[] AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
             var listItems = new List<AverageGradeSubjectYear>();
@@ -244,6 +276,41 @@ namespace TeachersAssistant.DataAccess.Concretes
             }
             return listItems.ToArray();
         }
+
+        public MedianGradeAttainedGrade[] MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+
+            var listItems = new List<MedianGradeAttainedGrade>();
+
+            using (var con = DataBase().Connection)
+            {
+                var cmd = con.CreateCommand();
+                cmd.CommandText = "dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@subjectId", System.Data.SqlDbType.Int));
+
+                cmd.Parameters["@YearBegin"].Value = yearStart;
+                cmd.Parameters["@YearEnd"].Value = yearEnd;
+                cmd.Parameters["@subjectId"].Value = subjectId;
+                con.Open();
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var type = reader["MedianGrade"].GetType();
+                    listItems.Add(new MedianGradeAttainedGrade
+                    {
+                        MedianGrade = reader["MedianGrade"] == DBNull.Value ? 0 : (decimal)reader["MedianGrade"],
+                        SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
+                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
+                    });
+                }
+            }
+            return listItems.ToArray();
+        }
+
         public MedianGradeAttainedGrade[] MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
 

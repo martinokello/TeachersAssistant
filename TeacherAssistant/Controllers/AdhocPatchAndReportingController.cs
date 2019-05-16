@@ -181,5 +181,31 @@ namespace TeacherAssistant.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public FileResult AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+            AverageGradeSubjectYear[] reportSubmissions = null;
+
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(yearStart, yearEnd, subjectId);
+            }
+            var fileName = string.Format("AverageGrades_{0}_{1}_{2}.xlsx", yearStart, yearEnd, DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+            return File(ReportingFacilities.ReportAverageGradeAttainedGradeBySubjectRoleAndYearAcrossAllRoles(fileName, reportSubmissions), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        [HttpGet]
+        public JsonResult MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
+        {
+            MedianGradeAttainedGrade[] reportSubmissions = null;
+            using (var dbContext = new TeachersAssistantDbContext())
+            {
+                adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
+                reportSubmissions = adhocPatchAndReportingRepository.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(yearStart, yearEnd, subjectId);
+            }
+
+            return Json(reportSubmissions, JsonRequestBehavior.AllowGet);
+        }
     }
 }

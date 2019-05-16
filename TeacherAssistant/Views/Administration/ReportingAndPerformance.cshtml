@@ -69,10 +69,13 @@
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
     var studentGrades = { YearDue: [], NumberOfStudents: [] };
+    var ignoreRoles = false;
 
     var baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
     var baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
     var baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+    var baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
+    var baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
     var studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
     function GetActualColourScheme(data) {
         let result = [];
@@ -199,17 +202,21 @@
         }
     }
     function ComputeUrlPortions() {
-
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
         var studentRole = $('#StudentRole').val();
+        //Compute BaseSubmissionsUrls:
+        if (!studentRole) ignoreRoles = true;
+        
 
         if (subject > 0) {
             baseSubmissionsUrl += "subjectId=" + subject;
             baseAveragesUrl += "subjectId=" + subject;
             baseMedianUrl += "subjectId=" + subject;
             studentGradesUrl += "subjectId=" + subject;
+            baseAveragesAcrossAllRolesUrl += "subjectId=" + subject;
+            baseMedianAcrossAllRolesUrl += "subjectId=" + subject;
 
             baseSubmissionsUrl += "&studentRole=" + studentRole;
             baseAveragesUrl += "&studentRole=" + studentRole;
@@ -217,19 +224,24 @@
 
             if (yearStart != "") {
 
+                baseAveragesAcrossAllRolesUrl += "&yearStart=" + yearStart;
+                baseMedianAcrossAllRolesUrl += "&yearStart=" + yearStart;
                 baseSubmissionsUrl += "&yearStart=" + yearStart;
                 baseAveragesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
                 studentGradesUrl += "&yearStart=" + yearStart;
                 if (yearEnd != "") {
 
+                    baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
+                    baseMedianAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
                     baseSubmissionsUrl += "&yearEnd=" + yearEnd;
                     baseAveragesUrl += "&yearEnd=" + yearEnd;
                     baseMedianUrl += "&yearEnd=" + yearEnd;
                     studentGradesUrl += "&yearEnd=" + yearEnd;
                 }
                 else {
-
+                    baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearStart;
+                    baseMedianAcrossAllRolesUrl += "&yearEnd=" + yearStart;
                     baseSubmissionsUrl += "&yearEnd=" + yearStart;
                     baseAveragesUrl += "&yearEnd=" + yearStart;
                     baseMedianUrl += "&yearEnd=" + yearStart;
@@ -238,6 +250,8 @@
             }
             else {
 
+                baseAveragesAcrossAllRolesUrl += "subjectId=" + subject;
+                baseMedianAcrossAllRolesUrl += "subjectId=" + subject;
                 baseSubmissionsUrl += "subjectId=" + subject;
                 baseAveragesUrl += "subjectId=" + subject;
                 baseMedianUrl += "subjectId=" + subject;
@@ -247,9 +261,13 @@
                 var yearEnd = '@DateTime.Now.Year';
                 baseSubmissionsUrl += "&yearStart=" + yearStart;
                 baseAveragesUrl += "&yearStart=" + yearStart;
+                baseAveragesAcrossAllRolesUrl += "&yearStart=" + yearStart;
+                baseMedianAcrossAllRolesUrl += "&yearStart=" + yearStart;
                 baseMedianUrl += "&yearStart=" + yearStart;
                 studentGradesUrl += "&yearStart=" + yearStart;
 
+                baseAveragesAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
+                baseMedianAcrossAllRolesUrl += "&yearEnd=" + yearEnd;
                 baseSubmissionsUrl += "&yearEnd=" + yearEnd;
                 baseAveragesUrl += "&yearEnd=" + yearEnd;
                 baseMedianUrl += "&yearEnd=" + yearEnd;
@@ -257,10 +275,12 @@
             }
         }
         else {
-            baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
-            baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
-            baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
-            studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
+             baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
+             baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+             baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
+             baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
+             baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
+             studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
         }
     }
     function CallCharting() {
@@ -273,6 +293,8 @@
         baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
         studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
+        baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
+        baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
 
         ComputeUrlPortions();
         $.ajax({
@@ -304,34 +326,67 @@
 
             }
         });
-        $.ajax({
-            url: baseAveragesUrl,
-            method: "GET",
-            success: function (data) {
-                for (let i = 0; i < data.length; i++) {
-                    averages.AverageGrade.push(data[i].AverageGrade);
-                    averages.YearDue.push(data[i].YearDue);
-                }
-                PrintGraphsAverages(averages);
-            },
-            error: function (xHttpReq, error, msg) {
+        if (!ignoreRoles) {
+            $.ajax({
+                url: baseAveragesUrl,
+                method: "GET",
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        averages.AverageGrade.push(data[i].AverageGrade);
+                        averages.YearDue.push(data[i].YearDue);
+                    }
+                    PrintGraphsAverages(averages);
+                },
+                error: function (xHttpReq, error, msg) {
 
-            }
-        });
-        $.ajax({
-            url: baseMedianUrl,
-            method: "GET",
-            success: function (data) {
-                for (let i = 0; i < data.length; i++) {
-                    medians.MedianGrade.push(data[i].MedianGrade);
-                    medians.YearDue.push(data[i].YearDue);
                 }
-                PrintGraphsMedians(medians);
-            },
-            error: function (xHttpReq, error,msg) {
+            });
+            $.ajax({
+                url: baseMedianUrl,
+                method: "GET",
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        medians.MedianGrade.push(data[i].MedianGrade);
+                        medians.YearDue.push(data[i].YearDue);
+                    }
+                    PrintGraphsMedians(medians);
+                },
+                error: function (xHttpReq, error, msg) {
 
-            }
-        });
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: baseAveragesAcrossRolesUrl,
+                method: "GET",
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        averages.AverageGrade.push(data[i].AverageGrade);
+                        averages.YearDue.push(data[i].YearDue);
+                    }
+                    PrintGraphsAverages(averages);
+                },
+                error: function (xHttpReq, error, msg) {
+
+                }
+            });
+            $.ajax({
+                url: baseMedianAcrossRolesUrl,
+                method: "GET",
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        medians.MedianGrade.push(data[i].MedianGrade);
+                        medians.YearDue.push(data[i].YearDue);
+                    }
+                    PrintGraphsMedians(medians);
+                },
+                error: function (xHttpReq, error, msg) {
+
+                }
+            });
+        }
+
 
     }
     function handleDownload(downloadUrl) {
