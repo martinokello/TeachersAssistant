@@ -361,7 +361,7 @@
         }
         else {
             $.ajax({
-                url: baseAveragesAcrossRolesUrl,
+                url: baseAveragesAcrossAllRolesUrl,
                 method: "GET",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
@@ -375,7 +375,7 @@
                 }
             });
             $.ajax({
-                url: baseMedianAcrossRolesUrl,
+                url: baseMedianAcrossAllRolesUrl,
                 method: "GET",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
