@@ -273,12 +273,12 @@
             studentGradesUrl += "subjectId=" + subject;
             baseAveragesAcrossAllRolesUrl += "subjectId=" + subject;
             baseMedianAcrossAllRolesUrl += "subjectId=" + subject;
-            averageAndMedianUrl += "&subjectId=" + subject;
+            averageAndMedianUrl += "subjectId=" + subject;
 
             baseSubmissionsUrl += "&studentRole=" + studentRole;
             baseAveragesUrl += "&studentRole=" + studentRole;
             baseMedianUrl += "&studentRole=" + studentRole;
-            averageAndMedianUrl += "&studentRole==" + studentRole;
+            averageAndMedianUrl += "&studentRole=" + studentRole;
 
             if (yearStart) {
 
@@ -327,7 +327,7 @@
                 baseAveragesUrl += "&yearEnd=" + yearEnd;
                 baseMedianUrl += "&yearEnd=" + yearEnd;
                 studentGradesUrl += "&yearEnd=" + yearEnd;
-                averageAndMedianUrl += "&yearStart=" + yearEnd;
+                averageAndMedianUrl += "&yearEnd=" + yearEnd;
             }
         }
         else {

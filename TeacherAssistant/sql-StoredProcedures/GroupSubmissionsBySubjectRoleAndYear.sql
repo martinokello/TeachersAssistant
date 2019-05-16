@@ -223,8 +223,8 @@ create procedure dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyear
  @StudentRole nvarchar(max)
 ) 
 AS
-if @StudentRole = ''
-select Avg(GradeNumeric) as MedianGrade, AverageGrade as AverageGrade, SubjectName, YearDue
+if @StudentRole = N''
+select Avg(GradeNumeric) as MedianGrade, AverageGrade as AverageGrade, SubjectName, YearDue, StudentRole=N''
 from
 	(
 		select (select Avg(subms.GradeNumeric) from (
@@ -251,7 +251,7 @@ select (select Avg(subms.GradeNumeric) from (
 				on stds.StudentId = subms.StudentId 
 				inner join dbo.Subjects sbj 
 				on sbj.SubjectId = subms.SubjectId
-			)) as AverageGrade, Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue
+			)) as AverageGrade, Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, StudentRole = @StudentRole
 from
 	(
 		select subms.GradeNumeric as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
