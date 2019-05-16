@@ -63,7 +63,8 @@
         <canvas id="studentGrades"></canvas>
         <canvas id="submissions"></canvas>
         <canvas id="averages"></canvas>
-        <canvas id="medians"></canvas>
+        <canvas id="averageOverAll"></canvas>
+        <canvas id="medianOverAll"></canvas>
     </div>
 
 </div>
@@ -209,7 +210,7 @@
     function PrintGraphAverageMedianGrades(averageMedianGrades) {
         if (averageMedianGrades.MedianGrade.length > 0) {
             //print medians
-            var medianAverageGradeBarChart1 = new Chart(document.getElementById("averageMedian"), {
+            var medianAverageGradeBarChart1 = new Chart(document.getElementById("medianOverAll"), {
                 type: 'bar',
                 data: {
                     labels: medians.YearDue,
@@ -231,7 +232,7 @@
             });
         } if (averageMedianGrades.AverageGrade.length > 0) {
             //print medians
-            var medianAverageGradeBarChart2 = new Chart(document.getElementById("averageMedian"), {
+            var medianAverageGradeBarChart2 = new Chart(document.getElementById("averageOverAll"), {
                 type: 'bar',
                 data: {
                     labels: medians.YearDue,
