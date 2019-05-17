@@ -232,7 +232,7 @@ from
 				on stds.StudentId = subms.StudentId 
 				inner join dbo.Subjects sbj 
 				on sbj.SubjectId = subms.SubjectId
-			)) as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
+			) where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd) as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
 		row_number() over(order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
 		row_number() over(order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
 		from (
@@ -251,7 +251,7 @@ select (select Avg(subms.GradeNumeric) from (
 				on stds.StudentId = subms.StudentId 
 				inner join dbo.Subjects sbj 
 				on sbj.SubjectId = subms.SubjectId
-			)) as AverageGrade, Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, StudentRole = @StudentRole
+			)where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd) as AverageGrade, Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, StudentRole = @StudentRole
 from
 	(
 		select subms.GradeNumeric as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
