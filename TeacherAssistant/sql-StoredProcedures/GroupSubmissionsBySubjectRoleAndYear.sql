@@ -148,10 +148,10 @@ create procedure dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears
  @StudentRole nvarchar(max)
 ) 
 AS
-select Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, Grade, StudentRole
+select Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, Grade, StudentRole, submissionsId
 from
 	(
-		select subms.GradeNumeric as GradeNumeric,subms.Grade as Grade, subms.StudentRole, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
+		select subms.GradeNumeric as GradeNumeric,subms.Grade as Grade, subms.StudentRole, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue, subms.AssignmentSubmissionId as submissionsId,
 		row_number() over(partition by subms.Grade order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
 		row_number() over(partition by subms.Grade order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
 		from (
@@ -162,8 +162,9 @@ from
 			)
 		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd  and subms.StudentRole = @StudentRole
 	) as x
-where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
-group by SubjectName,YearDue, Grade, StudentRole
+where x.rowAsc in (x.rowDes, x.rowDes-1, x.rowDes + 1)
+group by SubjectName,YearDue, Grade, StudentRole,submissionsId
+order by submissionsId
 go
 
 --select * from dbo.AssignmentSubmissions
@@ -195,10 +196,10 @@ create procedure dbo.MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAn
  @subjectId int
 ) 
 AS
-select Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, Grade
+select Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, Grade, submissionsId
 from
 	(
-		select subms.GradeNumeric as GradeNumeric,subms.Grade as Grade, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
+		select subms.GradeNumeric as GradeNumeric,subms.Grade as Grade, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue, subms.AssignmentSubmissionId as submissionsId,
 		row_number() over(partition by subms.Grade order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
 		row_number() over(partition by subms.Grade order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
 		from (
@@ -209,9 +210,11 @@ from
 			)
 		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
 	) as x
-where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
-group by SubjectName,YearDue, Grade
+where x.rowAsc in (x.rowDes, x.rowDes-1, x.rowDes + 1)
+group by SubjectName,YearDue, Grade, submissionsId
+order by submissionsId
 go
+
 
 if OBJECT_ID('AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears') IS NOT NULL
 drop procedure dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears
@@ -224,47 +227,57 @@ create procedure dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyear
 ) 
 AS
 if @StudentRole = N''
-select Avg(GradeNumeric) as MedianGrade, AverageGrade as AverageGrade, SubjectName, YearDue, StudentRole=N''
-from
-	(
-		select (select Avg(subms.GradeNumeric) from (
-				dbo.Students stds inner join dbo.AssignmentSubmissions subms
-				on stds.StudentId = subms.StudentId 
-				inner join dbo.Subjects sbj 
-				on sbj.SubjectId = subms.SubjectId
-			) where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd) as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
-		row_number() over(order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
-		row_number() over(order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
-		from (
-				dbo.Students stds inner join dbo.AssignmentSubmissions subms
-				on stds.StudentId = subms.StudentId 
-				inner join dbo.Subjects sbj 
-				on sbj.SubjectId = subms.SubjectId
-			)
-		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
-	) as x
-where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
-group by SubjectName,YearDue, AverageGrade
+	Begin
+	select  Avg(GradeNumeric) as AverageGrade, sbj.SubjectName, Year(subms.DateDue) as YearDue, StudentRole=@StudentRole
+	from(				
+			dbo.Students stds inner join dbo.AssignmentSubmissions subms
+			on stds.StudentId = subms.StudentId 
+			inner join dbo.Subjects sbj 
+			on sbj.SubjectId = subms.SubjectId
+		) where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
+		group by sbj.SubjectName, Year(subms.DateDue)
+
+	select distinct Avg(GradeNumeric) as MedianGrade
+	from
+		(
+			select subms.GradeNumeric as GradeNumeric, subms.AssignmentSubmissionId as submissionsId,
+			row_number() over(order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
+			row_number() over(order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
+			from (
+					dbo.Students stds inner join dbo.AssignmentSubmissions subms
+					on stds.StudentId = subms.StudentId 
+					inner join dbo.Subjects sbj 
+					on sbj.SubjectId = subms.SubjectId
+				)
+			where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd
+		) as x
+	where x.rowAsc in (x.rowDes, x.rowDes-1, x.rowDes + 1)
+	end
 else
-select (select Avg(subms.GradeNumeric) from (
-				dbo.Students stds inner join dbo.AssignmentSubmissions subms
-				on stds.StudentId = subms.StudentId 
-				inner join dbo.Subjects sbj 
-				on sbj.SubjectId = subms.SubjectId
-			)where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd) as AverageGrade, Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, StudentRole = @StudentRole
-from
-	(
-		select subms.GradeNumeric as AverageGrade,subms.GradeNumeric as GradeNumeric, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue,
-		row_number() over(order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
-		row_number() over(order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
-		from (
-				dbo.Students stds inner join dbo.AssignmentSubmissions subms
-				on stds.StudentId = subms.StudentId 
-				inner join dbo.Subjects sbj 
-				on sbj.SubjectId = subms.SubjectId
-			)
-		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd and subms.StudentRole = @StudentRole 
-	) as x
-where x.rowAsc in (x.rowDes, rowDes-1, rowDes + 1)
-group by SubjectName,YearDue,AverageGrade
-go
+	begin
+	select Avg(GradeNumeric) as AverageGrade, sbj.SubjectName, Year(subms.DateDue) as YearDue, StudentRole=@StudentRole
+	from(				
+			dbo.Students stds inner join dbo.AssignmentSubmissions subms
+			on stds.StudentId = subms.StudentId 
+			inner join dbo.Subjects sbj 
+			on sbj.SubjectId = subms.SubjectId
+		) where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd and subms.StudentRole = @StudentRole
+		group by sbj.SubjectName, Year(subms.DateDue)
+
+	select distinct Avg(GradeNumeric) as MedianGrade
+	from
+		(
+			select subms.GradeNumeric as GradeNumeric, subms.AssignmentSubmissionId as submissionsId,
+			row_number() over(order by subms.GradeNumeric asc, subms.AssignmentSubmissionId asc) as rowAsc,
+			row_number() over(order by subms.GradeNumeric desc, subms.AssignmentSubmissionId desc) as rowDes
+			from (
+					dbo.Students stds inner join dbo.AssignmentSubmissions subms
+					on stds.StudentId = subms.StudentId 
+					inner join dbo.Subjects sbj 
+					on sbj.SubjectId = subms.SubjectId
+				)
+			where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd and subms.StudentRole = @StudentRole
+		) as x
+	where x.rowAsc in (x.rowDes, x.rowDes-1, x.rowDes + 1)
+end
+

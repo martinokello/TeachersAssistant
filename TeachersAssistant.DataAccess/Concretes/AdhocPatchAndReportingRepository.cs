@@ -296,18 +296,25 @@ namespace TeachersAssistant.DataAccess.Concretes
                 cmd.Parameters["@StudentRole"].Value = studentRole;
                 con.Open();
                 var reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    listItems.Add(new AverageMedianAttainedGrade
+                var item = new AverageMedianAttainedGrade();
+                
+                if (reader.HasRows) {
+                   if(reader.Read())
                     {
-                        MedianGrade = reader["MedianGrade"] == DBNull.Value ? 0 : (decimal)reader["MedianGrade"],
-                        AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (decimal)reader["AverageGrade"],
-                        StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"],
-                        SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"],
-                        YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"]
-                    });
+                        item.AverageGrade = reader["AverageGrade"] == DBNull.Value ? 0 : (decimal)reader["AverageGrade"];
+                        item.StudentRole = reader["StudentRole"] == DBNull.Value ? "" : (string)reader["StudentRole"];
+                        item.SubjectName = reader["SubjectName"] == DBNull.Value ? "" : (string)reader["SubjectName"];
+                        item.YearDue = reader["YearDue"] == DBNull.Value ? 0 : (int)reader["YearDue"];
+                    }
+                    if (reader.NextResult())
+                    {
+                        if (reader.Read())
+                        {
+                            item.MedianGrade = reader["MedianGrade"] == DBNull.Value ? 0 : (decimal)reader["MedianGrade"];
+                        }
+                    }
                 }
+                listItems.Add(item);
             }
             return listItems.ToArray();
         }
