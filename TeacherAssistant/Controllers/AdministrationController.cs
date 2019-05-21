@@ -104,7 +104,7 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.DateAssignedString = DateTime.Now;
             ViewBag.DateDueString = DateTime.Now;
-            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            ViewBag.AssignmentList = GetAllAssignmentsList();
             return View("AssignWork");
         }
         [HttpPost]
@@ -114,7 +114,7 @@ namespace TeacherAssistant.Controllers
             {
                 ViewBag.DateAssignedString = DateTime.Now;
                 ViewBag.DateDueString = DateTime.Now;
-                ViewBag.AssignmentList = GetCurrentAssignmentList();
+                ViewBag.AssignmentList = GetAllAssignmentsList();
                 GetUIDropdownLists();
                 if (assignmentViewModel.AssignmentId < 1 && (!string.IsNullOrEmpty(assignmentViewModel.Select)|| !string.IsNullOrEmpty(assignmentViewModel.Update)|| !string.IsNullOrEmpty(assignmentViewModel.Delete)))
                 {
@@ -1627,8 +1627,17 @@ namespace TeacherAssistant.Controllers
             ViewBag.SubjectList = GetSubjectList();
             ViewBag.CalendarBookingList = GetCalendarList();
             ViewBag.ClassroomList = GetClassroomList();
+            ViewBag.GetAllAssignmentsList = GetAllAssignmentsList();
         }
         
+        private List<SelectListItem> GetAllAssignmentsList()
+        {
+            var assingnmentList = new List<SelectListItem>();
+            assingnmentList.Add(new SelectListItem { Text = "Pick Assignment", Value = 0.ToString() });
+
+            assingnmentList.AddRange(_repositoryServices.GetAllAssignments().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentId.ToString() }).ToList());
+            return assingnmentList;
+        }
         private List<SelectListItem> GetCurrentAssignmentList()
         {
             var assingnmentList = new List<SelectListItem>();

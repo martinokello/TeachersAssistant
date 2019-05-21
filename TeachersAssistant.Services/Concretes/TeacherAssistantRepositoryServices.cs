@@ -1016,6 +1016,15 @@ namespace TeachersAssistant.Services.Concretes
                 return results;
             }
         }
+        public IEnumerable<Assignment> GetAllAssignments()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var results = _unitOfWork._assignmentRepository.GetAll();
+                return results;
+            }
+        }
         public IEnumerable<AssignmentSubmission> GetUngradedSubmittedAssignments()
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
