@@ -148,7 +148,7 @@ create procedure dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYears
  @StudentRole nvarchar(max)
 ) 
 AS
-select Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, Grade, StudentRole, submissionsId
+select Avg(GradeNumeric) as MedianGrade, SubjectName, YearDue, Grade, StudentRole
 from
 	(
 		select subms.GradeNumeric as GradeNumeric,subms.Grade as Grade, subms.StudentRole, sbj.SubjectName as SubjectName, Year(subms.DateDue) as YearDue, subms.AssignmentSubmissionId as submissionsId,
@@ -163,8 +163,7 @@ from
 		where sbj.SubjectId = @subjectId  and Year(subms.DateDue) >= @YearBegin and Year(subms.DateDue) <= @YearEnd  and subms.StudentRole = @StudentRole
 	) as x
 where x.rowAsc in (x.rowDes, x.rowDes-1, x.rowDes + 1)
-group by SubjectName,YearDue, Grade, StudentRole,submissionsId
-order by submissionsId
+group by SubjectName,YearDue, Grade, StudentRole
 go
 
 --select * from dbo.AssignmentSubmissions
