@@ -122,7 +122,7 @@ namespace TeacherAssistant.Controllers
                     ModelState.AddModelError("AssignemnentId", "Assignment required");
                     return View("AssignWork", assignmentViewModel);
                 }
-                if (!string.IsNullOrEmpty(assignmentViewModel.Create)  || assignmentViewModel.TeacherId < 1 || (string.IsNullOrEmpty(assignmentViewModel.StudentRole) && assignmentViewModel.StudentId < 1))
+                if (!string.IsNullOrEmpty(assignmentViewModel.Select) && !string.IsNullOrEmpty(assignmentViewModel.Create)  || assignmentViewModel.TeacherId < 1 || (string.IsNullOrEmpty(assignmentViewModel.StudentRole) && assignmentViewModel.StudentId < 1))
                 {
                     ModelState.Clear();
                     ModelState.AddModelError("assignWorkError", "Subject, Teacher and (Student Or StudentRole) are required");
