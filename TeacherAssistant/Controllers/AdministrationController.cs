@@ -161,8 +161,8 @@ namespace TeacherAssistant.Controllers
                 }
                 if (assignmentViewModel.StudentId > 0)
                 {
-                    var role = Roles.GetRolesForUser(_repositoryServices.GetStudentById(assignmentViewModel.StudentId).EmailAddress);
-                    virtualPath = virtualPath = string.Format("~/StudentResources/{0}/Assignments/{1}", role, _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                    var roles = Roles.GetRolesForUser(_repositoryServices.GetStudentById(assignmentViewModel.StudentId).EmailAddress);
+                    virtualPath = virtualPath = string.Format("~/StudentResources/{0}/Assignments/{1}", roles.FirstOrDefault(), _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                 }
                 else
                 {
