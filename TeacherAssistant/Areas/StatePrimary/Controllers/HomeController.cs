@@ -594,7 +594,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                         hasPreviouslySubmitted = true;
                     }
 
-                    if (p.StudentId > 0)
+                    if (assignmentSubmission != null)
                         return new AssignmentSubmissionViewModel
                         {
                             AssignmentSubmissionId = assignmentSubmissionId,

@@ -592,7 +592,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                         assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
                         hasPreviouslySubmitted = true;
                     }
-                    if(p.StudentId > 0)
+                    if(assignmentSubmission != null)
                     return new AssignmentSubmissionViewModel
                     {
                         AssignmentSubmissionId = assignmentSubmissionId,
