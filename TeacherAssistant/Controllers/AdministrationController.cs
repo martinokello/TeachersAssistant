@@ -159,27 +159,33 @@ namespace TeacherAssistant.Controllers
                     });
 
                 }
-
-                //Save file to relevant fileSystem:
-                switch (assignmentViewModel.StudentRole.ToLower())
+                if (assignmentViewModel.StudentId > 0)
                 {
-                    case "collegeandpostgraduate":
-                        virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
-                        break;
-                    case "secondaryschool":
-                        virtualPath = string.Format("~/StudentResources/SecondarySchool/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
-                        break;
-                    case "grammar11plus":
-                        virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
-                        break;
-                    case "stateprimary":
-                        virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
-                        break;
-                    case "statejunior":
-                        virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
-                        break;
+                    var role = Roles.GetRolesForUser(_repositoryServices.GetStudentById(assignmentViewModel.StudentId).EmailAddress);
+                    virtualPath = virtualPath = string.Format("~/StudentResources/{0}/Assignments/{1}", role, _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                 }
-
+                else
+                {
+                    //Save file to relevant fileSystem:
+                    switch (assignmentViewModel.StudentRole.ToLower())
+                    {
+                        case "collegeandpostgraduate":
+                            virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "secondaryschool":
+                            virtualPath = string.Format("~/StudentResources/SecondarySchool/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "grammar11plus":
+                            virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "stateprimary":
+                            virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "statejunior":
+                            virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                    }
+                }
                 if (assignmentViewModel.Delete != null)
                 {
                     if (assignmentViewModel.AssignmentId < 1)
