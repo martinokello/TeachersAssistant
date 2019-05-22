@@ -595,21 +595,24 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                         assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
                         hasPreviouslySubmitted = true;
                     }
-                    return new AssignmentSubmissionViewModel
-                    {
-                        AssignmentSubmissionId = assignmentSubmissionId,
-                        AssignmentName = p.AssignmentName,
-                        AssignmentId = p.AssignmentId,
-                        DateDue = p.DateDue,
-                        FilePath = p.FilePath,
-                        StudentId = p.StudentId,
-                        StudentRole = p.StudentRole,
-                        IsSubmitted = hasPreviouslySubmitted,
-                        TeacherId = p.TeacherId,
-                        SubjectId = p.SubjectId,
-                        Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
-                    };
+                    if (p.StudentId > 0)
+                        return new AssignmentSubmissionViewModel
+                        {
+                            AssignmentSubmissionId = assignmentSubmissionId,
+                            AssignmentName = p.AssignmentName,
+                            AssignmentId = p.AssignmentId,
+                            DateDue = p.DateDue,
+                            FilePath = p.FilePath,
+                            StudentId = p.StudentId,
+                            StudentRole = p.StudentRole,
+                            IsSubmitted = hasPreviouslySubmitted,
+                            TeacherId = p.TeacherId,
+                            SubjectId = p.SubjectId,
+                            Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
+                        };
+                    return null;
                 });
+
 
                 return View("AssignmentAndSubmissions", listSubmissions.ToArray());
             }

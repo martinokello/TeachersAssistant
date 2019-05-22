@@ -592,6 +592,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                         assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
                         hasPreviouslySubmitted = true;
                     }
+                    if(p.StudentId > 0)
                     return new AssignmentSubmissionViewModel
                     {
                         AssignmentSubmissionId = assignmentSubmissionId,
@@ -606,9 +607,10 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                         SubjectId = p.SubjectId,
                         Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
                     };
+                    return null;
                 });
 
-                return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+                return View("AssignmentAndSubmissions", listSubmissions.Where(p=> p != null).ToArray());
             }
             catch
             {
