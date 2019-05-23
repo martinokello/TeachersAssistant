@@ -107,6 +107,16 @@ namespace TeacherAssistant.Controllers
             ViewBag.AssignmentList = GetAllAssignmentsList();
             return View("AssignWork");
         }
+
+        [HttpGet]
+        public JsonResult GetNewRegistrants() {
+            return Json(new { Registrants = _repositoryServices.GetNewRegistrants() }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetCurrentStudents()
+        {
+            return Json(new { Registrants = _repositoryServices.GetStudentList().Select(p=> p.EmailAddress).ToArray() }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult AssignWork(AssignmentViewModel assignmentViewModel)
         {

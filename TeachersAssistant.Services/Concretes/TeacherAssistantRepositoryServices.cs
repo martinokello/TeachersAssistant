@@ -163,6 +163,24 @@ namespace TeachersAssistant.Services.Concretes
             }
         }
 
+        public string[] GetNewRegistrants()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+
+                var allUsers = dbContext.Database.SqlQuery<string>("select [Email] from [dbo].[AspNetUsers]").ToArray();
+
+                var students = _unitOfWork._studentRepository.GetAll();
+
+                var teachers = _unitOfWork._teacherRepository.GetAll();
+
+                var unionStTeachers = students.Select(p => p.EmailAddress).Union(teachers.Select(q => q.EmailAddress)).ToArray();
+
+                return allUsers.Where(p => !unionStTeachers.Contains(p)).ToArray();
+            }
+        }
+
         public void SaveOrUpdateAssignment(Assignment assignment)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())

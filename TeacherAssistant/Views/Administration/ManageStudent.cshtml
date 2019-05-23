@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Student ViewModel</h4>
 
@@ -20,9 +20,15 @@
                 @Html.ValidationSummary("", new { @class = "text-danger" })
 
                 <div class="form-group">
+                    <span><span class="col-lg-3" style="text-align:right !important;">View New Registrants</span> <input type="checkbox" style="text-align:left !important;" name="newRegistrants" value="newRegistrants" /></span>
+                    <col-lg-4><button id="btnChoiceOfRegistrants" class="btn-info">Select Choice of Users</button></col-lg-4><br />
+
+                    <hr style="width:65% !important; text-align:center;" />
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" , @id= "StudentId" } })
                         @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -45,7 +51,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", @id= "EmailAddress" } })
                         @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -64,7 +70,40 @@
         </div>
     </div>
 }
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('button#btnChoiceOfRegistrants').click(function (e) {
+            $('input[type="submit"]').attr('disabled', 'disabled');
+            $('input[name="Create"]').removeAttr('disabled');
+            var selectStudentList = $('select#StudentId');
 
+            selectStudentList.children('option').remove();
+            var newRegistrants = $('input[name="newRegistrants"]').val();
+            var url = "@Url.Content("~/Administration/GetNewRegistrants")";
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+                success: function (d) {
+                    let data = d.Registrants;
+                    for (let i = 0; i < data.length; i++) {
+                        selectStudentList.append('<option value="' + 0 + '">' + data[i] + '</option>')
+                    }
+                    selectStudentList.change(function () {
+                        let selectedEmail = $(this).find("option:selected").html();
+                        $('input#EmailAddress').val(selectedEmail);
+                    });
+                },
+                error: function () {
+                    alert('failed to get user list');
+                }
+            });
+
+            e.preventDefault();
+        });
+    });
+</script>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
