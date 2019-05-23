@@ -573,6 +573,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
             try
             {
                 var assignments = _teacherRepository.GetCurrentAssignments("Grammar11Plus");
+
                 var student = _teacherRepository.GetStudentByName(User.Identity.Name);
                 var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
                 var listSubmissions = assignments.Select(p =>
@@ -602,6 +603,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                             Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
                         };
                     }
+					else if (p.StudentId > 0 && assignmentSubmission == null)return null;
                     else
                     {
                         return new AssignmentSubmissionViewModel
@@ -621,7 +623,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     }
                 });
 
-                return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+                return View("AssignmentAndSubmissions", listSubmissions.Where(c=> c != null).ToArray());
             }
             catch
             {

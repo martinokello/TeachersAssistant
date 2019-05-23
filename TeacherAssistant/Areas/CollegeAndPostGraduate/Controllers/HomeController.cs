@@ -578,6 +578,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             try
             {
                 var assignments = _teacherRepository.GetCurrentAssignments("CollegeAndPostGraduate");
+
                 var student = _teacherRepository.GetStudentByName(User.Identity.Name);
                 var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
                 var listSubmissions = assignments.Select(p =>
@@ -607,6 +608,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                             Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
                         };
                     }
+					else if (p.StudentId > 0 && assignmentSubmission == null)return null;
                     else
                     {
                         return new AssignmentSubmissionViewModel
@@ -626,7 +628,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                     }
                 });
 
-                return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+                return View("AssignmentAndSubmissions", listSubmissions.Where(c=> c != null).ToArray());
             }
             catch
             {

@@ -608,6 +608,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                             Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
                         };
                     }
+					else if (p.StudentId > 0 && assignmentSubmission == null)return null;
                     else
                     {
                         return new AssignmentSubmissionViewModel
@@ -627,7 +628,7 @@ namespace TeacherAssistant.Areas.StatePrimary.Controllers
                     }
                 });
 
-                return View("AssignmentAndSubmissions", listSubmissions.ToArray());
+                return View("AssignmentAndSubmissions", listSubmissions.Where(c=> c != null).ToArray());
             }
             catch
             {
