@@ -578,22 +578,20 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
             try
             {
                 var assignments = _teacherRepository.GetCurrentAssignments("SecondarySchool");
+                var student = _teacherRepository.GetStudentByName(User.Identity.Name);
                 var previousSubmissions = _teacherRepository.GetCurrentAssignmentsSubmissions();
                 var listSubmissions = assignments.Select(p =>
                 {
                     var hasPreviouslySubmitted = false;
                     AssignmentSubmission assignmentSubmission = null;
                     if (p.StudentId > 0)
-                        assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.AssignmentId == p.AssignmentId && q.StudentId == p.StudentId);
-                    else assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.AssignmentId == p.AssignmentId);
+                        assignmentSubmission = previousSubmissions.FirstOrDefault(q => q.AssignmentId == p.AssignmentId && q.StudentId == p.StudentId && p.StudentId == student.StudentId);
                     var assignmentSubmissionId = 0;
                     if (assignmentSubmission != null)
                     {
                         assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
                         hasPreviouslySubmitted = true;
-                    }
 
-                    if (assignmentSubmission != null)
                         return new AssignmentSubmissionViewModel
                         {
                             AssignmentSubmissionId = assignmentSubmissionId,
@@ -608,7 +606,24 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                             SubjectId = p.SubjectId,
                             Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
                         };
-                    return null;
+                    }
+                    else
+                    {
+                        return new AssignmentSubmissionViewModel
+                        {
+                            AssignmentSubmissionId = assignmentSubmissionId,
+                            AssignmentName = p.AssignmentName,
+                            AssignmentId = p.AssignmentId,
+                            DateDue = p.DateDue,
+                            FilePath = p.FilePath,
+                            StudentId = (int)student.StudentId,
+                            StudentRole = p.StudentRole,
+                            IsSubmitted = hasPreviouslySubmitted,
+                            TeacherId = p.TeacherId,
+                            SubjectId = p.SubjectId,
+                            Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
+                        };
+                    }
                 });
 
                 return View("AssignmentAndSubmissions", listSubmissions.ToArray());
