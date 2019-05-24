@@ -4,73 +4,74 @@
     ViewBag.Title = "Manage Student";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
+<div class="container-fluid">
 
-<h2>Manage Student</h2>
+    <h2>Manage Student</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Student ViewModel</h4>
+        <div class="form-horizontal">
+            <h4>Student ViewModel</h4>
 
-        <div style="background-color: #DADADA;">
-            <div style="padding:5px;">
-                <hr />
-                @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div style="background-color: #DADADA;">
+                <div style="padding:5px;">
+                    <hr />
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
 
-                <div class="form-group">
-                    <span><span class="col-lg-3" style="text-align:right !important;">View New Registrants</span> <input type="checkbox" style="text-align:left !important;" name="newRegistrants" value="newRegistrants" /></span>
-                    <col-lg-4><button id="btnChoiceOfRegistrants" class="btn-info">Select Choice of Users</button></col-lg-4><br />
+                    <div class="form-group">
+                        <span><span class="col-lg-3" style="text-align:right !important;">View New Registrants</span> <input type="checkbox" style="text-align:left !important;" name="newRegistrants" value="newRegistrants" /></span>
+                        <button id="btnChoiceOfRegistrants" class="btn-info">Select Choice of Users</button><br />
 
-                    <hr style="width:65% !important; text-align:center;" />
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" , @id= "StudentId" } })
-                        @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+                        <hr style="width:65% !important; text-align:center;" />
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StudentFirsName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.StudentFirsName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.StudentFirsName, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "StudentId" } })
+                            @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StudentLastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.StudentLastName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.StudentLastName, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StudentFirsName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.StudentFirsName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.StudentFirsName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", @id= "EmailAddress" } })
-                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StudentLastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.StudentLastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.StudentLastName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control", @id = "EmailAddress" } })
+                            @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
 
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" name="Select" value="Select" class="btn btn-default" />
-                        <input type="submit" name="Create" value="Create" class="btn btn-default" />
-                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
-                        <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" name="Select" value="Select" class="btn btn-default" />
+                            <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                            <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                            <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-<script type="text/javascript">
+    }
+    <script type="text/javascript">
     $(document).ready(function(){
         $('button#btnChoiceOfRegistrants').click(function (e) {
             $('input[type="submit"]').attr('disabled', 'disabled');
@@ -103,7 +104,9 @@
             e.preventDefault();
         });
     });
-</script>
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    </script>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
 </div>
