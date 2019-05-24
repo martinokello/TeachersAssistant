@@ -4,7 +4,7 @@
     ViewBag.Title = "Manage Student";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #DADADA;">
 
     <h2>Manage Student</h2>
 
@@ -15,14 +15,14 @@
         <div class="form-horizontal">
             <h4>Student ViewModel</h4>
 
-            <div style="background-color: #DADADA;">
+            <div>
                 <div style="padding:5px;">
                     <hr />
                     @Html.ValidationSummary("", new { @class = "text-danger" })
 
                     <div class="form-group">
-                        <span><span class="col-lg-3" style="text-align:right !important;">View New Registrants</span> <input type="checkbox" style="text-align:left !important;" name="newRegistrants" value="newRegistrants" /></span>
-                        <button id="btnChoiceOfRegistrants" class="btn-info">Select Choice of Users</button><br />
+                        <div><span class="col-lg-2" style="text-align:right !important;">View New Registrants</span> <input type="checkbox" style="text-align:left !important;" name="newRegistrants" value="newRegistrants" /> <button id="btnChoiceOfRegistrants" class="btn-primary">Select Choice of Users</button></div>
+                        <br />
 
                         <hr style="width:65% !important; text-align:center;" />
                     </div>
