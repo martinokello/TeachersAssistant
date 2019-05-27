@@ -262,14 +262,16 @@
             });
         }
     }
-
+    function clearChartSpace() {
+        if (percentilesBarChart) percentilesBarChart.destroy();
+        if (submissionsBarChart) submissionsBarChart.destroy();
+        if (averageGradeBarChart)averageGradeBarChart.destroy();
+        if (medianGradeBarChart)medianGradeBarChart.destroy();
+        if (medianAverageGradeBarChart1)medianAverageGradeBarChart1.destroy();
+        if (medianAverageGradeBarChart2)medianAverageGradeBarChart2.destroy();
+    }
     function ComputeUrlPortions() {
-        var percentilesBarChart = null;
-        var submissionsBarChart = null;
-        var averageGradeBarChart = null;
-        var medianGradeBarChart = null;
-        var medianAverageGradeBarChart1 = null;
-        var medianAverageGradeBarChart2 = null;
+        clearChartSpace();
 
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
