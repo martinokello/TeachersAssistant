@@ -70,6 +70,13 @@
 
 </div>
 <script type="text/javascript">
+    var percentilesBarChart = null;
+    var submissionsBarChart = null;
+    var averageGradeBarChart = null;
+    var medianGradeBarChart = null;
+    var medianAverageGradeBarChart1 = null;
+    var medianAverageGradeBarChart2 = null;
+
     var submissions = { YearDue: [], NumberOfStudents: []};
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
@@ -111,7 +118,7 @@
     function PrintGraphStudentGrades(studentGrades) {
         if (studentGrades.NumberOfStudents.length > 0) {
             //print submissions
-            var percentilesBarChart = new Chart(document.getElementById("studentGrades"), {
+            percentilesBarChart = new Chart(document.getElementById("studentGrades"), {
                 type: 'pie',
                 data: {
                     labels: studentGrades.YearDue,
@@ -136,7 +143,7 @@
     function PrintGraphsSubmissions(submissions) {
         if (submissions.NumberOfStudents.length > 0) {
             //print submissions
-            var submissionsBarChart = new Chart(document.getElementById("submissions"), {
+            submissionsBarChart = new Chart(document.getElementById("submissions"), {
                 type: 'bar',
                 data: {
                     labels: submissions.YearDue,
@@ -161,7 +168,7 @@
     function PrintGraphsAverages(averages) {
         if (averages.AverageGrade.length > 0) {
             //print averages
-            var averageGradeBarChart = new Chart(document.getElementById("averages"), {
+            averageGradeBarChart = new Chart(document.getElementById("averages"), {
                 type: 'bar',
                 data: {
                     labels: averages.YearDue,
@@ -186,7 +193,7 @@
     function PrintGraphsMedians(medians) {
         if (medians.MedianGrade.length > 0) {
             //print medians
-            var medianGradeBarChart = new Chart(document.getElementById("medians"), {
+            medianGradeBarChart = new Chart(document.getElementById("medians"), {
             type: 'bar',
                 data: {
                     labels: medians.YearDue,
@@ -211,7 +218,7 @@
     function PrintGraphAverageMedianGrades(averageMedianGrades) {
         if (averageMedianGrades.MedianGrade.length > 0) {
             //print medians
-            var medianAverageGradeBarChart1 = new Chart(document.getElementById("medianOverAll"), {
+            medianAverageGradeBarChart1 = new Chart(document.getElementById("medianOverAll"), {
                 type: 'bar',
                 data: {
                     labels: medians.YearDue,
@@ -233,7 +240,7 @@
             });
         } if (averageMedianGrades.AverageGrade.length > 0) {
             //print medians
-            var medianAverageGradeBarChart2 = new Chart(document.getElementById("averageOverAll"), {
+             medianAverageGradeBarChart2 = new Chart(document.getElementById("averageOverAll"), {
                 type: 'bar',
                 data: {
                     labels: medians.YearDue,
@@ -257,6 +264,13 @@
     }
 
     function ComputeUrlPortions() {
+        var percentilesBarChart = null;
+        var submissionsBarChart = null;
+        var averageGradeBarChart = null;
+        var medianGradeBarChart = null;
+        var medianAverageGradeBarChart1 = null;
+        var medianAverageGradeBarChart2 = null;
+
         var subject = $('#SubjectId').val();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
