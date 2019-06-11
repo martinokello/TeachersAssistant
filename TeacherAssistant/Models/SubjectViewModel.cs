@@ -5,6 +5,8 @@ namespace TeacherAssistant.Models
 {
     public class SubjectViewModel
     {
+        [Required]
+        public int CourseId { get; set; }
         public int? SubjectId { get; set; }
         [Required]
         public string SubjectName { get; set; } = "Subject Name Default";

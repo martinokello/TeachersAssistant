@@ -27,6 +27,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                 doc.SubjectId = item.SubjectId;
                 doc.RoleName = item.RoleName;
                 doc.StudentResourceName = item.StudentResourceName;
+                doc.CourseId = item.CourseId;
                 return true;
             }
             catch (Exception e)

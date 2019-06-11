@@ -17,6 +17,7 @@ namespace TeachersAssistant.Domain.Model.Models
         public int TeacherId { get; set; }
         public Student Student { get; set; }
         public int SubjectId { get; set; }
+        public int CourseId { get; set; }
         public string AssignmentName { get; set; }
         public string Description { get; set; }
         public DateTime DateAssigned { get; set; }

@@ -44,7 +44,8 @@ namespace TeachersAssistant
             unityContainer.RegisterType<IQAHelpRequestRepositoryMarker, QAHelpRequestRepository>();
             unityContainer.RegisterType<IAssignmentRepositoryMarker, AssignmentRepository>();
             unityContainer.RegisterType<IAssignmentSubmissionRepositoryMarker, AssignmentSubmissionRepository>();
-            unityContainer.RegisterType<IAdhocPatchAndReportingMarker, AdhocPatchAndReportingRepository>();
+            unityContainer.RegisterType<IAdhocPatchAndReportingMarker, AdhocPatchAndReportingRepository>(); 
+            unityContainer.RegisterType<ICourseRepositoryMarker, CourseRepository>();
 
             unityContainer.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(); 
             unityContainer.RegisterType<IRoleStore<IdentityRole, string>, RoleStore<IdentityRole>>();

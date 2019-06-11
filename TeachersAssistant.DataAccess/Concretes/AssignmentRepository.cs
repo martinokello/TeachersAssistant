@@ -30,6 +30,7 @@ namespace TeachersAssistant.DataAccess.Concretes
                 freeDoc.Description = item.Description;
                 freeDoc.FilePath = item.FilePath;
                 freeDoc.TeacherId = item.TeacherId;
+                freeDoc.CourseId = item.CourseId;
                 return true;
             }
             catch (Exception e)

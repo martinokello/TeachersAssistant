@@ -52,6 +52,7 @@
     <Compile Include="Models\BookingTime.cs" />
     <Compile Include="Models\CalendarBooking.cs" />
     <Compile Include="Models\Classroom.cs" />
+    <Compile Include="Models\Course.cs" />
     <Compile Include="Models\FreeDocument.cs" />
     <Compile Include="Models\FreeDocumentStudent.cs" />
     <Compile Include="Models\FreeVideo.cs" />

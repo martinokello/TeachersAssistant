@@ -20,36 +20,43 @@
             <div style="padding:5px;">
                 <hr />
                 @Html.ValidationSummary("", new { @class = "text-danger" })
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.SubjectName, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.SubjectName, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.SubjectName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" name="Select" value="Select" class="btn btn-default" />
-                            <input type="submit" name="Create" value="Create" class="btn btn-default" />
-                            <input type="submit" name="Update" value="Update" class="btn btn-default" />
-                            <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
-                        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubjectId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CourseId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("CourseId", ViewBag.CourseList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "StudentId" } })
+                        @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubjectName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SubjectName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SubjectName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" name="Select" value="Select" class="btn btn-default" />
+                        <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                        <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
      }

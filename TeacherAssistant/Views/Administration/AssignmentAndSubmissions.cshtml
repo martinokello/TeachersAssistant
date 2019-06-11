@@ -19,10 +19,11 @@
                     @Html.Hidden("AssignmentId", assSub.AssignmentId)
                     @Html.Hidden("SubjectId", assSub.SubjectId)
                     @Html.Hidden("TeacherId", assSub.TeacherId)
-                    @Html.Hidden("AssignmentName", assSub.AssignmentName)
+                    @Html.Hidden("TeacherId", assSub.TeacherId)
+                    @Html.Hidden("AssignmentName", assSub.CourseId)
                     @Html.Hidden("Notes", assSub.Notes)
-                    <span class="col-lg-4"> <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b></span> 
-                    <span class="col-lg-4">  Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b></span> 
+                    <span class="col-lg-4"> <a href="@assSub.FilePath">Assignment @assSub.AssignmentName</a> <b> | </b></span>
+                    <span class="col-lg-4">  Is Submitted: @(assSub.IsSubmitted ? "True" : "False")<b> | </b></span>
                     <span class="col-lg-4">  <a class="btn btn-default" style="display:inline !important;" href="@assSub.FilePath">Download To Mark</a></span>
                 </li>
             </form>

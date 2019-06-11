@@ -46,7 +46,8 @@ namespace  TeacherAssistant.Controllers
             IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
-            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
+            ICourseRepositoryMarker courseRepositoryMarker)
         {
 
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
@@ -68,6 +69,7 @@ namespace  TeacherAssistant.Controllers
             Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
             Condition.Requires<IAssignmentRepositoryMarker>(assignmentRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
             Condition.Requires<IAssignmentSubmissionRepositoryMarker>(assignmentSubmissionRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
+            Condition.Requires<ICourseRepositoryMarker>(courseRepositoryMarker, "courseRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -86,7 +88,8 @@ namespace  TeacherAssistant.Controllers
              studentResourceRepositoryMarker,
              qAHelpRequestRepositoryMarker,
              assignmentRepositoryMarker,
-             assignmentSubmissionRepositoryMarker);
+             assignmentSubmissionRepositoryMarker,
+             courseRepositoryMarker);
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
         public enum MediaType { Document, Video }

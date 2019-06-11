@@ -14,6 +14,7 @@ namespace TeacherAssistant.Models
         public HttpPostedFileBase MediaContent { get; set; }
         public string FilePath { get; set; }
         public int SubjectId { get; set; }
+        public int CourseId { get; set; }
         public string RoleName { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }

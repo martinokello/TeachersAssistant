@@ -48,7 +48,8 @@ namespace TeacherAssistant.Controllers
             IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
-            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
+            ICourseRepositoryMarker courseRepositoryMarker)
         {
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
             Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
@@ -69,6 +70,7 @@ namespace TeacherAssistant.Controllers
             Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
             Condition.Requires<IAssignmentRepositoryMarker>(assignmentRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
             Condition.Requires<IAssignmentSubmissionRepositoryMarker>(assignmentSubmissionRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
+            Condition.Requires<ICourseRepositoryMarker>(courseRepositoryMarker, "courseRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -87,7 +89,8 @@ namespace TeacherAssistant.Controllers
              studentResourceRepositoryMarker,
              qAHelpRequestRepositoryMarker,
              assignmentRepositoryMarker,
-             assignmentSubmissionRepositoryMarker);
+             assignmentSubmissionRepositoryMarker,
+             courseRepositoryMarker);
 
             unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
@@ -132,10 +135,10 @@ namespace TeacherAssistant.Controllers
                     ModelState.AddModelError("AssignemnentId", "Assignment required");
                     return View("AssignWork", assignmentViewModel);
                 }
-                if (!string.IsNullOrEmpty(assignmentViewModel.Create) && (assignmentViewModel.TeacherId < 1 || (string.IsNullOrEmpty(assignmentViewModel.StudentRole) && assignmentViewModel.StudentId < 1)))
+                if (!string.IsNullOrEmpty(assignmentViewModel.Create) && (assignmentViewModel.TeacherId < 1  || assignmentViewModel.CourseId < 1 || (string.IsNullOrEmpty(assignmentViewModel.StudentRole) && assignmentViewModel.StudentId < 1)))
                 {
                     ModelState.Clear();
-                    ModelState.AddModelError("assignWorkError", "Subject, Teacher and (Student Or StudentRole) are required");
+                    ModelState.AddModelError("assignWorkError", "Course, Subject, Teacher and (Student Or StudentRole) are required");
                     return View("AssignWork", assignmentViewModel);
                 }
                 
@@ -165,7 +168,8 @@ namespace TeacherAssistant.Controllers
                         DateAssigned = doc.DateAssigned,
                         DateDue = doc.DateDue,
                         Description = doc.Description,
-                        AssignmentName = doc.AssignmentName
+                        AssignmentName = doc.AssignmentName,
+                        CourseId = doc.CourseId
                     });
 
                 }
@@ -225,9 +229,9 @@ namespace TeacherAssistant.Controllers
                     {
                         var dateDue = DateTime.Now;
                         var dataAssigned = DateTime.Now;
-                        if(string.IsNullOrEmpty(assignmentViewModel.AssignmentName) || string.IsNullOrEmpty(assignmentViewModel.Description))
+                        if(string.IsNullOrEmpty(assignmentViewModel.AssignmentName) || assignmentViewModel.CourseId < 1 || string.IsNullOrEmpty(assignmentViewModel.Description))
                         {
-                            ModelState.AddModelError("assingmentName", "Assignement Name and Description are required!");
+                            ModelState.AddModelError("assingmentName", "Assignement Name, Course and Description are required!");
                             return View(assignmentViewModel);
                         }
                         HttpPostedFileBase file = assignmentViewModel.MediaContent;
@@ -269,7 +273,8 @@ namespace TeacherAssistant.Controllers
                             StudentId = assignmentViewModel.StudentId,
                             StudentRole = assignmentViewModel.StudentRole,
                             SubjectId = assignmentViewModel.SubjectId,
-                            TeacherId = assignmentViewModel.TeacherId
+                            TeacherId = assignmentViewModel.TeacherId,
+                            CourseId = assignmentViewModel.CourseId
                         });
                         return View("SuccessfullCreation");
                     }
@@ -385,8 +390,61 @@ namespace TeacherAssistant.Controllers
 
             return View("ManageStudent", studentViewModel);
         }
-
         [HttpGet]
+        public ActionResult ManageCourse()
+        {
+            GetUIDropdownLists();
+            return View("ManageCourses");
+        }
+
+        [HttpPost]
+        public ActionResult ManageCourse(CourseViewModel courseViewModel)
+        {
+            GetUIDropdownLists();
+            if (courseViewModel.Select != null)
+            {
+                ModelState.Clear();
+                if (courseViewModel.CourseId < 1)
+                {
+                    ModelState.AddModelError("CourseId", "CourseId is required");
+                    return View("ManageCourses", courseViewModel);
+                }
+                if (ModelState.IsValid)
+                {
+                    var course = _repositoryServices.GetCourseById(courseViewModel.CourseId);
+                    courseViewModel = (CourseViewModel)Mapper.Map(course, typeof(Course), typeof(CourseViewModel));
+
+                }
+                ModelState.Clear();
+                return View("ManageCourses", courseViewModel);
+            }
+            if (courseViewModel.Delete != null)
+            {
+                ModelState.Clear();
+                if (courseViewModel.CourseId < 1)
+                {
+                    ModelState.AddModelError("CourseId", "CourseId is required");
+                    return View("ManageCourses", courseViewModel);
+                }
+                if (ModelState.IsValid)
+                {
+                    var course = _repositoryServices.GetCourseById(courseViewModel.CourseId);
+                    _repositoryServices.DeleteCourse(course);
+                    return View("SuccessfullCreation");
+                }
+                return View("ManageCourses", courseViewModel);
+            }
+            if (!string.IsNullOrEmpty(courseViewModel.CourseName)  && !string.IsNullOrEmpty(courseViewModel.CourseDescription))
+            {
+                var course = (Course)Mapper.Map(courseViewModel, typeof(CourseViewModel), typeof(Course));
+                _repositoryServices.AddOrUpdateCourse(course);
+                return View("SuccessfullCreation");
+
+            }
+            return View("ManageCourses", courseViewModel);
+        }
+
+       [HttpGet]
         public ActionResult ManageSubject()
         {
             GetUIDropdownLists();
@@ -552,7 +610,7 @@ namespace TeacherAssistant.Controllers
                         ModelState.AddModelError("StudentResourceId", "Student Resource Id Required");
                         return View("ManageResources", resourceModel);
                     }
-                    else if(string.IsNullOrEmpty(resourceModel.StudentResourceName) || string.IsNullOrEmpty(resourceModel.RoleName) || resourceModel.SubjectId < 1 || resourceModel.MediaContent == null)
+                    else if(string.IsNullOrEmpty(resourceModel.StudentResourceName) || string.IsNullOrEmpty(resourceModel.RoleName) || resourceModel.CourseId < 1 ||  resourceModel.SubjectId < 1 || resourceModel.MediaContent == null)
                     {
                         ModelState.AddModelError("StudentResourcesCreate", "Student Resource Name,  RoleName, Subject and Media Content Required");
                         return View("ManageResources", resourceModel);
@@ -597,7 +655,8 @@ namespace TeacherAssistant.Controllers
                             FilePath = Url.Content(virtualPath + "/" + file.FileName),
                             SubjectId = resourceModel.SubjectId,
                             RoleName = resourceModel.RoleName,
-                            StudentResourceName = resourceModel.StudentResourceName
+                            StudentResourceName = resourceModel.StudentResourceName,
+                            CourseId = resourceModel.CourseId
                         };
                         //Save file Path To DB: 
                         _repositoryServices.SaveOrUpdateStudentResource(studentResource);
@@ -1118,7 +1177,8 @@ namespace TeacherAssistant.Controllers
                         SubjectId =p.SubjectId,
                         TeacherId = p.TeacherId,
                         StudentRole = p.StudentRole,
-                        IsSubmitted = p.IsSubmitted
+                        IsSubmitted = p.IsSubmitted,
+                        CourseId = p.CourseId
                     };
                 });
 
@@ -1366,6 +1426,7 @@ namespace TeacherAssistant.Controllers
         public ActionResult AssignUserRole()
         {
             ViewBag.RoleName = GetRolesSelectList();
+            ViewBag.CourseList = GetAllCourses();
             return View("AssignUserRole");
         }
 
@@ -1375,6 +1436,7 @@ namespace TeacherAssistant.Controllers
         public ActionResult AssignUserRole(Models.UserRoleViewModel userInRole)
         {
 
+            ViewBag.CourseList = GetAllCourses();
             ViewBag.RoleName = GetRolesSelectList();
             if (string.IsNullOrEmpty(userInRole.RoleName) || string.IsNullOrEmpty(userInRole.Username))
             {
@@ -1447,16 +1509,17 @@ namespace TeacherAssistant.Controllers
             {
                 ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
             }
-            if ((assignmentSubmissions.AssignmentId < 1 || assignmentSubmissions.AssignmentSubmissionId < 1) &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
+            if ((assignmentSubmissions.CourseId < 1 || assignmentSubmissions.AssignmentId < 1 || assignmentSubmissions.AssignmentSubmissionId < 1) &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
             {
                 ModelState.Clear();
                 ModelState.AddModelError("AssignmentSubmissionId", "AssignmentSubmission Is required");
                 ModelState.AddModelError("AssignmentId", "Assignment Is required");
+                ModelState.AddModelError("CourseId", "Course Is required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
-            if (!string.IsNullOrEmpty(assignmentSubmissions.Create) && (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole)))
+            if (!string.IsNullOrEmpty(assignmentSubmissions.Create) && (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.CourseId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole)))
             {
-                ModelState.AddModelError("assignWorkError", "Student, Subject, Teacher and StudentRole are required");
+                ModelState.AddModelError("assignWorkError", "Course, Student, Subject, Teacher and StudentRole are required");
                 return View("AddGradesToSubmissions", assignmentSubmissions);
             }
             Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
@@ -1644,6 +1707,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.CalendarBookingList = GetCalendarList();
             ViewBag.ClassroomList = GetClassroomList();
             ViewBag.GetAllAssignmentsList = GetAllAssignmentsList();
+            ViewBag.CourseList = GetAllCourses();
         }
         
         private List<SelectListItem> GetAllAssignmentsList()
@@ -1654,6 +1718,15 @@ namespace TeacherAssistant.Controllers
             assingnmentList.AddRange(_repositoryServices.GetAllAssignments().Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentId.ToString() }).ToList());
             return assingnmentList;
         }
+        private List<SelectListItem> GetAllCourses()
+        {
+            var courseList = new List<SelectListItem>();
+            courseList.Add(new SelectListItem { Text = "Pick Course", Value = 0.ToString() });
+
+            courseList.AddRange(_repositoryServices.GetAllCourses().Select(p => new SelectListItem { Text = p.CourseName, Value = p.CourseId.ToString() }).ToList());
+            return courseList;
+        }
+        
         private List<SelectListItem> GetCurrentAssignmentList()
         {
             var assingnmentList = new List<SelectListItem>();

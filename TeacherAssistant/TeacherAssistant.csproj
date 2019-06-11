@@ -342,6 +342,7 @@
     <Compile Include="Models\ClassroomViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Models\CourseViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\QAHelpRequestViewModel.cs" />
     <Compile Include="Models\StudentResourcesViewModel.cs" />
@@ -735,7 +736,7 @@
     <Content Include="Views\Home\DownloadPaidDocuments.cshtml" />
     <Content Include="Views\Administration\ManageResources.cshtml" />
     <Content Include="Views\Shared\StudentResources.cshtml" />
-    <Content Include="Web.config">
+    <Content Include="WebLive.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Administration\ManageQAHelpRequest.cshtml" />
@@ -744,12 +745,20 @@
     <Content Include="Views\Shared\ViewAssignmentGrades.cshtml" />
     <Content Include="Views\Administration\AssignmentAndSubmissions.cshtml" />
     <Content Include="Views\Administration\ReportingAndPerformance.cshtml" />
+    <Content Include="Views\Administration\ManageCourses.cshtml" />
+    <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="WebLive.Debug.config">
+      <DependentUpon>WebLive.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WebLive.Release.config">
+      <DependentUpon>WebLive.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

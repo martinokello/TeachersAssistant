@@ -30,6 +30,7 @@ namespace  TeachersAssistant.DataAccess.Concretes
             {
                 var subj = DbContextTeachersAssistant.Subjects.SingleOrDefault(p => p.SubjectId == item.SubjectId);
                 subj.SubjectName = item.SubjectName;
+                subj.CourseId = item.CourseId;
                 return true;
             }
             catch (Exception e)

@@ -1,0 +1,61 @@
+﻿@model TeacherAssistant.Models.CourseViewModel
+@{
+    ViewBag.Title = "ManageCourses";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+}
+<div class="container-fluid" style="background-color: #DADADA;">
+
+    <h2>Manage Courses</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Student ViewModel</h4>
+
+            <div>
+                <div style="padding:5px;">
+                    <hr />
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CourseId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("CourseId", ViewBag.CourseList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "StudentId" } })
+                            @Html.ValidationMessageFor(model => model.CourseId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CourseName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CourseName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CourseName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CourseDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.CourseDescription, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CourseDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" name="Select" value="Select" class="btn btn-default" />
+                            <input type="submit" name="Create" value="Create" class="btn btn-default" />
+                            <input type="submit" name="Update" value="Update" class="btn btn-default" />
+                            <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+</div>
+

@@ -15,6 +15,7 @@ namespace TeachersAssistant.Domain.Model.Models
         public string FilePath { get; set; }
         public int SubjectId { get; set; }
         public string RoleName { get; set; }
+        public int CourseId { get; set; }
         public string StudentResourceName { get; set; }
         public Subject Subject { get; set; }
     }

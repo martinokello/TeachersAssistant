@@ -5,6 +5,8 @@ namespace TeacherAssistant.Models
 {
     public class StudentViewModel
     {
+        [Required]
+        public int CourseId { get; set; }
         public int? StudentId { get; set; }
         [Required]
         public string StudentFirsName { get; set; } = "Student FirstName";

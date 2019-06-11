@@ -31,6 +31,7 @@ namespace  TeachersAssistant.Services.Concretes
         public QAHelpRequestRepository _qAHelpRequestRepository;
         public AssignmentRepository _assignmentRepository;
         public AssignmentSubmissionRepository _assignmentSubmissionRepository;
+        public CourseRepository _courseRepository;
 
 
         public DataAccess.TeachersAssistantDbContext TeachersAssistantDbContext { get; set; }
@@ -54,7 +55,8 @@ namespace  TeachersAssistant.Services.Concretes
             IStudentResourceRepositoryMarker studentResourcesRepositoryMarker,
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
-            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
+            ICourseRepositoryMarker courseRepositoryMarker)
         {
             _calendarBookingRepository = calendarBookingRepository as CalendarBookingRepository;
             _classroomRepository = classroomRepositoryMarker as ClassroomRepository;
@@ -75,6 +77,7 @@ namespace  TeachersAssistant.Services.Concretes
             _qAHelpRequestRepository = qAHelpRequestRepositoryMarker as QAHelpRequestRepository;
             _assignmentRepository = assignmentRepositoryMarker as AssignmentRepository;
             _assignmentSubmissionRepository = assignmentSubmissionRepositoryMarker as AssignmentSubmissionRepository;
+            _courseRepository = courseRepositoryMarker as CourseRepository;
         }
 
         public void InitializeDbContext(DataAccess.TeachersAssistantDbContext teachersAssistantDbContext)
@@ -99,6 +102,7 @@ namespace  TeachersAssistant.Services.Concretes
             _qAHelpRequestRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
             _assignmentRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
             _assignmentSubmissionRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
+            _courseRepository.DbContextTeachersAssistant = teachersAssistantDbContext;
             this.TeachersAssistantDbContext = teachersAssistantDbContext;
         }
         public void SaveChanges()

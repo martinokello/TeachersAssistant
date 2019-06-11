@@ -60,6 +60,7 @@
     <Compile Include="Concretes\AssignmentRepository.cs" />
     <Compile Include="Concretes\AssignmentSubmissionRepository.cs" />
     <Compile Include="Concretes\AdhocPatchAndReportingRepository.cs" />
+    <Compile Include="Concretes\CourseRepository.cs" />
     <Compile Include="Concretes\QAHelpRequestRepository.cs" />
     <Compile Include="Concretes\StudentResourcesRepository.cs" />
     <Compile Include="Interfaces\IAdhocPatchAndReportingMarker.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Concretes\FreeDocumentStudentRepository.cs" />
     <Compile Include="Concretes\FreeVideoRepository.cs" />
     <Compile Include="Concretes\FreeVideoStudentRepository.cs" />
+    <Compile Include="Interfaces\ICourseRepositoryMarker.cs" />
     <Compile Include="Interfaces\IQAHelpRequestRepositoryMarker.cs" />
     <Compile Include="Interfaces\IStudentResourceRepositoryMarker.cs" />
     <Compile Include="Interfaces\IStudentTypeRepositoryMarker.cs" />
@@ -98,57 +100,9 @@
     <Compile Include="Concretes\SubjectRepository.cs" />
     <Compile Include="Concretes\TeacherRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Migrations\201903051428094_AddNewTableStudentResources.cs" />
-    <Compile Include="Migrations\201903051428094_AddNewTableStudentResources.Designer.cs">
-      <DependentUpon>201903051428094_AddNewTableStudentResources.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903071046114_TableQA.cs" />
-    <Compile Include="Migrations\201903071046114_TableQA.Designer.cs">
-      <DependentUpon>201903071046114_TableQA.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903081245596_AddAssignmentAndSubmissions.cs" />
-    <Compile Include="Migrations\201903081245596_AddAssignmentAndSubmissions.Designer.cs">
-      <DependentUpon>201903081245596_AddAssignmentAndSubmissions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903081816092_AddAssignmentAndSubmissions2.cs" />
-    <Compile Include="Migrations\201903081816092_AddAssignmentAndSubmissions2.Designer.cs">
-      <DependentUpon>201903081816092_AddAssignmentAndSubmissions2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903081826484_AddAssignmentAndSubmissionsRelationships.cs" />
-    <Compile Include="Migrations\201903081826484_AddAssignmentAndSubmissionsRelationships.Designer.cs">
-      <DependentUpon>201903081826484_AddAssignmentAndSubmissionsRelationships.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903090444036_IncludeGrades.cs" />
-    <Compile Include="Migrations\201903090444036_IncludeGrades.Designer.cs">
-      <DependentUpon>201903090444036_IncludeGrades.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903091115404_ChangedModels.cs" />
-    <Compile Include="Migrations\201903091115404_ChangedModels.Designer.cs">
-      <DependentUpon>201903091115404_ChangedModels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903091757418_RemoveRElationAssingmentSubject.cs" />
-    <Compile Include="Migrations\201903091757418_RemoveRElationAssingmentSubject.Designer.cs">
-      <DependentUpon>201903091757418_RemoveRElationAssingmentSubject.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903092056558_AddSubjectTeacherColumns.cs" />
-    <Compile Include="Migrations\201903092056558_AddSubjectTeacherColumns.Designer.cs">
-      <DependentUpon>201903092056558_AddSubjectTeacherColumns.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903112059500_AddNotesToSubmission.cs" />
-    <Compile Include="Migrations\201903112059500_AddNotesToSubmission.Designer.cs">
-      <DependentUpon>201903112059500_AddNotesToSubmission.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903191329284_AddGradeDecimalColumnToSubmissions.cs" />
-    <Compile Include="Migrations\201903191329284_AddGradeDecimalColumnToSubmissions.Designer.cs">
-      <DependentUpon>201903191329284_AddGradeDecimalColumnToSubmissions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905221151380_removeAssociationBtnAssignmentAndStudent.cs" />
-    <Compile Include="Migrations\201905221151380_removeAssociationBtnAssignmentAndStudent.Designer.cs">
-      <DependentUpon>201905221151380_removeAssociationBtnAssignmentAndStudent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905221226164_removeRelatonStudentAssignment.cs" />
-    <Compile Include="Migrations\201905221226164_removeRelatonStudentAssignment.Designer.cs">
-      <DependentUpon>201905221226164_removeRelatonStudentAssignment.cs</DependentUpon>
+    <Compile Include="Migrations\201906102026291_CreateDatabase.cs" />
+    <Compile Include="Migrations\201906102026291_CreateDatabase.Designer.cs">
+      <DependentUpon>201906102026291_CreateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,44 +121,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903051428094_AddNewTableStudentResources.resx">
-      <DependentUpon>201903051428094_AddNewTableStudentResources.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903071046114_TableQA.resx">
-      <DependentUpon>201903071046114_TableQA.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903081245596_AddAssignmentAndSubmissions.resx">
-      <DependentUpon>201903081245596_AddAssignmentAndSubmissions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903081816092_AddAssignmentAndSubmissions2.resx">
-      <DependentUpon>201903081816092_AddAssignmentAndSubmissions2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903081826484_AddAssignmentAndSubmissionsRelationships.resx">
-      <DependentUpon>201903081826484_AddAssignmentAndSubmissionsRelationships.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903090444036_IncludeGrades.resx">
-      <DependentUpon>201903090444036_IncludeGrades.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903091115404_ChangedModels.resx">
-      <DependentUpon>201903091115404_ChangedModels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903091757418_RemoveRElationAssingmentSubject.resx">
-      <DependentUpon>201903091757418_RemoveRElationAssingmentSubject.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903092056558_AddSubjectTeacherColumns.resx">
-      <DependentUpon>201903092056558_AddSubjectTeacherColumns.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903112059500_AddNotesToSubmission.resx">
-      <DependentUpon>201903112059500_AddNotesToSubmission.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903191329284_AddGradeDecimalColumnToSubmissions.resx">
-      <DependentUpon>201903191329284_AddGradeDecimalColumnToSubmissions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905221151380_removeAssociationBtnAssignmentAndStudent.resx">
-      <DependentUpon>201905221151380_removeAssociationBtnAssignmentAndStudent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905221226164_removeRelatonStudentAssignment.resx">
-      <DependentUpon>201905221226164_removeRelatonStudentAssignment.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906102026291_CreateDatabase.resx">
+      <DependentUpon>201906102026291_CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

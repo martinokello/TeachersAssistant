@@ -223,6 +223,8 @@ namespace  TeacherAssistant.Controllers
                 Roles.CreateRole("Grammar11Plus");
                 Roles.CreateRole("StatePrimary");
                 Roles.CreateRole("StateJunior");
+                Roles.CreateRole("SecondarySchool");
+                Roles.CreateRole("CollegeAndPostGraduate");
             }
             var defaultAdmin = "administrator@martinlayooinc.co.uk";
             var defaultAdminPassword = "deltaX!505";
@@ -342,27 +344,24 @@ namespace  TeacherAssistant.Controllers
 			}
 			else{
 				user = await UserManager.FindByNameAsync(User.Identity.Name);
-			}
-			
-            var provider = new DpapiDataProtectionProvider("TeacherAssistant");
-            if(_userManager.UserTokenProvider == null)
-            _userManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("EmailConfirmation"));
-            model.Code = await UserManager.GeneratePasswordResetTokenAsync(user.Id); 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
             }
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
+            string resetToken = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            IdentityResult passwordChangeResult = await UserManager.ResetPasswordAsync(user.Id, resetToken, model.Password);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (passwordChangeResult.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            AddErrors(result);
+            AddErrors(passwordChangeResult);
             return View();
         }
 

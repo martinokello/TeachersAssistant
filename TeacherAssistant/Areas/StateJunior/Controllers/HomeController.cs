@@ -43,7 +43,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
             IStudentResourceRepositoryMarker studentResourcesRepositoryMarker,
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
-            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
+            ICourseRepositoryMarker courseRepositoryMarker)
         {
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -63,7 +64,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
              studentResourcesRepositoryMarker,
              qAHelpRequestRepositoryMarker, 
              assignmentRepositoryMarker,
-             assignmentSubmissionRepositoryMarker);
+             assignmentSubmissionRepositoryMarker,
+             courseRepositoryMarker);
             unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
@@ -564,7 +566,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                     StudentRole = p.StudentRole,
                     TeacherId = p.TeacherId,
                     SubjectId = p.SubjectId,
-                    Notes = p.Notes
+                    Notes = p.Notes,
+                    CourseId = p.CourseId
                 });
                 return View("ViewAssignmentGrades", assignments.ToArray());
             }
@@ -608,7 +611,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                             IsSubmitted = hasPreviouslySubmitted,
                             TeacherId = p.TeacherId,
                             SubjectId = p.SubjectId,
-                            Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
+                            Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : "",
+                            CourseId = p.CourseId
                         };
                     }
 					else if (p.StudentId > 0 && assignmentSubmission == null)return null;
@@ -626,7 +630,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                             IsSubmitted = hasPreviouslySubmitted,
                             TeacherId = p.TeacherId,
                             SubjectId = p.SubjectId,
-                            Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : ""
+                            Notes = hasPreviouslySubmitted ? assignmentSubmission.Notes : "",
+                            CourseId = p.CourseId
                         };
                     }
                 });
@@ -685,7 +690,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                 SubjectId = submissions.SubjectId,
                 TeacherId = submissions.TeacherId,
                 AssignmentName = assignment.AssignmentName,
-                Notes = submissions.Notes
+                Notes = submissions.Notes,
+                CourseId = assignment.CourseId
             };
             _teacherRepository.SaveOrUpdateAssignmentSubmissions(actualSubmission);
             return View("SuccessfullCreation");

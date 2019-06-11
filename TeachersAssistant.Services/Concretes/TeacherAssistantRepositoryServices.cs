@@ -293,6 +293,7 @@ namespace TeachersAssistant.Services.Concretes
                     if (student != null)
                     {
                         student.StudentType = studentModel.StudentType;
+                        student.CourseId = studentModel.CourseId;
                         _unitOfWork.SaveChanges();
                     }
                 }
@@ -339,6 +340,7 @@ namespace TeachersAssistant.Services.Concretes
                 {
                     subject.SubjectName = subjectModel.SubjectName;
                     subject.TeacherId = subjectModel.TeacherId;
+                    subject.CourseId = subjectModel.CourseId;
                     _unitOfWork.SaveChanges();
                 }
             }
@@ -540,6 +542,49 @@ namespace TeachersAssistant.Services.Concretes
 
         }
 
+        public void AddOrUpdateCourse(Course course)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var res = _unitOfWork._courseRepository.GetById(course.CourseId);
+                if (res == null)
+                {
+                    _unitOfWork._courseRepository.Add(course);
+                    _unitOfWork.SaveChanges();
+                }
+                else
+                {
+                    res.CourseName = course.CourseName;
+                    res.CourseDescription = course.CourseDescription;
+                    _unitOfWork.SaveChanges();
+                }
+            }
+        }
+        
+        public void DeleteCourse(Course course)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var res = _unitOfWork._courseRepository.GetById(course.CourseId);
+                if (res != null)
+                {
+                    _unitOfWork._courseRepository.Delete(res);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+        }
+
+        public Course GetCourseById(int courseId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._courseRepository.GetById(courseId);   
+            }
+        }
+
         public void DeleteStudentResource(int studentResourceId)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
@@ -594,6 +639,7 @@ namespace TeachersAssistant.Services.Concretes
                 else
                 {
                     stuRes.SubjectId = studentResource.SubjectId;
+                    stuRes.CourseId = studentResource.CourseId;
                     stuRes.FilePath = studentResource.FilePath;
                     stuRes.RoleName = studentResource.RoleName;
                     stuRes.StudentResourceName = studentResource.StudentResourceName;
@@ -1090,6 +1136,16 @@ namespace TeachersAssistant.Services.Concretes
                 var submission = _unitOfWork._assignmentSubmissionRepository.GetById(assignmentSubmissionId);
                 _unitOfWork._assignmentSubmissionRepository.Delete(submission);
                 _unitOfWork.SaveChanges();
+            }
+        }
+
+        public Course[] GetAllCourses()
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                var courses = _unitOfWork._courseRepository.GetAll();
+                return courses;
             }
         }
     }

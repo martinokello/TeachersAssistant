@@ -18,7 +18,7 @@ namespace TeachersAssistant.DataAccess
             : base("name=TeachersAssistant")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<TeachersAssistantDbContext>());
-            //Database.SetInitializer(new DropCreateDatabaseAlways<TeachersAssistant>());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<TeachersAssistantDbContext>());
 
         }
 
@@ -103,6 +103,7 @@ namespace TeachersAssistant.DataAccess
         public DbSet<QAHelpRequest> QAHelpRequests { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<AssignmentSubmission> AssignmentSubmissions { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
     }
     

@@ -30,6 +30,8 @@ namespace TeachersAssistant.App_Start
                 docsFvid.ReverseMap();
                 var docsPvid = cfg.CreateMap<PaidDocument, PaidVideo>();
                 docsPvid.ReverseMap();
+                var courseMap = cfg.CreateMap<CourseViewModel, Course>();
+                courseMap.ReverseMap();
                 var mp = cfg.CreateMap<ProductViewModel, SHOP_PRODS>();
                 //map.ForAllMembers(opt => opt.Ignore());
                 mp.ForMember(dest => dest.prodName, opt => opt.MapFrom(src => src.ProductName));

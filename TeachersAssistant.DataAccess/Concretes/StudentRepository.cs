@@ -25,6 +25,7 @@ namespace  TeachersAssistant.DataAccess.Concretes
                 stu.StudentLastName = item.StudentLastName;
                 stu.EmailAddress = item.EmailAddress;
                 stu.StudentType = item.StudentType;
+                stu.CourseId = item.CourseId;
                 return true;
             }
             catch (Exception e)

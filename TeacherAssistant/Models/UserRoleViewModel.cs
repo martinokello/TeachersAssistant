@@ -13,6 +13,8 @@ namespace  TeacherAssistant.Models
         public string Username { get; set; } = "Username Default";
         [Required]
         public string RoleName { get; set; } = "StatePrimary";
+        [Required]
+        public int CourseId { get; set; }
 
     }
 }

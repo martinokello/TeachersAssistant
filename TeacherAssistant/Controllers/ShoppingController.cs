@@ -42,7 +42,8 @@ namespace TeachersAssistant.Controllers
             IStudentResourceRepositoryMarker studentResourceRepositoryMarker,
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
-            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker)
+            IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
+            ICourseRepositoryMarker courseRepositoryMarker)
         {
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
             Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
@@ -63,6 +64,7 @@ namespace TeachersAssistant.Controllers
             Condition.Requires<IQAHelpRequestRepositoryMarker>(qAHelpRequestRepositoryMarker, "qaHelpRequestRepositoryMarker").IsNotNull();
             Condition.Requires<IAssignmentRepositoryMarker>(assignmentRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
             Condition.Requires<IAssignmentSubmissionRepositoryMarker>(assignmentSubmissionRepositoryMarker, "assignmentSubmissionRepositoryMarker").IsNotNull();
+            Condition.Requires<ICourseRepositoryMarker>(courseRepositoryMarker, "courseRepositoryMarker").IsNotNull();
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
              freeDocumentRepositoryMarker,
@@ -81,7 +83,8 @@ namespace TeachersAssistant.Controllers
              studentResourceRepositoryMarker,
              qAHelpRequestRepositoryMarker,
              assignmentRepositoryMarker,
-             assignmentSubmissionRepositoryMarker);
+             assignmentSubmissionRepositoryMarker,
+             courseRepositoryMarker);
 
             unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);

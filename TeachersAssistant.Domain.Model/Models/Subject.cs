@@ -16,5 +16,8 @@ namespace  TeachersAssistant.Domain.Model.Models
         [ForeignKey("Teacher")]
         public int TeacherId { get; set; }
         public Teacher Teacher { get; set; }
+        [ForeignKey("Course")]
+        public int CourseId { get; set; }
+        public Course Course { get; set; }
     }
 }
