@@ -2,8 +2,6 @@ exec dbo.GroupSubmissionsBySubjectRoleAndYear
 go
 exec dbo.NumberOfStudentsGradedInSubjectAndyearBtwnYears
 go
-exec dbo.PercentileGroupedByGradeAndSubjectAndyear 2019,2019, 1, N'StatePrimary'
-go
 exec dbo.AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears 2019,2019,1,''
 go
 exec dbo.AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears 2019,2019,3
