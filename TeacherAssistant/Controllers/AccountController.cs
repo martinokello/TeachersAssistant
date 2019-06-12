@@ -12,6 +12,13 @@ using TeacherAssistant.Models;
 using System.Web.Security;
 using System.Text.RegularExpressions;
 using Microsoft.Owin.Security.DataProtection;
+using EmailServices.Interfaces;
+using EmailServices.EmailDomain;
+using System.Configuration;
+using System.Collections.Generic;
+using TeachersAssistant.DataAccess.Concretes;
+using TeachersAssistant.DataAccess.Interfaces;
+using EmailServices;
 
 namespace  TeacherAssistant.Controllers
 {
@@ -20,15 +27,18 @@ namespace  TeacherAssistant.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private EmailService _emailService;
+        private TeacherRepository _teacherRepository;
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IEmailService emailService, ITeacherRepositoryMarker teacherRepositoryMarker)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _emailService = emailService as EmailService;
+            _teacherRepository = teacherRepositoryMarker as TeacherRepository;
         }
 
         public ApplicationSignInManager SignInManager
@@ -251,13 +261,27 @@ namespace  TeacherAssistant.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var ftpServerUser = ConfigurationManager.AppSettings["ftpServerUser"];
+                    var ftpPassword = ConfigurationManager.AppSettings["ftpServerPassword"];
+                    _emailService.SmtpServerUsername = ftpServerUser;
+                    _emailService.SmtpServerPassword = ftpPassword;
+                    var emailToList =_teacherRepository.GetAll().Select(p => p.EmailAddress).ToList();
+                    var emailMessage = string.Format(@"Dear Teaching Staff,
 
+There has been a new Registrant: email Address: {0}.
+
+You may want to put them in their right roles at this stage, so that they can begin using the application for routine work.
+
+Many thanks
+MartinLayooInc Dev Team.",model.Email);
+                    var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = emailToList, Subject = "New Student Registration", EmailMessage = emailMessage };
+                    _emailService.SendEmail(message);
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

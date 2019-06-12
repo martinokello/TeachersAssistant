@@ -12,10 +12,11 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using TeacherAssistant.Models;
 using Microsoft.Owin.Security.DataProtection;
+using EmailServices;
 
 namespace  TeacherAssistant  
 {
-    public class EmailService : IIdentityMessageService
+    public class EmailService2 : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
         {
@@ -77,7 +78,7 @@ namespace  TeacherAssistant
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
             });
-            manager.EmailService = new EmailService();
+            manager.EmailService = new EmailService2();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = new DpapiDataProtectionProvider("TeachersAssistant") ;
              manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("Email Confirmation"));

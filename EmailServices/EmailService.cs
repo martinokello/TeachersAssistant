@@ -14,11 +14,15 @@ namespace EmailServices
     {
         private SmtpClient _smtpServer;
 
-        public EmailService(string smtpHostServer)
+        public EmailService(string smtpHostServer, string smtpServerUsername, string smtpServerPassword)
         {
             _smtpServer = new SmtpClient(smtpHostServer);
             EmailType = EmailType.Text;
+            SmtpServerUsername = smtpServerUsername;
+            SmtpServerPassword = smtpServerPassword;
         }
+        public string SmtpServerUsername { get; set; }
+        public string SmtpServerPassword { get; set; }
         public EmailType EmailType { get; set; }
         public void SendEmail(TicketMasterEmailMessage message)
         {
@@ -34,7 +38,7 @@ namespace EmailServices
             mailMessage.Subject = message.Subject;
             mailMessage.IsBodyHtml = EmailType == EmailType.Html;
             mailMessage.Body = message.EmailMessage;
-            _smtpServer.Credentials = new NetworkCredential("business-enterprise@martinlayooinc.co.uk", "eps1LonX!505First14Chars");
+            _smtpServer.Credentials = new NetworkCredential(SmtpServerUsername, SmtpServerPassword);
 
             _smtpServer.Send(mailMessage);
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CuttingEdge.Conditions;
+using EmailServices.EmailDomain;
 using EmailServices.Interfaces;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -1139,7 +1140,7 @@ namespace TeacherAssistant.Controllers
                         bookingTimeViewModel.Description);
                 }
 
-                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"]);
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"], ConfigurationManager.AppSettings["smtpServerUser"], ConfigurationManager.AppSettings["smtpServerPassword"]);
 
                 var emailMessage = new System.Net.Mail.MailMessage();
 
@@ -1153,6 +1154,9 @@ namespace TeacherAssistant.Controllers
                 emailService.EmailType = EmailType.Html;
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
                 //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
+
+                var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = new List<string> { student.EmailAddress }, Subject = "Teacher Assistant's Booking Time Schedule", EmailMessage = html };
+                emailService.SendEmail(message);
                 return View("SuccessfullCreation");
             }
             return View("ManageTeacherCalendar", bookingTimeViewModel);

@@ -1,4 +1,5 @@
-﻿using EmailServices.Interfaces;
+﻿using EmailServices.EmailDomain;
+using EmailServices.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -241,7 +242,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                     _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
                         bookingTimeViewModel.Description);
                 }
-                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"]);
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"], ConfigurationManager.AppSettings["smtpServerUser"], ConfigurationManager.AppSettings["smtpServerPassword"]);
 
                 var emailMessage = new System.Net.Mail.MailMessage();
 
@@ -254,6 +255,9 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
                 html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
                 emailService.EmailType = EmailType.Html;
                 //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
+                
+                var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = new List<string> { student.EmailAddress }, Subject = "Teacher Assistant's Booking Time Schedule", EmailMessage = html };
+                emailService.SendEmail(message);
                 return View("SuccessfullCreation");
             }
             return viewResult;

@@ -166,8 +166,8 @@ namespace  TeacherAssistant.Controllers
                 {
                     _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) }, bookingTimeViewModel.Description);
                 }
-                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"]);
-                
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"], ConfigurationManager.AppSettings["smtpServerUser"], ConfigurationManager.AppSettings["smtpServerPassword"]);
+
                 var emailMessage = new System.Net.Mail.MailMessage();
 
                 var fileInfo = new FileInfo(Server.MapPath("~/Infrastructure/EmailTemplates/TeacherBookingTime.html"));
@@ -178,7 +178,9 @@ namespace  TeacherAssistant.Controllers
                 html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
                 html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
                 emailService.EmailType = EmailType.Html;
-                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});                
+                var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = new List<string> { student.EmailAddress }, Subject = "Teacher Assistant's Booking Time Schedule", EmailMessage = html };
+                emailService.SendEmail(message);
                 return View("_SuccessfullCreation");
             }
             return View("BookTeacherHelpTime",bookingTimeViewModel);
