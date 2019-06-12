@@ -25,7 +25,7 @@ namespace TeachersAssistant
         public static void RegisterComponents()
         {
 			var unityContainer = new UnityContainer();
-            unityContainer.RegisterType<IEmailService, EmailServices.EmailService>(new InjectionConstructor(ConfigurationManager.AppSettings["ftpServer"], typeof(string)), new InjectionConstructor(ConfigurationManager.AppSettings["ftpServerUser"], typeof(string)), new InjectionConstructor(ConfigurationManager.AppSettings["ftpServerPassword"], typeof(string)));
+            unityContainer.RegisterType<IEmailService, EmailServices.EmailService>(new InjectionConstructor(ConfigurationManager.AppSettings["ftpServer"],ConfigurationManager.AppSettings["ftpServerUser"], ConfigurationManager.AppSettings["ftpServerPassword"]));
             unityContainer.RegisterType<ICalendarBookingRepositoryMarker, CalendarBookingRepository>();
             unityContainer.RegisterType<IClassroomRepositoryMarker, ClassroomRepository>();
             unityContainer.RegisterType<IFreeDocumentRepositoryMarker, FreeDocumentRepository>();

@@ -39,6 +39,7 @@ namespace  TeacherAssistant.Controllers
             SignInManager = signInManager;
             _emailService = emailService as EmailService;
             _teacherRepository = teacherRepositoryMarker as TeacherRepository;
+            _teacherRepository.DbContextTeachersAssistant = new TeachersAssistant.DataAccess.TeachersAssistantDbContext();
         }
 
         public ApplicationSignInManager SignInManager
