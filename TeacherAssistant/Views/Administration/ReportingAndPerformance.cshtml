@@ -16,6 +16,13 @@
             @Html.DropDownList("SubjectId", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "SubjectId" } })
         </div>
     </div>
+    <div class="form-group">Or</div>
+    <div class="form-group">
+        @Html.Label("SubjectContains", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("SubjectContains", ViewBag.SubjectList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "SubjectContains" } })
+        </div>
+    </div>
     <div class="form-group">
         @Html.Label("StudentRole", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -51,7 +58,14 @@
                  new SelectListItem { Text = "Student Grades Over Particular Role", Value = "4" },
                  new SelectListItem { Text = "Average Grades Across All Roles Per Grade", Value = "5" },
                  new SelectListItem { Text = "Median Grades Across All Roles Per Grade", Value = "6" },
-                 new SelectListItem { Text = "Average And Medians Across All results", Value = "7" }
+                 new SelectListItem { Text = "Average And Medians Across All results", Value = "7" },
+                 new SelectListItem { Text = "Average Grade Over Roles Across Subject Contains", Value = "8" },
+                 new SelectListItem { Text = "Median Grade Over Roles Across Subject Contains", Value = "9" },
+                 new SelectListItem { Text = "Student Grades Over All Roles Across Subject Contains", Value = "10" },
+                 new SelectListItem { Text = "Student Grades Over Particular Role Across Subject Contains", Value = "11" },
+                 new SelectListItem { Text = "Average Grades Across All Roles Per Grade Across Subject Contains", Value = "12" },
+                 new SelectListItem { Text = "Median Grades Across All Roles Per Grade Across Subject Contains", Value = "13"},
+                 new SelectListItem { Text = "Average And Medians Across All results Across Subject Contains", Value = "14" }
                  }
             , new { htmlAttributes = new { @class = "form-control", @id = "Reports" } })
         </div>
@@ -76,7 +90,7 @@
     var medianGradeBarChart = null;
     var medianAverageGradeBarChart1 = null;
     var medianAverageGradeBarChart2 = null;
-
+    var isAcrossSubjectContains = false;
     var submissions = { YearDue: [], NumberOfStudents: []};
     var medians = { YearDue: [], MedianGrade: [] };
     var averages = { YearDue: [], AverageGrade: [] };
@@ -90,7 +104,16 @@
     var baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
     var baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears")";
     var studentGradesUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears")";
-    var averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears")";
+    var averageAndMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears")";
+
+
+    var baseSubmissionsSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmissionAcrossSubjectContains")";
+    var baseAveragesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains")";
+    var baseMedianSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains")";
+    var baseAveragesAcrossAllRolesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains")";
+    var baseMedianAcrossAllRolesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains")";
+    var studentGradesSubjectContainsUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYearsAcrossSubjectContains")";
+    var averageAndMedianSubjectContainsUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains")";
     function GetActualColourScheme(data) {
         let result = [];
         for (var n = 0; n < data.length; n++) {
@@ -274,13 +297,14 @@
         clearChartSpace();
 
         var subject = $('#SubjectId').val();
+        var subjectContains = $('#SubjectContains').val();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
         var studentRole = $('#StudentRole').val();
         //Compute BaseSubmissionsUrls:
         if (studentRole) ignoreRoles = false;
         else ignoreRoles = true;
-        
+
 
         if (subject > 0) {
             baseSubmissionsUrl += "subjectId=" + subject;
@@ -346,6 +370,71 @@
                 averageAndMedianUrl += "&yearEnd=" + yearEnd;
             }
         }
+        else if (subjectContains) {
+            isAcrossSubjectContains = true;
+            baseSubmissionsSubjectContainsUrl += "subject=" + subjectContains;
+            baseAveragesSubjectContainsUrl += "subject=" + subjectContains;
+            baseMedianSubjectContainsUrl += "subject =" + subjectContains;
+            studentGradesSubjectContainsUrl += "subject=" + subjectContains;
+            baseAveragesAcrossAllRolesSubjectContainsUrl += "subject=" + subjectContains;
+            baseMedianAcrossAllRolesSubjectContainsUrl += "subject=" + subjectContains;
+            averageAndMedianSubjectContainsUrl += "subject=" + subjectContains
+
+            baseSubmissionsSubjectContainsUrl += "&studentRole=" + studentRole;
+            baseAveragesSubjectContainsUrl += "&studentRole=" + studentRole;
+            baseMedianSubjectContainsUrl += "&studentRole=" + studentRole;
+            averageAndMedianSubjectContainsUrl += "&studentRole=" + studentRole;
+
+            if (yearStart) {
+
+                baseAveragesAcrossAllRolesSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseMedianAcrossAllRolesSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseSubmissionsSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseAveragesSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseMedianSubjectContainsUrl += "&yearStart=" + yearStart;
+                studentGradesSubjectContainsUrl += "&yearStart=" + yearStart;
+                averageAndMedianSubjectContainsUrl += "&yearStart=" + yearStart;
+                if (yearEnd) {
+
+                    baseAveragesAcrossAllRolesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                    baseMedianAcrossAllRolesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                    baseSubmissionsSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                    baseAveragesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                    baseMedianSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                    studentGradesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                    averageAndMedianSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                }
+                else {
+                    baseAveragesAcrossAllRolesSubjectContainsUrl += "&yearEnd=" + yearStart;
+                    baseMedianAcrossAllRolesSubjectContainsUrl += "&yearEnd=" + yearStart;
+                    baseSubmissionsSubjectContainsUrl += "&yearEnd=" + yearStart;
+                    baseAveragesSubjectContainsUrl += "&yearEnd=" + yearStart;
+                    baseMedianSubjectContainsUrl += "&yearEnd=" + yearStart;
+                    studentGradesSubjectContainsUrl += "&yearEnd=" + yearStart;
+                    averageAndMedianSubjectContainsUrl += "&yearEnd=" + yearStart;
+                }
+            }
+            else {
+
+                var yearStart = '@DateTime.Now.Year';
+                var yearEnd = '@DateTime.Now.Year';
+                baseSubmissionsSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseAveragesSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseAveragesAcrossAllRolesSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseMedianAcrossAllRolesSubjectContainsUrl += "&yearStart=" + yearStart;
+                baseMedianSubjectContainsUrl += "&yearStart=" + yearStart;
+                studentGradesSubjectContainsUrl += "&yearStart=" + yearStart;
+                averageAndMedianSubjectContainsUrl += "&yearStart=" + yearStart;
+
+                baseAveragesAcrossAllRolesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                baseMedianAcrossAllRolesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                baseSubmissionsSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                baseAveragesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                baseMedianSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                studentGradesSubjectContainsUrl += "&yearEnd=" + yearEnd;
+                averageAndMedianSubjectContainsUrl += "&yearEnd=" + yearEnd;
+            }
+        }
         else {
              baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportingGroupSubmission")";
              baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears")";
@@ -362,18 +451,29 @@
         averages = { YearDue: [], AverageGrade: [] };
         studentGrades = { YearDue: [], NumberOfStudents: [] };
         averageMedianGrades = { YearDue: [], AverageGrade: [], MedianGrade: [] };
+        if (!isAcrossSubjectContains) {
 
-        baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
-        baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
-        baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
-        studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
-        baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
-        baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
-        averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears?")";
+            baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
+            baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+            baseMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
+            studentGradesUrl = "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYears?")";
+            baseAveragesAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
+            baseMedianAcrossAllRolesUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears?")";
+            averageAndMedianUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears?")";
+        }
+        else {
+             baseSubmissionsSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwnSubjectContains")";
+             baseAveragesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains")";
+             baseMedianSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains")";
+             baseAveragesAcrossAllRolesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains")";
+             baseMedianAcrossAllRolesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains")";
+             studentGradesSubjectContainsUrl =  "@Url.Content("~/AdhocPatchAndReporting/NumberOfStudentsGradedInSubjectAndyearBtwnYearsAcrossSubjectContains")";
+             averageAndMedianSubjectContainsUrl =  "@Url.Content("~/AdhocPatchAndReporting/AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains")";
+        }
 
         ComputeUrlPortions();
         $.ajax({
-            url: studentGradesUrl,
+            url: !isAcrossSubjectContains ? studentGradesUrl : studentGradesSubjectContainsUrl,
             method: "GET",
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
@@ -388,11 +488,11 @@
             }
         });
         $.ajax({
-            url: averageAndMedianUrl,
+            url: !isAcrossSubjectContains ? averageAndMedianUrl : averageAndMedianSubjectContainsUrl,
             method: "GET",
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    
+
                     averageMedianGrades.AverageGrade.push(data[i].AverageGrade);
                     averageMedianGrades.MedianGrade.push(data[i].MedianGrade);
                     averageMedianGrades.YearDue.push(data[i].YearDue + ", " + data[i].Grade);
@@ -405,7 +505,7 @@
             }
         });
         $.ajax({
-            url: baseSubmissionsUrl,
+            url: !isAcrossSubjectContains ? baseSubmissionsUrl : baseSubmissionsSubjectContainsUrl,
             method: "GET",
             success: function (data) {
                 for (let i = 0; i < data.length; i++) {
@@ -420,7 +520,7 @@
         });
         if (!ignoreRoles) {
             $.ajax({
-                url: baseAveragesUrl,
+                url: !isAcrossSubjectContains ? baseAveragesUrl : baseAveragesSubjectContainsUrl,
                 method: "GET",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
@@ -434,7 +534,7 @@
                 }
             });
             $.ajax({
-                url: baseMedianUrl,
+                url: !isAcrossSubjectContains ? baseMedianUrl : baseMedianSubjectContainsUrl,
                 method: "GET",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
@@ -450,7 +550,7 @@
         }
         else {
             $.ajax({
-                url: baseAveragesAcrossAllRolesUrl,
+                url: !isAcrossSubjectContains ? baseAveragesAcrossAllRolesUrl : baseAveragesAcrossAllRolesSubjectContainsUrl,
                 method: "GET",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
@@ -464,7 +564,7 @@
                 }
             });
             $.ajax({
-                url: baseMedianAcrossAllRolesUrl,
+                url: !isAcrossSubjectContains ? baseMedianAcrossAllRolesUrl : baseMedianAcrossAllRolesSubjectContainsUrl,
                 method: "GET",
                 success: function (data) {
                     for (let i = 0; i < data.length; i++) {
@@ -488,7 +588,7 @@
         document.body.appendChild(a);
         a.click();
         // cleanup
-        document.body.remove(a); 
+        document.body.remove(a);
         document.location.href = '@Url.Content("~/Administration/ViewGraphsAndReports")';
     }
 
@@ -504,6 +604,8 @@
         $('#generateReport').click(function(){
 
             var reportType = $('#Reports').val();
+        if (!isAcrossSubjectContains) {
+
 
             baseSubmissionsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportGroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn?")";
             baseAveragesUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears?")";
@@ -513,6 +615,16 @@
             baseMedianAcrossAllRolesUrl =  "@Url.Content("~/ReportMedianGradeAttainedGradeBySubjectAcrossAllRolesAndYearForParticualarSubjectBtwnYears?")";
             averageAndMedianUrl =  "@Url.Content("~/AdhocPatchAndReporting/ReportAverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears?")";
 
+        }
+        else {
+             baseSubmissionsSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportGroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwnAcrossSubjectContains?")";
+             baseAveragesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains?")";
+             baseMedianSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportMedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains?")";
+             baseAveragesAcrossAllRolesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportAverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains?")";
+             baseMedianAcrossAllRolesSubjectContainsUrl = "@Url.Content("~/AdhocPatchAndReporting/ReportMedianGradeAttainedGradeBySubjectAcrossAllRolesAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains?")";
+             studentGradesSubjectContainsUrl =  "@Url.Content("~/AdhocPatchAndReporting/ReportNumberOfStudentsGradedInSubjectAndyearBtwnYearsAcrossSubjectContains?")";
+             averageAndMedianSubjectContainsUrl =  "@Url.Content("~/AdhocPatchAndReporting/ReportAverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains?")";
+        }
             ComputeUrlPortions();
 
             switch(parseInt(reportType)) {
@@ -536,6 +648,27 @@
                     break;
                 case 7:
                     handleDownload(averageAndMedianUrl);
+                    break;
+                case 8:
+                    handleDownload(baseAveragesSubjectContainsUrl);
+                    break;
+                case 9:
+                    handleDownload(baseMedianSubjectContainsUrl);
+                    break;
+                case 10:
+                    handleDownload(studentGradesSubjectContainsUrl);
+                    break;
+                case 11:
+                    handleDownload(studentGradesSubjectContainsUrl);
+                    break;
+                case 12:
+                    handleDownload(baseAveragesAcrossAllRolesSubjectContainsUrl);
+                    break;
+                case 13:
+                    handleDownload(baseMedianAcrossAllRolesSubjectContainsUrl);
+                    break;
+                case 14:
+                    handleDownload(averageAndMedianSubjectContainsUrl);
                     break;
                 default:
                     handleDownload(baseSubmissionsUrl);
