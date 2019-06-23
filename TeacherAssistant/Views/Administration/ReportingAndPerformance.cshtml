@@ -299,7 +299,7 @@
         clearChartSpace();
 
         var subject = $('#SubjectId').val();
-        var subjectContains = $('#SubjectContains').val();
+        var subjectContains = $('#SubjectContains').val().trim();
         var yearStart = $('#YearStart').val();
         var yearEnd = $('#YearEnd').val();
         var studentRole = $('#StudentRole').val();
@@ -376,7 +376,7 @@
             isAcrossSubjectContains = true;
             baseSubmissionsSubjectContainsUrl += "subject=" + subjectContains;
             baseAveragesSubjectContainsUrl += "subject=" + subjectContains;
-            baseMedianSubjectContainsUrl += "subject =" + subjectContains;
+            baseMedianSubjectContainsUrl += "subject=" + subjectContains;
             studentGradesSubjectContainsUrl += "subject=" + subjectContains;
             baseAveragesAcrossAllRolesSubjectContainsUrl += "subject=" + subjectContains;
             baseMedianAcrossAllRolesSubjectContainsUrl += "subject=" + subjectContains;
@@ -607,7 +607,7 @@
 
             var reportType = $('#Reports').val();
 
-            isAcrossSubjectContains = $('#SubjectContains').val();
+            isAcrossSubjectContains = $('#SubjectContains').val().trim();;
         if (!isAcrossSubjectContains) {
 
 
