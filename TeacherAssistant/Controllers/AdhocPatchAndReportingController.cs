@@ -37,6 +37,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult GroupSubmissionsBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole)) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -52,6 +53,7 @@ namespace TeacherAssistant.Controllers
         public JsonResult GroupSubmissionsBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
             ReportingGroupSubmission[] reportSubmissions = null;
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
 
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -65,6 +67,7 @@ namespace TeacherAssistant.Controllers
         public JsonResult NumberOfStudentsGradedInSubjectAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
             ReportingGroupSubmission[] reportSubmissions = null;
+            if ( subjectId < 1) return null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
                 adhocPatchAndReportingRepository.DbContextTeachersAssistant = dbContext;
@@ -76,6 +79,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult NumberOfStudentsGradedInSubjectAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject)
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -88,6 +92,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportNumberOfStudentsGradedInSubjectAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
+            if (subjectId < 1) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -102,6 +107,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportNumberOfStudentsGradedInSubjectAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject)
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -116,6 +122,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult PercentileGradeBySubjectRoleAndYearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
             PercentileGradeSubjectYear[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -141,6 +148,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult GroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwnSubjectContains(int yearStart, int yearEnd, string subject, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || string.IsNullOrEmpty(subject)) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -153,6 +161,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportGroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwn(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -167,6 +176,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportGroupByNumberOfStudentsReceivedGradesInSubjectAndyearBtwnAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || string.IsNullOrEmpty(subject)) return null;
             ReportingGroupSubmission[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -181,6 +191,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -193,6 +204,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult AverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || string.IsNullOrEmpty(subject)) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -205,6 +217,8 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
+
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -218,6 +232,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportsAverageGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || string.IsNullOrEmpty(subject)) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -231,6 +246,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -243,6 +259,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult MedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || string.IsNullOrEmpty(subject)) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -255,6 +272,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportMedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || subjectId < 1) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -268,6 +286,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportMedianGradeAttainedGradeBySubjectRoleAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole)
         {
+            if (string.IsNullOrEmpty(studentRole) || string.IsNullOrEmpty(subject)) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -287,6 +306,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportAverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
+            if (subjectId < 1) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -300,6 +320,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportAverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject)
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -313,6 +334,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportMedianGradeAttainedGradeBySubjectAcrossAllRolesAndYearForParticualarSubjectBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
+            if (subjectId < 1) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -326,6 +348,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportMedianGradeAttainedGradeBySubjectAcrossAllRolesAndYearForParticualarSubjectBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject)
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -339,6 +362,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
+            if (subjectId < 1) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -351,6 +375,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult AverageAttainedGradesGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject)
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             AverageGradeSubjectYear[] reportSubmissions = null;
 
             using (var dbContext = new TeachersAssistantDbContext())
@@ -363,6 +388,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId)
         {
+            if ( subjectId < 1) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -375,6 +401,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult MedianGradeAttainedGroupedByGradeAndSubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject)
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             MedianGradeAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -387,6 +414,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole = "")
         {
+            if (subjectId < 1) return null;
             AverageMedianAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -399,6 +427,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public JsonResult AverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole = "")
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             AverageMedianAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -411,6 +440,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportAverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYears(int yearStart, int yearEnd, int subjectId, string studentRole = "")
         {
+            if (subjectId < 1) return null;
             AverageMedianAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
@@ -424,6 +454,7 @@ namespace TeacherAssistant.Controllers
         [HttpGet]
         public FileResult ReportAverageAndMedianGradeAttainedBySubjectAcrossAllRolesAndyearBtwnYearsAcrossSubjectContains(int yearStart, int yearEnd, string subject, string studentRole = "")
         {
+            if (string.IsNullOrEmpty(subject)) return null;
             AverageMedianAttainedGrade[] reportSubmissions = null;
             using (var dbContext = new TeachersAssistantDbContext())
             {
