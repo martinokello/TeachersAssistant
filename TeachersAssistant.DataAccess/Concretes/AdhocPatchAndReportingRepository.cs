@@ -757,7 +757,7 @@ namespace TeachersAssistant.DataAccess.Concretes
             using (var con = DataBase().Connection)
             {
                 var cmd = con.CreateCommand();
-    cmd.CommandText = "dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYearsAcrossSubject";
+                cmd.CommandText = "dbo.MedianGradeAttainedGroupedByGradeAndSubjectAndyearBtwnYearsAcrossSubject";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@YearBegin", System.Data.SqlDbType.Int));
                 cmd.Parameters.Add(new SqlParameter("@YearEnd", System.Data.SqlDbType.Int));
