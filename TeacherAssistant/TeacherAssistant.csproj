@@ -504,6 +504,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="images\basket.jpg" />
     <Content Include="images\HappyGrad.jpg" />
+    <Content Include="images\HappyGrad.png" />
     <Content Include="images\HappyGrad2.jpg" />
     <Content Include="images\header.jpg" />
     <Content Include="images\paypal_logo.gif" />
@@ -840,11 +841,9 @@
   <Target Name="PublishToFileSystem" DependsOnTargets="PipelinePreDeployCopyAllFilesToOneFolder">
     <Error Condition="'$(PublishDestination)'==''" Text="The PublishDestination property must be set to the intended publishing destination." />
     <MakeDir Condition="!Exists($(PublishDestination))" Directories="$(PublishDestination)" />
-    
     <ItemGroup>
-        <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
+      <PublishFiles Include="$(_PackageTempDir)\**\*.*" />
     </ItemGroup>
-
     <Copy SourceFiles="@(PublishFiles)" DestinationFiles="@(PublishFiles->'$(PublishDestination)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="True" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
