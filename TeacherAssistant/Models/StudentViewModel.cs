@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using TeachersAssistant.Domain.Model.Models;
 
 namespace TeacherAssistant.Models
@@ -20,6 +21,7 @@ namespace TeacherAssistant.Models
     public class StudentSelectOrDeleteViewModel
     {
         [Required(ErrorMessage = "Student Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Id Required!")]
         public int? StudentId { get; set; }
         [Required]
         public int CourseId { get; set; }
@@ -38,6 +40,7 @@ namespace TeacherAssistant.Models
     public class StudentUpdateViewModel:IStudentViewModel
     {
         [Required(ErrorMessage = "Student Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Id Required!")]
         public int? StudentId { get; set; }
         [Required(ErrorMessage ="Course Id Required!")]
         public int CourseId { get; set; }

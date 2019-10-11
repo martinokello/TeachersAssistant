@@ -7,7 +7,7 @@ using TeacherAssistant.Infrastructure.Validation;
 
 namespace TeacherAssistant.Models
 {
-    public class IAssignmentSubmissionViewModel
+    public interface IAssignmentSubmissionViewModel
     {
         int AssignmentSubmissionId { get; set; }
         int CourseId { get; set; }
@@ -36,6 +36,7 @@ namespace TeacherAssistant.Models
     public class AssignmentSubmissionSelectOrDeleteViewModel:IAssignmentSubmissionViewModel
     {
         [Required(ErrorMessage= "AssignmentSubmission Id Required!")]
+        [Range(1,Int32.MaxValue,ErrorMessage = "AssignmentSubmission Id Required!")]
         public int AssignmentSubmissionId { get; set; }
         public int CourseId { get; set; }
         public string AssignmentName { get; set; }
@@ -106,6 +107,7 @@ namespace TeacherAssistant.Models
     public class AssignmentSubmissionUpdateViewModel : IAssignmentSubmissionViewModel
     {
         [Required(ErrorMessage = "AssignmentSubmission Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "AssignmentSubmission Id Required!")]
         public int AssignmentSubmissionId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }

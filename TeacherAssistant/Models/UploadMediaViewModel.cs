@@ -25,6 +25,7 @@ namespace TeacherAssistant.Models
     public class UploadMediaSelectOrDeleteViewModel:IUploadMediaViewModel
     {
         [Required(ErrorMessage = "Media Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Media Id Required!")]
         public int? MediaId { get; set; }
         public string MediaType { get; set; }
         public string Name { get; set; }
@@ -56,6 +57,7 @@ namespace TeacherAssistant.Models
     public class UploadMediaUpdateViewModel
     {
         [Required(ErrorMessage = "Media Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Media Id Required!")]
         public int? MediaId { get; set; }
         public string MediaType { get; set; }
         public string Name { get; set; }

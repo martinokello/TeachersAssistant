@@ -23,6 +23,7 @@ namespace TeacherAssistant.Models
     public class StudentResourcesSelectOrDeleteViewModel: IStudentResourcesViewModel
     {
         [Required(ErrorMessage = "Student Resource Id Required")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Resource Id Required!")]
         public int StudentResourceId { get; set; }
         public string StudentResourceName { get; set; }
         public HttpPostedFileBase MediaContent { get; set; }
@@ -57,6 +58,7 @@ namespace TeacherAssistant.Models
     public class StudentResourcesUpdateViewModel
     {
         [Required(ErrorMessage = "Student Resource Id Required")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Resource Id Required!")]
         public int StudentResourceId { get; set; }
         [Required(ErrorMessage = "Resource Name Required")]
         public string StudentResourceName { get; set; }

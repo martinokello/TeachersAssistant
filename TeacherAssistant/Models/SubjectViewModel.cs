@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using TeachersAssistant.Domain.Model.Models;
 
 namespace TeacherAssistant.Models
@@ -18,6 +19,7 @@ namespace TeacherAssistant.Models
     public class SubjectSelectOrDeleteViewModel:ISubjectViewModel
     {
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int? SubjectId { get; set; }
         public int CourseId { get; set; }
         public string SubjectName { get; set; } 
@@ -46,6 +48,7 @@ namespace TeacherAssistant.Models
     public class SubjectUpdateViewModel : ISubjectViewModel
     {
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int? SubjectId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }

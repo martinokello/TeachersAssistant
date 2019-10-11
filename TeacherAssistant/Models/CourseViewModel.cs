@@ -20,6 +20,7 @@ namespace TeacherAssistant.Models
     public class CourseSelectOrDeleteViewModel: ICourseViewModel
     {
         [Required(ErrorMessage="Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         public string CourseName { get; set; }
         public string CourseDescription { get; set; }
@@ -43,6 +44,7 @@ namespace TeacherAssistant.Models
     public class CourseUpdateViewModel : ICourseViewModel
     {
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Course Name Required!")]
         public string CourseName { get; set; }

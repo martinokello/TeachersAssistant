@@ -14,17 +14,21 @@ namespace TeachersAssistant.App_Start
         {
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                var mt = cfg.CreateMap<TeacherViewModel, Teacher>();
-                mt.ReverseMap();
-                var mc = cfg.CreateMap<ClassroomCreateViewModel, Classroom>();
-                mc.ForMember(dest => dest.CalendarId, opt=> opt.MapFrom( src => src.CalendarBookingId));
-                mc.ReverseMap();
+                var mtu = cfg.CreateMap<TeacherUpdateViewModel, Teacher>();
+                mtu.ReverseMap();
+                var mtsd = cfg.CreateMap < TeacherSelectOrDeleteViewModel, Teacher>();
+                mtsd.ReverseMap();
+                var mtcr = cfg.CreateMap<TeacherCreateViewModel, Teacher>();
+                mtcr.ReverseMap();
+                var mtc = cfg.CreateMap<ClassroomCreateViewModel, Classroom>();
+                mtc.ForMember(dest => dest.CalendarId, opt=> opt.MapFrom( src => src.CalendarBookingId));
+                mtc.ReverseMap();
                 var mfc = cfg.CreateMap<ClassroomUpdateViewModel, Classroom>();
-                mc.ForMember(dest => dest.CalendarId, opt => opt.MapFrom(src => src.CalendarBookingId));
-                mc.ReverseMap();
-                var msc = cfg.CreateMap<ClassroomSelectOrDeleteViewModel, Classroom>();
                 mfc.ForMember(dest => dest.CalendarId, opt => opt.MapFrom(src => src.CalendarBookingId));
                 mfc.ReverseMap();
+                var msdc = cfg.CreateMap<ClassroomSelectOrDeleteViewModel, Classroom>();
+                msdc.ForMember(dest => dest.CalendarId, opt => opt.MapFrom(src => src.CalendarBookingId));
+                msdc.ReverseMap();
                 var st = cfg.CreateMap<StudentCreateViewModel, Student>();
                 st.ReverseMap();
                 var sut = cfg.CreateMap<StudentUpdateViewModel, Student>();

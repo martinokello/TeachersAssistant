@@ -24,6 +24,7 @@ namespace TeacherAssistant.Models
     public class ProductSelectOrDeleteViewModel: IProductViewModel
     {
         [Required(ErrorMessage ="Product Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Product Id Required!")]
         public int ProductId { get; set; }
         public string ProductName { get; set; } = "MartinLayooInc ProductName Default";
         public string ProductDescription { get; set; } = "MartinLayooInc ProductDescription Default";
@@ -61,6 +62,7 @@ namespace TeacherAssistant.Models
     public class ProductUpdateViewModel : IProductViewModel
     {
         [Required(ErrorMessage = "Product Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Product Id Required!")]
         public int ProductId { get; set; }
         [Required(ErrorMessage = "Product Name Required!")]
         public string ProductName { get; set; } = "MartinLayooInc ProductName Default";

@@ -30,6 +30,7 @@ namespace TeacherAssistant.Models
     public class AssignmentSelectAndDeleteViewModel :  IAssignmentViewModel
     {
         [Required(ErrorMessage = "Assignment Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Assignment Id Required!")]
         public int AssignmentId { get; set; }
         public string StudentRole { get; set; }
         public int StudentId { get; set; }
@@ -51,6 +52,7 @@ namespace TeacherAssistant.Models
     public class AssignmentUpdateViewModel:IAssignmentViewModel
     {
         [Required(ErrorMessage = "Assignment Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Assignment Id Required!")]
         public int AssignmentId { get; set; }
         [StudentIdOrRoleValidation(ErrorMessage = "Either Student Role or Student Id Required!")]
         public string StudentRole { get; set; }

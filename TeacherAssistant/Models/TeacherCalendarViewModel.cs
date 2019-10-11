@@ -38,6 +38,7 @@ namespace TeacherAssistant.Models
     public class TeacherCalendarSelectOrDeleteViewModel:ITeacherCalendarViewModel
     {
         [Required(ErrorMessage ="Calendar Boopking Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Calendar Boopking Id Required!")]
         public int? CalendarBookingId { get; set; }
         public int SubjectId { get; set; } = -1;
         public int TeacherId { get; set; } = -1;
@@ -81,6 +82,7 @@ namespace TeacherAssistant.Models
     public class TeacherCalendarUpdateViewModel : ITeacherCalendarViewModel
     {
         [Required(ErrorMessage = "Calendar Booking Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Calendar Boopking Id Required!")]
         public int? CalendarBookingId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; } = -1;
