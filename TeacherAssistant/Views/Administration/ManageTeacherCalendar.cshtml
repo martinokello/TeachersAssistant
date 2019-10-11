@@ -1,11 +1,11 @@
-﻿@model TeacherAssistant.Models.TeacherCalendarViewModel
+﻿@model TeacherAssistant.Models.ITeacherCalendarViewModel
 @{
     ViewBag.Title = "Manage Teacher Calendar";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
 
-@using (Html.BeginForm())
-{
+
+<form method="post" id="ManageTeacherCalendarForm" action="">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -80,15 +80,30 @@
             </div>
         </div>
     </div>
-                        }
-
-
+</form>
     <script type="text/javascript">
         jQuery('#startTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
         jQuery('#endTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
     var events = [];
     $(document).ready(function(){
-
+        var $form = $('form#ManageTeacherCalendarForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageTeachersCalendarSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageTeachersCalendarUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageTeachersCalendarCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageTeachersCalendarSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
         var calendarJsonString = @Html.Raw(Json.Encode(ViewBag.CalendarUiList));
         if (calendarJsonString) {
             var teacher = null;
@@ -141,4 +156,4 @@
         }
     });
 
-</script>
+    </script>

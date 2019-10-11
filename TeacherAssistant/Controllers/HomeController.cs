@@ -147,7 +147,7 @@ namespace  TeacherAssistant.Controllers
             return View("BookTeacherHelpTime");
         }
         [HttpPost]
-        public ActionResult BookTeacherHelpTime(TeacherCalendarViewModel bookingTimeViewModel)
+        public ActionResult BookTeacherHelpTime(TeacherCalendarUpdateViewModel bookingTimeViewModel)
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
@@ -191,7 +191,7 @@ namespace  TeacherAssistant.Controllers
             ViewBag.Message = "Teachers Calendar.";
             var teacher = _teacherRepository.GetTeacherByName(teacherEmail);
             var calendar = _teacherRepository.GetTeacherCalendar(teacher.TeacherId ?? 1);
-            var teacherCalendarViewModelList = new List<TeacherCalendarViewModel>();
+            var teacherCalendarViewModelList = new List<TeacherCalendarSelectOrDeleteViewModel>();
 
             var bookingTimes = new List<BookingTimeString>();
 
@@ -199,7 +199,7 @@ namespace  TeacherAssistant.Controllers
             {
                 foreach (var cal in calendar)
                 {
-                    var teacherCalendarViewModel = new TeacherCalendarViewModel();
+                    var teacherCalendarViewModel = new TeacherCalendarSelectOrDeleteViewModel();
                     teacherCalendarViewModel.CalendarBookingId = (int)calendar.FirstOrDefault().CalendarBookingId;
                     teacherCalendarViewModel.BookingTimes = bookingTimes.ToArray();
                     teacherCalendarViewModel.ClassId = (int)calendar.FirstOrDefault().ClassId;

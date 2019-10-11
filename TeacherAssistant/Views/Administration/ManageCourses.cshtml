@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.CourseViewModel
+﻿@model TeacherAssistant.Models.ICourseViewModel
 @{
     ViewBag.Title = "ManageCourses";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
@@ -7,8 +7,7 @@
 
     <h2>Manage Courses</h2>
 
-    @using (Html.BeginForm())
-    {
+    <form method="post" id="ManageCourseForm" action="">
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
@@ -52,10 +51,32 @@
                 </div>
             </div>
         </div>
-    }
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+    </form>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
 
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $form = $('form#ManageCourseForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageCourseSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageCourseUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageCourseCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageCourseSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
+    });
+</script>

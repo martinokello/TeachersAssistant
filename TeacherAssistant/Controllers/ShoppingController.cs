@@ -203,14 +203,14 @@ namespace TeachersAssistant.Controllers
         public ActionResult ShopContentListing()
         {
             var shopProds = _repositoryServices.GetShoppingProdsList().ToArray();
-            var viewModel = (ProductViewModel[])AutoMapper.Mapper.Map(shopProds, typeof(SHOP_PRODS[]), typeof(ProductViewModel[]));
+            var viewModel = (ProductSelectOrDeleteViewModel[])AutoMapper.Mapper.Map(shopProds, typeof(SHOP_PRODS[]), typeof(ProductSelectOrDeleteViewModel[]));
             return View("ShopContentListing", viewModel);
         }
 
         [HttpPost]
-        public ActionResult ShopContentListing(ProductViewModel boughtProduct)
+        public ActionResult ShopContentListing(ProductSelectOrDeleteViewModel boughtProduct)
         {
-            var shopProduct = (SHOP_PRODS)AutoMapper.Mapper.Map(boughtProduct, typeof(ProductViewModel), typeof(SHOP_PRODS));
+            var shopProduct = (SHOP_PRODS)AutoMapper.Mapper.Map(boughtProduct, typeof(ProductSelectOrDeleteViewModel), typeof(SHOP_PRODS));
             return AddToBasket(shopProduct.prodId);
         }
         private Paging InitialisePageInfoCurrent(int numberOfPages, int numberOfPagesToDisplay)

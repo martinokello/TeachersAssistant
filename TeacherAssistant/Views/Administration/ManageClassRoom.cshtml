@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.ClassroomViewModel
+﻿@model TeacherAssistant.Models.IClassroomViewModel
 
 @{
     ViewBag.Title = "Manage ClassRoom";
@@ -7,8 +7,7 @@
 
 <h2>Manage ClassRoom</h2>
 
-@using (Html.BeginForm())
-{
+<form method="post" id="ManageClassroomForm" action="">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -64,8 +63,33 @@
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    </form>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var $form = $('form#ManageClassroomForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
+        jQuery('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+        jQuery('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+        $('#dateSubmitted').val('@ViewBag.DateSubmittedString.ToString("yyyy-MM-dd HH:mm")');
+        $('#dateDue').val('@ViewBag.DateDueString.ToString("yyyy-MM-dd HH:mm")');
+    });
+    </script>

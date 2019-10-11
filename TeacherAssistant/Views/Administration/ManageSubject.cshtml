@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.SubjectViewModel
+﻿@model TeacherAssistant.Models.ISubjectViewModel
 
 @{
     ViewBag.Title = "Manage Subject";
@@ -7,8 +7,7 @@
 
 <h2>Manage Subject</h2>
 
-@using (Html.BeginForm())
-{
+<form method="post" id="ManageSubjectForm" action="">
     @Html.AntiForgeryToken()
 
 
@@ -57,7 +56,29 @@
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-     }
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $form = $('form#ManageSubjectForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageSubjectSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageSubjectUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageSubjectCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageSubjectSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
+    });
+</script>
 

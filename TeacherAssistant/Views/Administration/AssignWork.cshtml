@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.AssignmentViewModel
+﻿@model TeacherAssistant.Models.IAssignmentViewModel
 
 @{
     ViewBag.Title = "AssignWork";
@@ -7,7 +7,7 @@
 
 <h2>Assign Work</h2>
 
-<form method="post" action="@Url.Content("~/Administration/AssignWork")" enctype="multipart/form-data">
+<form id="AssignWorkForm" method="post" action="" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -111,6 +111,25 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var $form = $('form#AssignWorkForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("AssignWorkSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("AssignWorkUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("AssignWorkCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("AssignWorkSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
         $('#dateAssigned').datetimepicker({format:'YYYY-MM-DD HH:mm'});
         $('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
         

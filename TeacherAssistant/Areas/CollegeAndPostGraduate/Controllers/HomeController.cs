@@ -189,7 +189,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             return View("BookTeacherHelpTime");
         }
         [HttpPost]
-        public ActionResult BookTeacherHelpTime(TeacherCalendarViewModel bookingTimeViewModel)
+        public ActionResult BookTeacherHelpTime(TeacherCalendarUpdateViewModel bookingTimeViewModel)
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
@@ -259,7 +259,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             }
             return viewResult;
         }
-        private ViewResult SetCalendarValues(TeacherCalendarViewModel bookingTimeViewModel)
+        private ViewResult SetCalendarValues(ITeacherCalendarViewModel bookingTimeViewModel)
         {
             var calendarBookingViewModels = new List<CalendarBookingViewModel>();
             var calendar =
@@ -310,7 +310,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                 ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
                 ModelState.Clear();
 
-                return View("BookTeacherHelpTime", new TeacherCalendarViewModel
+                return View("BookTeacherHelpTime", new TeacherCalendarSelectOrDeleteViewModel
                 {
                     TeacherId = calendar.TeacherId,
                     SubjectId = calendar.SubjectId,
@@ -552,7 +552,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             {
                 var studentId = _teacherRepository.GetStudentByName(User.Identity.Name).StudentId;
                 var assignments = _teacherRepository.GetCurrentAssignmentsSubmissions("CollegeAndPostGraduate", (int)studentId).Select(p =>
-                new AssignmentSubmissionViewModel
+                new AssignmentSubmissionSelectOrDeleteViewModel
                 {
                     AssignmentSubmissionId = p.AssignmentSubmissionId,
                     AssignmentId = p.AssignmentId,
@@ -574,7 +574,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             } catch
             {
 
-                return View("ViewAssignmentGrades", new AssignmentSubmissionViewModel[] {});
+                return View("ViewAssignmentGrades", new AssignmentSubmissionSelectOrDeleteViewModel[] {});
             }
 
         }
@@ -599,7 +599,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
                         assignmentSubmissionId = assignmentSubmission.AssignmentSubmissionId;
                         hasPreviouslySubmitted = true;
 
-                        return new AssignmentSubmissionViewModel
+                        return new AssignmentSubmissionSelectOrDeleteViewModel
                         {
                             AssignmentSubmissionId = assignmentSubmissionId,
                             AssignmentName = p.AssignmentName,
@@ -618,7 +618,7 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
 					else if (p.StudentId > 0 && assignmentSubmission == null)return null;
                     else
                     {
-                        return new AssignmentSubmissionViewModel
+                        return new AssignmentSubmissionSelectOrDeleteViewModel
                         {
                             AssignmentSubmissionId = assignmentSubmissionId,
                             AssignmentName = p.AssignmentName,
@@ -640,11 +640,11 @@ namespace TeacherAssistant.Areas.CollegeAndPostGraduate.Controllers
             }
             catch
             {
-                return View("AssignmentAndSubmissions", new AssignmentSubmissionViewModel[] { });
+                return View("AssignmentAndSubmissions", new AssignmentSubmissionSelectOrDeleteViewModel[] { });
             }
         }
         [HttpPost]
-        public ActionResult SubmitAssignment(AssignmentSubmissionViewModel submissions)
+        public ActionResult SubmitAssignment(AssignmentSubmissionCreateViewModel submissions)
         {
             var assignment = _teacherRepository.GetAssignmentById(submissions.AssignmentId);
             Subject subject = _teacherRepository.GetSubjectById(submissions.SubjectId);

@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.StudentViewModel
+﻿@model TeacherAssistant.Models.IStudentViewModel
 
 @{
     ViewBag.Title = "Manage Student";
@@ -8,8 +8,7 @@
 
     <h2>Manage Student</h2>
 
-    @using (Html.BeginForm())
-    {
+    <form method="post" id="ManageStudentForm" action="">
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
@@ -32,7 +31,7 @@
                             @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @id = "StudentId" } })
                             @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
                         </div>
-                    </div>                    
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.CourseId, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -77,9 +76,27 @@
                 </div>
             </div>
         </div>
-    }
-    <script type="text/javascript">
+    </form>
+        <script type="text/javascript">
     $(document).ready(function(){
+        var $form = $('form#ManageStudentForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageStudentSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageStudentUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageStudentCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageStudentSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
         $('button#btnChoiceOfRegistrants').click(function (e) {
             $('input[type="submit"]').attr('disabled', 'disabled');
             $('input[name="Create"]').removeAttr('disabled');
@@ -111,9 +128,9 @@
             e.preventDefault();
         });
     });
-    </script>
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+        </script>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
 
 </div>

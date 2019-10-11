@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.ProductViewModel
+﻿@model TeacherAssistant.Models.IProductViewModel
 
 @{
     ViewBag.Title = "Manage Products";
@@ -7,10 +7,10 @@
 
 <h2>Manage Products</h2>
 
-@using (Html.BeginForm())
-{
+
+<form method="post" id="ManageProductsForm" action="">
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Product View Model</h4>
 
@@ -77,12 +77,12 @@
             </div>
         </div>
     </div>
-}
+</form>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-<script type="text/javascript">
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    <script type="text/javascript">
 
     var paidDocsUrl = '@Url.Content("~/")'+ 'Administration/GetPaidDocuments?';
 
@@ -105,6 +105,24 @@
     }
     $(document).ready(function () {
         var initVal = $('select#IsPaidDocument').val();
+        var $form = $('form#ManageProductsForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageProductsSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageProductsUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageProductsCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageProductsSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
         getDocumentList(initVal);
         $('select#IsPaidDocument').change(function () {
             var result = $(this).val();
@@ -124,4 +142,4 @@
             }
         });
     });
-</script>
+    </script>

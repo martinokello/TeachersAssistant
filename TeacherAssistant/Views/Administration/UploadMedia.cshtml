@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.UploadMediaViewModel
+﻿@model TeacherAssistant.Models.IUploadMediaViewModel
 
 @{
     ViewBag.Title = "Upload Media";
@@ -7,7 +7,7 @@
 }
 
 <h2>Upload Media</h2>
-<form method="post" action="@Url.Content("~/Administration/UploadMedia")" enctype="multipart/form-data">
+<form method="post" id="UploadMediaForm" action="" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -102,6 +102,24 @@
         });
     }
     $(document).ready(function () {
+        var $form = $('form#UploadMediaForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("UploadMediaSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("UploadMediaUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("UploadMediaCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("UploadMediaSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
         triggerGetMediaIds();
 
         $('select[name="MediaType"]').change(function () {

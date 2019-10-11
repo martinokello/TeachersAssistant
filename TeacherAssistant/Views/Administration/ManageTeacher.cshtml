@@ -7,10 +7,9 @@
 
 <h2>Manage Teacher</h2>
 
-@using (Html.BeginForm())
-{
+<form method="post" id="ManageTeacherForm" action="">
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Teacher</h4>
 
@@ -59,8 +58,29 @@
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+ </form>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var $form = $('form#ManageTeacherForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageTeacherSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageTeacherSelectOrUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageTeacherSelectOrCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageTeacherSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
+    });
+    </script>

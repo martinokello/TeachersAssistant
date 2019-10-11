@@ -113,16 +113,93 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetNewRegistrants() {
+        public JsonResult GetNewRegistrants()
+        {
             return Json(new { Registrants = _repositoryServices.GetNewRegistrants() }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetCurrentStudents()
         {
-            return Json(new { Registrants = _repositoryServices.GetStudentList().Select(p=> p.EmailAddress).ToArray() }, JsonRequestBehavior.AllowGet);
+            return Json(new { Registrants = _repositoryServices.GetStudentList().Select(p => p.EmailAddress).ToArray() }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult AssignWork(AssignmentViewModel assignmentViewModel)
+        public ActionResult AssignWorkSelectOrDelete(AssignmentSelectAndDeleteViewModel assignmentViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ViewBag.DateAssignedString = DateTime.Now;
+                    ViewBag.DateDueString = DateTime.Now;
+                    ViewBag.AssignmentList = GetAllAssignmentsList();
+                    GetUIDropdownLists();
+
+                    var virtualPath = string.Empty;
+
+
+                    if (assignmentViewModel.Select != null)
+                    {
+                        if (assignmentViewModel.AssignmentId < 1)
+                        {
+                            ModelState.AddModelError("AssignmentId", "Assignment Id Required");
+                            return View(assignmentViewModel);
+                        }
+                        Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                        ModelState.Clear();
+                        ViewBag.DateDueString = doc.DateDue;
+                        ViewBag.DateAssignedString = doc.DateAssigned;
+                        return View(new AssignmentSelectAndDeleteViewModel
+                        {
+                            AssignmentId = doc.AssignmentId,
+                            StudentRole = doc.StudentRole,
+                            SubjectId = doc.SubjectId,
+                            StudentId = doc.StudentId,
+                            FilePath = doc.FilePath,
+                            DateAssigned = doc.DateAssigned,
+                            DateDue = doc.DateDue,
+                            Description = doc.Description,
+                            AssignmentName = doc.AssignmentName,
+                            CourseId = doc.CourseId,
+                            TeacherId = doc.TeacherId
+                        });
+
+                    }
+                    else if (assignmentViewModel.Delete != null)
+                    {
+                        if (assignmentViewModel.AssignmentId < 1)
+                        {
+                            ModelState.AddModelError("AssignmenId", "Assignment Id Required");
+                            return View(assignmentViewModel);
+                        }
+
+
+                        var doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
+                        if (doc != null)
+                        {
+                            var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                            if (delFileInfo.Exists)
+                            {
+                                delFileInfo.Delete();
+                            }
+
+                        }
+                        _repositoryServices.DeleteAssignment(doc.AssignmentId);
+                        return View("SuccessfullCreation");
+
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("AssignWork", assignmentViewModel);
+            }
+            return View("AssignWork", assignmentViewModel);
+        }
+        [HttpPost]
+        public ActionResult AssignWorkUpdate(AssignmentUpdateViewModel assignmentViewModel)
         {
             try
             {
@@ -130,57 +207,12 @@ namespace TeacherAssistant.Controllers
                 ViewBag.DateDueString = DateTime.Now;
                 ViewBag.AssignmentList = GetAllAssignmentsList();
                 GetUIDropdownLists();
-                if (assignmentViewModel.AssignmentId < 1 && (!string.IsNullOrEmpty(assignmentViewModel.Select)|| !string.IsNullOrEmpty(assignmentViewModel.Update)|| !string.IsNullOrEmpty(assignmentViewModel.Delete)))
+                if (ModelState.IsValid)
                 {
-                    ModelState.Clear();
-                    ModelState.AddModelError("AssignemnentId", "Assignment required");
-                    return View("AssignWork", assignmentViewModel);
-                }
-                if (!string.IsNullOrEmpty(assignmentViewModel.Create) && (assignmentViewModel.TeacherId < 1  || assignmentViewModel.CourseId < 1 || (string.IsNullOrEmpty(assignmentViewModel.StudentRole) && assignmentViewModel.StudentId < 1)))
-                {
-                    ModelState.Clear();
-                    ModelState.AddModelError("assignWorkError", "Course, Subject, Teacher and (Student Or StudentRole) are required");
-                    return View("AssignWork", assignmentViewModel);
-                }
-                
-                
 
-                var virtualPath = string.Empty;
+                    var virtualPath = string.Empty;
 
 
-                if (assignmentViewModel.Select != null)
-                {
-                    if (assignmentViewModel.AssignmentId < 1)
-                    {
-                        ModelState.AddModelError("AssignmentId", "Assignment Id Required");
-                        return View(assignmentViewModel);
-                    }
-                    Assignment doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
-                    ModelState.Clear();
-                    ViewBag.DateDueString = doc.DateDue;
-                    ViewBag.DateAssignedString = doc.DateAssigned;
-                    return View(new AssignmentViewModel
-                    {
-                        AssignmentId = doc.AssignmentId,
-                        StudentRole = doc.StudentRole,
-                        SubjectId = doc.SubjectId,
-                        StudentId = doc.StudentId,
-                        FilePath = doc.FilePath,
-                        DateAssigned = doc.DateAssigned,
-                        DateDue = doc.DateDue,
-                        Description = doc.Description,
-                        AssignmentName = doc.AssignmentName,
-                        CourseId = doc.CourseId
-                    });
-
-                }
-                if (assignmentViewModel.StudentId > 0)
-                {
-                    var roles = Roles.GetRolesForUser(_repositoryServices.GetStudentById(assignmentViewModel.StudentId).EmailAddress);
-                    virtualPath = virtualPath = string.Format("~/StudentResources/{0}/Assignments/{1}", roles.FirstOrDefault(), _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
-                }
-                else
-                {
                     //Save file to relevant fileSystem:
                     switch (assignmentViewModel.StudentRole.ToLower())
                     {
@@ -200,89 +232,55 @@ namespace TeacherAssistant.Controllers
                             virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
                             break;
                     }
-                }
-                if (assignmentViewModel.Delete != null)
-                {
-                    if (assignmentViewModel.AssignmentId < 1)
+                    var dateDue = DateTime.Now;
+                    var dataAssigned = DateTime.Now;
+
+                    HttpPostedFileBase file = assignmentViewModel.MediaContent;
+
+                    var fileName = file.FileName;
+                    var fileBuffer = new byte[file.ContentLength];
+
+                    var physicalPath = Server.MapPath(virtualPath);
+                    var dirInfo = new DirectoryInfo(physicalPath);
+                    if (!dirInfo.Exists) dirInfo.Create();
+                    FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                    if (fileInfo1.Exists)
                     {
-                        ModelState.AddModelError("AssignmenId", "Assignment Id Required");
-                        return View(assignmentViewModel);
+                        fileInfo1.Delete();
                     }
+                    FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
 
-
-                    var doc = _repositoryServices.GetAssignmentById(assignmentViewModel.AssignmentId);
-                    if (doc != null)
+                    using (var fileStream = fileInfo.Create())
                     {
-                        var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
-                        if (delFileInfo.Exists)
+                        var sizeRead = 0;
+                        while ((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
                         {
-                            delFileInfo.Delete();
+                            fileStream.Write(fileBuffer, 0, sizeRead);
                         }
-
+                        file.InputStream.Flush();
+                        file.InputStream.Close();
+                        fileStream.Flush();
+                        fileStream.Close();
                     }
-                    _repositoryServices.DeleteAssignment(doc.AssignmentId);
+
+                    _repositoryServices.SaveOrUpdateAssignment(new Assignment
+                    {
+                        AssignmentId = assignmentViewModel.AssignmentId,
+                        AssignmentName = assignmentViewModel.AssignmentName,
+                        DateAssigned = assignmentViewModel.DateAssigned,
+                        DateDue = assignmentViewModel.DateDue,
+                        Description = assignmentViewModel.Description,
+                        FilePath = Url.Content(virtualPath + "/" + file.FileName),
+                        StudentId = assignmentViewModel.StudentId,
+                        StudentRole = assignmentViewModel.StudentRole,
+                        SubjectId = assignmentViewModel.SubjectId,
+                        TeacherId = assignmentViewModel.TeacherId,
+                        CourseId = assignmentViewModel.CourseId
+                    });
                     return View("SuccessfullCreation");
-
-                }
-                else
-                {
-                    if (ModelState.IsValid)
-                    {
-                        var dateDue = DateTime.Now;
-                        var dataAssigned = DateTime.Now;
-                        if(string.IsNullOrEmpty(assignmentViewModel.AssignmentName) || assignmentViewModel.CourseId < 1 || string.IsNullOrEmpty(assignmentViewModel.Description))
-                        {
-                            ModelState.AddModelError("assingmentName", "Assignement Name, Course and Description are required!");
-                            return View(assignmentViewModel);
-                        }
-                        HttpPostedFileBase file = assignmentViewModel.MediaContent;
-
-                        var fileName = file.FileName;
-                        var fileBuffer = new byte[file.ContentLength];
-
-                        var physicalPath = Server.MapPath(virtualPath);
-                        var dirInfo = new DirectoryInfo(physicalPath);
-                        if (!dirInfo.Exists) dirInfo.Create();
-                        FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
-                        if (fileInfo1.Exists)
-                        {
-                            fileInfo1.Delete();
-                        }
-                        FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
-
-                        using (var fileStream = fileInfo.Create())
-                        {
-                            var sizeRead = 0;
-                            while ((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
-                            {
-                                fileStream.Write(fileBuffer, 0, sizeRead);
-                            }
-                            file.InputStream.Flush();
-                            file.InputStream.Close();
-                            fileStream.Flush();
-                            fileStream.Close();
-                        }
-
-                        _repositoryServices.SaveOrUpdateAssignment(new Assignment
-                        {
-                            AssignmentId = assignmentViewModel.AssignmentId,
-                            AssignmentName = assignmentViewModel.AssignmentName,
-                            DateAssigned = assignmentViewModel.DateAssigned,
-                            DateDue = assignmentViewModel.DateDue,
-                            Description = assignmentViewModel.Description,
-                            FilePath = Url.Content(virtualPath + "/" + file.FileName),
-                            StudentId = assignmentViewModel.StudentId,
-                            StudentRole = assignmentViewModel.StudentRole,
-                            SubjectId = assignmentViewModel.SubjectId,
-                            TeacherId = assignmentViewModel.TeacherId,
-                            CourseId = assignmentViewModel.CourseId
-                        });
-                        return View("SuccessfullCreation");
-                    }
-
-                    return View("AssignWork", assignmentViewModel);
                 }
 
+                return View("AssignWork", assignmentViewModel);
             }
             catch (Exception e)
             {
@@ -292,24 +290,107 @@ namespace TeacherAssistant.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ManageClassRoom(ClassroomViewModel classRoomViewModel)
+        public ActionResult AssignWorkCreate(AssignmentCreateViewModel assignmentViewModel)
         {
-            GetUIDropdownLists();
-            var classRoomModel = (Classroom)Mapper.Map(classRoomViewModel, typeof(ClassroomViewModel), typeof(Classroom));
-            if (classRoomViewModel.Select != null)
+            try
             {
-                ModelState.Clear();
-                if (classRoomViewModel.ClassroomId < 1 || classRoomViewModel.CalendarBookingId < 1)
+                ViewBag.DateAssignedString = DateTime.Now;
+                ViewBag.DateDueString = DateTime.Now;
+                ViewBag.AssignmentList = GetAllAssignmentsList();
+                GetUIDropdownLists();
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("ClassroomId", "ClassroomId and CalendarId are required");
-                    return View("ManageClassRoom", classRoomViewModel);
+
+                    var virtualPath = string.Empty;
+
+
+                    //Save file to relevant fileSystem:
+                    switch (assignmentViewModel.StudentRole.ToLower())
+                    {
+                        case "collegeandpostgraduate":
+                            virtualPath = string.Format("~/StudentResources/CollegeAndPostGraduate/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "secondaryschool":
+                            virtualPath = string.Format("~/StudentResources/SecondarySchool/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "grammar11plus":
+                            virtualPath = string.Format("~/StudentResources/Grammar11Plus/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "stateprimary":
+                            virtualPath = string.Format("~/StudentResources/StatePrimary/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                        case "statejunior":
+                            virtualPath = string.Format("~/StudentResources/StateJunior/Assignments/{0}", _repositoryServices.GetSubjectById(assignmentViewModel.SubjectId).SubjectName);
+                            break;
+                    }
+                    var dateDue = DateTime.Now;
+                    var dataAssigned = DateTime.Now;
+
+                    HttpPostedFileBase file = assignmentViewModel.MediaContent;
+
+                    var fileName = file.FileName;
+                    var fileBuffer = new byte[file.ContentLength];
+
+                    var physicalPath = Server.MapPath(virtualPath);
+                    var dirInfo = new DirectoryInfo(physicalPath);
+                    if (!dirInfo.Exists) dirInfo.Create();
+                    FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                    if (fileInfo1.Exists)
+                    {
+                        fileInfo1.Delete();
+                    }
+                    FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+
+                    using (var fileStream = fileInfo.Create())
+                    {
+                        var sizeRead = 0;
+                        while ((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
+                        {
+                            fileStream.Write(fileBuffer, 0, sizeRead);
+                        }
+                        file.InputStream.Flush();
+                        file.InputStream.Close();
+                        fileStream.Flush();
+                        fileStream.Close();
+                    }
+
+                    _repositoryServices.SaveOrUpdateAssignment(new Assignment
+                    {
+                        AssignmentName = assignmentViewModel.AssignmentName,
+                        DateAssigned = assignmentViewModel.DateAssigned,
+                        DateDue = assignmentViewModel.DateDue,
+                        Description = assignmentViewModel.Description,
+                        FilePath = Url.Content(virtualPath + "/" + file.FileName),
+                        StudentId = assignmentViewModel.StudentId,
+                        StudentRole = assignmentViewModel.StudentRole,
+                        SubjectId = assignmentViewModel.SubjectId,
+                        TeacherId = assignmentViewModel.TeacherId,
+                        CourseId = assignmentViewModel.CourseId
+                    });
+                    return View("SuccessfullCreation");
                 }
 
+                return View("AssignWork", assignmentViewModel);
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("AssignWork", assignmentViewModel);
+            }
+        }
+        [HttpPost]
+        public ActionResult ManageClassRoomSelectOrDelete(ClassroomSelectOrDeleteViewModel classRoomViewModel)
+        {
+            GetUIDropdownLists();
+            var classRoomModel = (Classroom)Mapper.Map(classRoomViewModel, typeof(ClassroomSelectOrDeleteViewModel), typeof(Classroom));
+            if (classRoomViewModel.Select != null)
+            {
                 if (ModelState.IsValid)
                 {
                     var calendar = _repositoryServices.GetTeacherCalendarByBookingId(classRoomViewModel.CalendarBookingId);
                     var classroom = _repositoryServices.GetClassroomById(classRoomViewModel.ClassroomId);
-                    classRoomViewModel = (ClassroomViewModel)Mapper.Map(classroom, typeof(Classroom), typeof(ClassroomViewModel));
+                    classRoomViewModel = (ClassroomSelectOrDeleteViewModel)Mapper.Map(classroom, typeof(Classroom), typeof(ClassroomSelectOrDeleteViewModel));
                     classRoomViewModel.CalendarBookingId = (int)calendar.CalendarBookingId;
                     classRoomViewModel.SubjectId = calendar.SubjectId;
                 }
@@ -333,7 +414,7 @@ namespace TeacherAssistant.Controllers
                 }
                 else
                 {
-                    if(classRoomModel.SubjectId < 0 || classRoomModel.TeacherId <0 || classRoomViewModel.CalendarBookingId < 0)
+                    if (classRoomModel.SubjectId < 0 || classRoomModel.TeacherId < 0 || classRoomViewModel.CalendarBookingId < 0)
                     {
                         ModelState.AddModelError("ClassroomId", "CalendarBookingId Teacher and Subject are required");
                         return View("ManageClassRoom", classRoomViewModel);
@@ -348,6 +429,43 @@ namespace TeacherAssistant.Controllers
             }
             return View("ManageClassRoom", classRoomViewModel);
         }
+        public ActionResult ManageClassRoomCreate(ClassroomCreateViewModel classRoomViewModel)
+        {
+            GetUIDropdownLists();
+            var classRoomModel = (Classroom)Mapper.Map(classRoomViewModel, typeof(ClassroomCreateViewModel), typeof(Classroom));
+
+            if (ModelState.IsValid)
+            {
+                var calendar = _repositoryServices.GetTeacherCalendarByBookingId(classRoomViewModel.CalendarBookingId);
+                _repositoryServices.ManageClassRoom(classRoomModel);
+                calendar.SubjectId = classRoomModel.SubjectId;
+                calendar.ClassId = (int)classRoomModel.ClassroomId;
+                _repositoryServices.SaveOrUpdateCalendar(calendar);
+                return View("SuccessfullCreation");
+            }
+            return View("ManageClassRoom", classRoomViewModel);
+        }
+        public ActionResult ManageClassRoomUpdate(ClassroomUpdateViewModel classRoomViewModel)
+        {
+            GetUIDropdownLists();
+            var classRoomModel = (Classroom)Mapper.Map(classRoomViewModel, typeof(ClassroomUpdateViewModel), typeof(Classroom));
+
+            if (ModelState.IsValid)
+            {
+                if (classRoomModel.SubjectId < 0 || classRoomModel.TeacherId < 0 || classRoomViewModel.CalendarBookingId < 0)
+                {
+                    ModelState.AddModelError("ClassroomId", "CalendarBookingId Teacher and Subject are required");
+                    return View("ManageClassRoom", classRoomViewModel);
+                }
+                var calendar = _repositoryServices.GetTeacherCalendarByBookingId(classRoomViewModel.CalendarBookingId);
+                _repositoryServices.ManageClassRoom(classRoomModel);
+                calendar.SubjectId = classRoomModel.SubjectId;
+                calendar.ClassId = (int)classRoomModel.ClassroomId;
+                _repositoryServices.SaveOrUpdateCalendar(calendar);
+                return View("SuccessfullCreation");
+            }
+            return View("ManageClassRoom", classRoomViewModel);
+        }
         [HttpGet]
         public ActionResult ManageStudent()
         {
@@ -356,24 +474,56 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult ManageStudent(StudentViewModel studentViewModel)
+        public ActionResult ManageStudentSelectOrDelete(StudentSelectOrDeleteViewModel studentViewModel)
         {
             GetUIDropdownLists();
-            if (studentViewModel.Select != null)
-            {
-                if (studentViewModel.StudentId < 1)
-                {
-                    ModelState.AddModelError("StudentId", "StudentId is required");
-                    return View("ManageStudent", studentViewModel);
-                }
-                var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
-                studentViewModel = (StudentViewModel)Mapper.Map(student, typeof(Student), typeof(StudentViewModel));
 
-                ModelState.Clear();
-                return View("ManageStudent", studentViewModel);
-            }
             if (ModelState.IsValid)
             {
+                if (studentViewModel.Select != null)
+                {
+                    if (studentViewModel.StudentId < 1)
+                    {
+                        ModelState.AddModelError("StudentId", "StudentId is required");
+                        return View("ManageStudent", studentViewModel);
+                    }
+                    var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
+                    studentViewModel = (StudentSelectOrDeleteViewModel)Mapper.Map(student, typeof(Student), typeof(StudentSelectOrDeleteViewModel));
+
+                    ModelState.Clear();
+                    return View("ManageStudent", studentViewModel);
+                }
+                if (studentViewModel.Delete != null)
+                {
+                    var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
+                    _repositoryServices.DeleteStudent(student);
+                    return View("SuccessfullCreation");
+                }
+            }
+
+            return View("ManageStudent", studentViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ManageStudentUpdate(StudentUpdateViewModel studentViewModel)
+        {
+            GetUIDropdownLists();
+
+            if (ModelState.IsValid)
+            {
+                if (studentViewModel.Select != null)
+                {
+                    if (studentViewModel.StudentId < 1)
+                    {
+                        ModelState.AddModelError("StudentId", "StudentId is required");
+                        return View("ManageStudent", studentViewModel);
+                    }
+                    var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
+                    studentViewModel = (StudentUpdateViewModel)Mapper.Map(student, typeof(Student), typeof(StudentUpdateViewModel));
+
+                    ModelState.Clear();
+                    return View("ManageStudent", studentViewModel);
+                }
                 if (studentViewModel.Delete != null)
                 {
                     var student = _repositoryServices.GetStudentById(studentViewModel.StudentId);
@@ -383,10 +533,25 @@ namespace TeacherAssistant.Controllers
                 else
                 {
                     var studentModel =
-                        (Student)Mapper.Map(studentViewModel, typeof(StudentViewModel), typeof(Student));
+                        (Student)Mapper.Map(studentViewModel, typeof(StudentUpdateViewModel), typeof(Student));
                     _repositoryServices.ManageStudent(studentModel);
                     return View("SuccessfullCreation");
                 }
+            }
+
+            return View("ManageStudent", studentViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageStudentCreate(StudentCreateViewModel studentViewModel)
+        {
+            GetUIDropdownLists();
+
+            if (ModelState.IsValid)
+            {
+                var studentModel =
+                    (Student)Mapper.Map(studentViewModel, typeof(StudentCreateViewModel), typeof(Student));
+                _repositoryServices.ManageStudent(studentModel);
+                return View("SuccessfullCreation");
             }
 
             return View("ManageStudent", studentViewModel);
@@ -399,53 +564,62 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult ManageCourse(CourseViewModel courseViewModel)
+        public ActionResult ManageCourseSelectOrDelete(CourseSelectOrDeleteViewModel courseViewModel)
         {
             GetUIDropdownLists();
-            if (courseViewModel.Select != null)
+            if (ModelState.IsValid)
             {
-                ModelState.Clear();
-                if (courseViewModel.CourseId < 1)
-                {
-                    ModelState.AddModelError("CourseId", "CourseId is required");
-                    return View("ManageCourses", courseViewModel);
-                }
-                if (ModelState.IsValid)
+                if (courseViewModel.Select != null)
                 {
                     var course = _repositoryServices.GetCourseById(courseViewModel.CourseId);
-                    courseViewModel = (CourseViewModel)Mapper.Map(course, typeof(Course), typeof(CourseViewModel));
+                    courseViewModel = (CourseSelectOrDeleteViewModel)Mapper.Map(course, typeof(Course), typeof(CourseSelectOrDeleteViewModel));
 
-                }
-                ModelState.Clear();
-                return View("ManageCourses", courseViewModel);
-            }
-            if (courseViewModel.Delete != null)
-            {
-                ModelState.Clear();
-                if (courseViewModel.CourseId < 1)
-                {
-                    ModelState.AddModelError("CourseId", "CourseId is required");
+                    ModelState.Clear();
                     return View("ManageCourses", courseViewModel);
                 }
-                if (ModelState.IsValid)
+                if (courseViewModel.Delete != null)
                 {
+
                     var course = _repositoryServices.GetCourseById(courseViewModel.CourseId);
                     _repositoryServices.DeleteCourse(course);
                     return View("SuccessfullCreation");
                 }
-                return View("ManageCourses", courseViewModel);
-            }
-            if (!string.IsNullOrEmpty(courseViewModel.CourseName)  && !string.IsNullOrEmpty(courseViewModel.CourseDescription))
-            {
-                var course = (Course)Mapper.Map(courseViewModel, typeof(CourseViewModel), typeof(Course));
-                _repositoryServices.AddOrUpdateCourse(course);
-                return View("SuccessfullCreation");
-
             }
             return View("ManageCourses", courseViewModel);
         }
+        [HttpPost]
+        public ActionResult ManageCourseCreate(CourseCreateViewModel courseViewModel)
+        {
+            GetUIDropdownLists();
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(courseViewModel.CourseName) && !string.IsNullOrEmpty(courseViewModel.CourseDescription))
+                {
+                    var course = (Course)Mapper.Map(courseViewModel, typeof(CourseCreateViewModel), typeof(Course));
+                    _repositoryServices.AddOrUpdateCourse(course);
+                    return View("SuccessfullCreation");
 
-       [HttpGet]
+                }
+            }
+            return View("ManageCourses", courseViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageCourseUpdate(CourseUpdateViewModel courseViewModel)
+        {
+            GetUIDropdownLists();
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(courseViewModel.CourseName) && !string.IsNullOrEmpty(courseViewModel.CourseDescription))
+                {
+                    var course = (Course)Mapper.Map(courseViewModel, typeof(CourseUpdateViewModel), typeof(Course));
+                    _repositoryServices.AddOrUpdateCourse(course);
+                    return View("SuccessfullCreation");
+
+                }
+            }
+            return View("ManageCourses", courseViewModel);
+        }
+        [HttpGet]
         public ActionResult ManageSubject()
         {
             GetUIDropdownLists();
@@ -453,48 +627,61 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult ManageSubject(SubjectViewModel subjectViewModel)
+        public ActionResult ManageSubjectSelectOrDelete(SubjectSelectOrDeleteViewModel subjectViewModel)
         {
             GetUIDropdownLists();
-            if (subjectViewModel.Select != null)
+            if (ModelState.IsValid)
             {
-                ModelState.Clear();
-                if (subjectViewModel.SubjectId < 1)
-                {
-                    ModelState.AddModelError("SubjectId", "SubjectId is required");
-                    return View("ManageSubject", subjectViewModel);
-                }
-                if (ModelState.IsValid)
-                {
-                    var subject = _repositoryServices.GetSubjectById(subjectViewModel.SubjectId);
-                    subjectViewModel = (SubjectViewModel)Mapper.Map(subject, typeof(Subject), typeof(SubjectViewModel));
 
-                }
-                ModelState.Clear();
-                return View("ManageSubject", subjectViewModel);
-            }
-            if (subjectViewModel.Delete != null)
-            {
-                ModelState.Clear();
-                if (subjectViewModel.SubjectId < 1)
-                {
-                    ModelState.AddModelError("SubjectId", "SubjectId is required");
-                    return View("ManageSubject", subjectViewModel);
-                }
-                if (ModelState.IsValid)
+                if (subjectViewModel.Select != null)
                 {
                     var subject = _repositoryServices.GetSubjectById(subjectViewModel.SubjectId);
-                    _repositoryServices.DeleteSubject(subject);
+                    subjectViewModel = (SubjectSelectOrDeleteViewModel)Mapper.Map(subject, typeof(Subject), typeof(SubjectSelectOrDeleteViewModel));
+                    ModelState.Clear();
+                    return View("ManageSubject", subjectViewModel);
+                }
+                if (subjectViewModel.Delete != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var subject = _repositoryServices.GetSubjectById(subjectViewModel.SubjectId);
+                        _repositoryServices.DeleteSubject(subject);
+                        return View("SuccessfullCreation");
+                    }
+                    return View("ManageSubject", subjectViewModel);
+                }
+            }
+            return View("ManageSubject", subjectViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageSubjectCreate(SubjectCreateViewModel subjectViewModel)
+        {
+            GetUIDropdownLists();
+            if (ModelState.IsValid)
+            {
+                var subjectModel = (Subject)Mapper.Map(subjectViewModel, typeof(SubjectCreateViewModel), typeof(Subject));
+                if (subjectViewModel.SubjectName != null)
+                {
+                    _repositoryServices.ManageSubject(subjectModel);
                     return View("SuccessfullCreation");
-                }
-                return View("ManageSubject", subjectViewModel);
-            }
-            var subjectModel = (Subject)Mapper.Map(subjectViewModel, typeof(SubjectViewModel), typeof(Subject));
-            if (subjectViewModel.SubjectName != null)
-            {
-                _repositoryServices.ManageSubject(subjectModel);
-                return View("SuccessfullCreation");
 
+                }
+            }
+            return View("ManageSubject", subjectViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageSubjectUpdate(SubjectUpdateViewModel subjectViewModel)
+        {
+            GetUIDropdownLists();
+            if (ModelState.IsValid)
+            {
+                var subjectModel = (Subject)Mapper.Map(subjectViewModel, typeof(SubjectUpdateViewModel), typeof(Subject));
+                if (subjectViewModel.SubjectName != null)
+                {
+                    _repositoryServices.ManageSubject(subjectModel);
+                    return View("SuccessfullCreation");
+
+                }
             }
             return View("ManageSubject", subjectViewModel);
         }
@@ -506,45 +693,51 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult ManageTeacher(TeacherViewModel teacherViewModel)
+        public ActionResult ManageTeacherSelectOrDelete(TeacherSelectOrDeleteViewModel teacherViewModel)
         {
             GetUIDropdownLists();
-            if (teacherViewModel.Select != null)
+            if (ModelState.IsValid && teacherViewModel.Select != null)
+            {
+                var teacher = _repositoryServices.GetTeacherById(teacherViewModel.TeacherId);
+                teacherViewModel = (TeacherSelectOrDeleteViewModel)Mapper.Map(teacher, typeof(Teacher), typeof(TeacherSelectOrDeleteViewModel));
+                ModelState.Clear();
+                return View("ManageTeacher", teacherViewModel);
+            }
+            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherSelectOrDeleteViewModel), typeof(Teacher));
+            if (ModelState.IsValid && teacherViewModel.Delete != null)
             {
                 if (teacherViewModel.TeacherId < 1)
                 {
                     ModelState.AddModelError("TeacherId", "Teacher Id is required");
                     return View("ManageTeacher", teacherViewModel);
                 }
-                var teacher = _repositoryServices.GetTeacherById(teacherViewModel.TeacherId);
-                teacherViewModel = (TeacherViewModel)Mapper.Map(teacher, typeof(Teacher), typeof(TeacherViewModel));
-                ModelState.Clear();
-                return View("ManageTeacher", teacherViewModel);
+                var teacher = _repositoryServices.GetTeacherByName(teacherViewModel.EmailAddress);
+                _repositoryServices.DeleteTeacher(teacher);
+                return View("SuccessfullCreation");
             }
-            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherViewModel), typeof(Teacher));
+            return View("ManageTeacher", teacherViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageTeacherCreate(TeacherCreateViewModel teacherViewModel)
+        {
+            GetUIDropdownLists();
+            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherCreateViewModel), typeof(Teacher));
             if (ModelState.IsValid)
             {
-                if (teacherViewModel.Delete != null)
-                {
-                    if (teacherViewModel.TeacherId < 1)
-                    {
-                        ModelState.AddModelError("TeacherId", "Teacher Id is required");
-                        return View("ManageTeacher", teacherViewModel);
-                    }
-                    var teacher = _repositoryServices.GetTeacherByName(teacherViewModel.EmailAddress);
-                    _repositoryServices.DeleteTeacher(teacher);
-                    return View("SuccessfullCreation");
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(teacherViewModel.LastName) || string.IsNullOrEmpty(teacherViewModel.FirsName))
-                    {
-                        ModelState.AddModelError("TeacherId", "Teacher Id is required");
-                        return View("ManageTeacher", teacherViewModel);
-                    }
-                    _repositoryServices.ManageTeachers(teacherModel);
-                    return View("SuccessfullCreation");
-                }
+                _repositoryServices.ManageTeachers(teacherModel);
+                return View("SuccessfullCreation");
+            }
+            return View("ManageTeacher", teacherViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageTeacherUpdate(TeacherUpdateViewModel teacherViewModel)
+        {
+            GetUIDropdownLists();
+            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherUpdateViewModel), typeof(Teacher));
+            if (ModelState.IsValid)
+            {
+                _repositoryServices.ManageTeachers(teacherModel);
+                return View("SuccessfullCreation");
             }
             return View("ManageTeacher", teacherViewModel);
         }
@@ -555,7 +748,62 @@ namespace TeacherAssistant.Controllers
             return View("ManageResources");
         }
         [HttpPost]
-        public ActionResult ManageStudentResources(StudentResourcesViewModel resourceModel)
+        public ActionResult ManageStudentResourcesSelectOrDelete(StudentResourcesSelectOrDeleteViewModel resourceModel)
+        {
+            try
+            {
+                GetUIDropdownLists();
+
+                ViewBag.StudentResourcesList = GetStudentResourcesList();
+                ViewBag.RoleList = GetRolesSelectList();
+                ViewBag.SubjectList = GetSubjectList();
+
+                var virtualPath = string.Empty;
+
+                //Save file to relevant fileSystem:
+                if (ModelState.IsValid)
+                {
+
+                    if (resourceModel.Select != null)
+                    {
+                        StudentResource doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
+                        ModelState.Clear();
+                        return View("ManageResources", new StudentResourcesSelectOrDeleteViewModel
+                        {
+                            StudentResourceId = doc.StudentResourceId,
+                            RoleName = doc.RoleName,
+                            SubjectId = doc.SubjectId,
+                            FilePath = doc.FilePath,
+                            StudentResourceName = doc.StudentResourceName
+                        });
+                    }
+                    else if (resourceModel.Delete != null)
+                    {
+                        var doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
+                        if (doc != null)
+                        {
+                            var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                            if (delFileInfo.Exists)
+                            {
+                                delFileInfo.Delete();
+                            }
+
+                        }
+                        _repositoryServices.DeleteStudentResource(resourceModel.StudentResourceId);
+                        return View("SuccessfullCreation");
+                    }
+                }
+                return View("ManageResources", resourceModel);
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("ManageResources", resourceModel);
+            }
+        }
+        [HttpPost]
+        public ActionResult ManageStudentResourcesUpdate(StudentResourcesUpdateViewModel resourceModel)
         {
             try
             {
@@ -569,104 +817,125 @@ namespace TeacherAssistant.Controllers
 
                 //Save file to relevant fileSystem:
 
-                if (resourceModel.Select != null)
+                if (ModelState.IsValid)
                 {
-                    if (resourceModel.StudentResourceId < 1)
-                    {
-                        ModelState.AddModelError("StudentResourceId", "StudentResource Id Required");
-                        return View("ManageResources", resourceModel);
-                    }
-                    StudentResource doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
-                    ModelState.Clear();
-                    return View("ManageResources",new StudentResourcesViewModel { StudentResourceId = doc.StudentResourceId, RoleName = doc.RoleName,
-                    SubjectId = doc.SubjectId, FilePath=doc.FilePath, StudentResourceName=doc.StudentResourceName });
-                    
-                }
-                else if (resourceModel.Delete != null)
-                {
-                    if (resourceModel.StudentResourceId < 1)
-                    {
-                        ModelState.AddModelError("StudentResourceId", "StudentResource Id Required");
-                        return View("ManageResources", resourceModel);
-                    }
-                    
-                    var doc = _repositoryServices.GetStudentResourceById(resourceModel.StudentResourceId);
-                    if (doc != null)
-                    {
-                        var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
-                        if (delFileInfo.Exists)
-                        {
-                            delFileInfo.Delete();
-                        }
-
-                    }
-                    _repositoryServices.DeleteStudentResource(resourceModel.StudentResourceId);
-                    return View("SuccessfullCreation");
-                   
-                }
-                else
-                {
-                    if (resourceModel.StudentResourceId < 1 && !string.IsNullOrEmpty(resourceModel.Update))
-                    {
-                        ModelState.AddModelError("StudentResourceId", "Student Resource Id Required");
-                        return View("ManageResources", resourceModel);
-                    }
-                    else if(string.IsNullOrEmpty(resourceModel.StudentResourceName) || string.IsNullOrEmpty(resourceModel.RoleName) || resourceModel.CourseId < 1 ||  resourceModel.SubjectId < 1 || resourceModel.MediaContent == null)
-                    {
-                        ModelState.AddModelError("StudentResourcesCreate", "Student Resource Name,  RoleName, Subject and Media Content Required");
-                        return View("ManageResources", resourceModel);
-                    }
                     var subj = _repositoryServices.GetSubjectById(resourceModel.SubjectId);
                     virtualPath = GetResourcesFilePath(resourceModel.RoleName, subj);
+                    HttpPostedFileBase file = resourceModel.MediaContent;
 
-                    if (ModelState.IsValid)
+                    var fileName = file.FileName;
+                    var fileBuffer = new byte[file.ContentLength];
+
+                    var physicalPath = Server.MapPath(virtualPath);
+                    var dirInfo = new DirectoryInfo(physicalPath);
+                    if (!dirInfo.Exists) dirInfo.Create();
+
+                    FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                    if (fileInfo1.Exists)
                     {
-                        HttpPostedFileBase file = resourceModel.MediaContent;
-                            
-                        var fileName = file.FileName;
-                        var fileBuffer = new byte[file.ContentLength];
+                        fileInfo1.Delete();
+                    }
+                    FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
 
-                        var physicalPath = Server.MapPath(virtualPath);
-                        var dirInfo = new DirectoryInfo(physicalPath);
-                        if (!dirInfo.Exists) dirInfo.Create();
-
-                        FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
-                        if (fileInfo1.Exists)
+                    using (var fileStream = fileInfo.Create())
+                    {
+                        var sizeRead = 0;
+                        while ((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
                         {
-                            fileInfo1.Delete();
+                            fileStream.Write(fileBuffer, 0, sizeRead);
                         }
-                        FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
-                        
-                        using (var fileStream = fileInfo.Create())
-                        {
-                            var sizeRead = 0;
-                            while((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
-                            {
-                                fileStream.Write(fileBuffer, 0, sizeRead);
-                            }
-                            file.InputStream.Flush();
-                            file.InputStream.Close();
-                            fileStream.Flush();
-                            fileStream.Close();
-                        }
-
-                        var studentResource = new StudentResource()
-                        {
-                            StudentResourceId = resourceModel.StudentResourceId,
-                            FilePath = Url.Content(virtualPath + "/" + file.FileName),
-                            SubjectId = resourceModel.SubjectId,
-                            RoleName = resourceModel.RoleName,
-                            StudentResourceName = resourceModel.StudentResourceName,
-                            CourseId = resourceModel.CourseId
-                        };
-                        //Save file Path To DB: 
-                        _repositoryServices.SaveOrUpdateStudentResource(studentResource);
-                        return View("SuccessfullCreation");
+                        file.InputStream.Flush();
+                        file.InputStream.Close();
+                        fileStream.Flush();
+                        fileStream.Close();
                     }
 
-                    return View("ManageResources", resourceModel);
+                    var studentResource = new StudentResource()
+                    {
+                        StudentResourceId = resourceModel.StudentResourceId,
+                        FilePath = Url.Content(virtualPath + "/" + file.FileName),
+                        SubjectId = resourceModel.SubjectId,
+                        RoleName = resourceModel.RoleName,
+                        StudentResourceName = resourceModel.StudentResourceName,
+                        CourseId = resourceModel.CourseId
+                    };
+                    //Save file Path To DB: 
+                    _repositoryServices.SaveOrUpdateStudentResource(studentResource);
+                    return View("SuccessfullCreation");
                 }
 
+                return View("ManageResources", resourceModel);
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("ManageResources", resourceModel);
+            }
+        }
+        [HttpPost]
+        public ActionResult ManageStudentResourcesCreate(StudentResourcesUpdateViewModel resourceModel)
+        {
+            try
+            {
+                GetUIDropdownLists();
+
+                ViewBag.StudentResourcesList = GetStudentResourcesList();
+                ViewBag.RoleList = GetRolesSelectList();
+                ViewBag.SubjectList = GetSubjectList();
+
+                var virtualPath = string.Empty;
+
+                //Save file to relevant fileSystem:
+
+                if (ModelState.IsValid)
+                {
+                    var subj = _repositoryServices.GetSubjectById(resourceModel.SubjectId);
+                    virtualPath = GetResourcesFilePath(resourceModel.RoleName, subj);
+                    HttpPostedFileBase file = resourceModel.MediaContent;
+
+                    var fileName = file.FileName;
+                    var fileBuffer = new byte[file.ContentLength];
+
+                    var physicalPath = Server.MapPath(virtualPath);
+                    var dirInfo = new DirectoryInfo(physicalPath);
+                    if (!dirInfo.Exists) dirInfo.Create();
+
+                    FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                    if (fileInfo1.Exists)
+                    {
+                        fileInfo1.Delete();
+                    }
+                    FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+
+                    using (var fileStream = fileInfo.Create())
+                    {
+                        var sizeRead = 0;
+                        while ((sizeRead = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length)) > 0)
+                        {
+                            fileStream.Write(fileBuffer, 0, sizeRead);
+                        }
+                        file.InputStream.Flush();
+                        file.InputStream.Close();
+                        fileStream.Flush();
+                        fileStream.Close();
+                    }
+
+                    var studentResource = new StudentResource()
+                    {
+                        StudentResourceId = resourceModel.StudentResourceId,
+                        FilePath = Url.Content(virtualPath + "/" + file.FileName),
+                        SubjectId = resourceModel.SubjectId,
+                        RoleName = resourceModel.RoleName,
+                        StudentResourceName = resourceModel.StudentResourceName,
+                        CourseId = resourceModel.CourseId
+                    };
+                    //Save file Path To DB: 
+                    _repositoryServices.SaveOrUpdateStudentResource(studentResource);
+                    return View("SuccessfullCreation");
+                }
+
+                return View("ManageResources", resourceModel);
             }
             catch (Exception e)
             {
@@ -676,7 +945,7 @@ namespace TeacherAssistant.Controllers
             }
         }
 
-        private string GetResourcesFilePath(string roleName,Subject subject)
+        private string GetResourcesFilePath(string roleName, Subject subject)
         {
             var virtualPath = string.Empty;
 
@@ -708,223 +977,379 @@ namespace TeacherAssistant.Controllers
             return View("UploadMedia");
         }
         [HttpPost]
-        public ActionResult UploadMedia(UploadMediaViewModel mediaModel)
+        public ActionResult UploadMediaSelectOrDelete(UploadMediaSelectOrDeleteViewModel mediaModel)
         {
             try
             {
                 GetUIDropdownLists();
-
-                ModelState.Clear();
-                var validator = new UploadMediaViewModelValidator();
-                var errors = validator.Validate(mediaModel).Errors;
-                foreach(var failed in errors)
-                {
-                    ModelState.AddModelError(failed.PropertyName, failed.ErrorMessage);
-                }
-                if (errors.Any())
-                {
-                    return View("UploadMedia", mediaModel);
-                }
 
                 ViewBag.RoleList = GetRolesSelectList();
 
 
                 var mediaType = mediaModel.MediaType;
                 var virtualPath = string.Empty;
-
-                //Save file to relevant fileSystem:
-                switch (mediaModel.RoleName.ToLower())
+                if (ModelState.IsValid)
                 {
-                    case "collegeandpostgraduate":
-                        if (mediaType.ToLower().StartsWith("paid"))
-                            virtualPath = "~/Documents/CollegeAndPostGraduate/PaidDocuments";
-                        else virtualPath = "~/Documents/CollegeAndPostGraduate/FreeDocuments";
-                        break;
-                    case "secondaryschool":
-                        if (mediaType.ToLower().StartsWith("paid"))
-                            virtualPath = "~/Documents/SecondarySchool/PaidDocuments";
-                        else virtualPath = "~/Documents/SecondarySchool/FreeDocuments";
-                        break;
-                    case "grammar11plus":
-                        if (mediaType.ToLower().StartsWith("paid"))
-                            virtualPath = "~/Documents/Grammar11Plus/PaidDocuments";
-                        else virtualPath = "~/Documents/Grammar11Plus/FreeDocuments";
-                        break;
-                    case "stateprimary":
-                        if (mediaType.ToLower().StartsWith("paid"))
-                            virtualPath = "~/Documents/StatePrimary/PaidDocuments";
-                        else virtualPath = "~/Documents/StatePrimary/FreeDocuments";
-                        break;
-                    case "statejunior":
-                        if (mediaType.ToLower().StartsWith("paid"))
-                            virtualPath = "~/Documents/StateJunior/PaidDocuments";
-                        else virtualPath = "~/Documents/StateJunior/FreeDocuments";
-                        break;
-                    default:
-                        if (mediaType.ToLower().StartsWith("paid"))
-                            virtualPath = "~/Documents/Administration/PaidDouments";
-                        else virtualPath = "~/Documents/Administration/FreeDouments";
-                        break;
-                }
-
-
-                if (mediaModel.Select != null)
-                {
-                    if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType) || mediaModel.MediaId < 1)
+                    switch (mediaModel.RoleName.ToLower())
                     {
-                        ModelState.AddModelError("MediaId", "Media Id Required");
-                        return View("UploadMedia",mediaModel);
+                        case "collegeandpostgraduate":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/CollegeAndPostGraduate/PaidDocuments";
+                            else virtualPath = "~/Documents/CollegeAndPostGraduate/FreeDocuments";
+                            break;
+                        case "secondaryschool":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/SecondarySchool/PaidDocuments";
+                            else virtualPath = "~/Documents/SecondarySchool/FreeDocuments";
+                            break;
+                        case "grammar11plus":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/Grammar11Plus/PaidDocuments";
+                            else virtualPath = "~/Documents/Grammar11Plus/FreeDocuments";
+                            break;
+                        case "stateprimary":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/StatePrimary/PaidDocuments";
+                            else virtualPath = "~/Documents/StatePrimary/FreeDocuments";
+                            break;
+                        case "statejunior":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/StateJunior/PaidDocuments";
+                            else virtualPath = "~/Documents/StateJunior/FreeDocuments";
+                            break;
+                        default:
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/Administration/PaidDouments";
+                            else virtualPath = "~/Documents/Administration/FreeDouments";
+                            break;
                     }
-                    switch (mediaType.ToLower())
+
+                    if (mediaModel.Select != null)
                     {
-                        case "paiddocument":
-                            var paidDoc = _repositoryServices.GetPaidDocumentById(mediaModel.MediaId);
-                            ModelState.Clear();
-                            return View(new UploadMediaViewModel { MediaId = paidDoc.PaidDocumentId, RoleName = paidDoc.RoleName, Name = paidDoc.FilePath });
-                        case "freedocument":
-                            var freeDoc = _repositoryServices.GetFreeDocumentById(mediaModel.MediaId);
-                            ModelState.Clear();
-                            return View(new UploadMediaViewModel { MediaId = freeDoc.FreeDocumentId, RoleName = freeDoc.RoleName, Name = freeDoc.FilePath });
-                        case "paidvideo":
-                            var paidVideo = _repositoryServices.GetPaidVideoById(mediaModel.MediaId);
-                            ModelState.Clear();
-                            return View(new UploadMediaViewModel { MediaId = paidVideo.PaidVideoId, RoleName = paidVideo.RoleName, Name = paidVideo.FilePath });
-                        case "freevideo":
-                            var freeVideo = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
-                            ModelState.Clear();
-                            return View(new UploadMediaViewModel { MediaId = freeVideo.FreeVideoId, RoleName = freeVideo.RoleName, Name = freeVideo.FilePath });
+                        if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType) || mediaModel.MediaId < 1)
+                        {
+                            ModelState.AddModelError("MediaId", "Media Id Required");
+                            return View("UploadMedia", mediaModel);
+                        }
+                        switch (mediaType.ToLower())
+                        {
+                            case "paiddocument":
+                                var paidDoc = _repositoryServices.GetPaidDocumentById(mediaModel.MediaId);
+                                ModelState.Clear();
+                                return View(new UploadMediaSelectOrDeleteViewModel { MediaId = paidDoc.PaidDocumentId, RoleName = paidDoc.RoleName, Name = paidDoc.FilePath });
+                            case "freedocument":
+                                var freeDoc = _repositoryServices.GetFreeDocumentById(mediaModel.MediaId);
+                                ModelState.Clear();
+                                return View(new UploadMediaSelectOrDeleteViewModel { MediaId = freeDoc.FreeDocumentId, RoleName = freeDoc.RoleName, Name = freeDoc.FilePath });
+                            case "paidvideo":
+                                var paidVideo = _repositoryServices.GetPaidVideoById(mediaModel.MediaId);
+                                ModelState.Clear();
+                                return View(new UploadMediaSelectOrDeleteViewModel { MediaId = paidVideo.PaidVideoId, RoleName = paidVideo.RoleName, Name = paidVideo.FilePath });
+                            case "freevideo":
+                                var freeVideo = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
+                                ModelState.Clear();
+                                return View(new UploadMediaSelectOrDeleteViewModel { MediaId = freeVideo.FreeVideoId, RoleName = freeVideo.RoleName, Name = freeVideo.FilePath });
+                        }
+                        ModelState.Clear();
+                        return View("UploadMedia", mediaModel);
                     }
-                    ModelState.Clear();
-                    return View("UploadMedia", mediaModel);
-                }
-                else if (mediaModel.Delete != null)
-                {
-                    if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType) || mediaModel.MediaId<1)
+                    else if (mediaModel.Delete != null)
                     {
-                        ModelState.AddModelError("MediaId", "Media Id Required");
+                        if (mediaModel.MediaId == null || string.IsNullOrEmpty(mediaType) || mediaModel.MediaId < 1)
+                        {
+                            ModelState.AddModelError("MediaId", "Media Id Required");
+                            return View("UploadMedia", mediaModel);
+                        }
+
+
+                        switch (mediaType.ToLower())
+                        {
+                            case "paiddocument":
+                                dynamic doc = _repositoryServices.GetPaidDocumentById(mediaModel.MediaId);
+                                if (doc != null)
+                                {
+                                    var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                                    if (delFileInfo.Exists)
+                                    {
+                                        delFileInfo.Delete();
+                                    }
+
+                                }
+                                _repositoryServices.DeletePaidDocumentById(mediaModel.MediaId);
+                                return View("SuccessfullCreation");
+                            case "freedocument":
+                                doc = _repositoryServices.GetFreeDocumentById(mediaModel.MediaId);
+                                if (doc != null)
+                                {
+                                    var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                                    if (delFileInfo.Exists)
+                                    {
+                                        delFileInfo.Delete();
+                                    }
+
+                                }
+                                _repositoryServices.DeleteFreeDocumentById(mediaModel.MediaId);
+                                return View("SuccessfullCreation");
+                            case "paidvideo":
+                                doc = _repositoryServices.GetPaidVideoById(mediaModel.MediaId);
+                                if (doc != null)
+                                {
+                                    var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                                    if (delFileInfo.Exists)
+                                    {
+                                        delFileInfo.Delete();
+                                    }
+
+                                }
+                                _repositoryServices.DeletePaidVideoById(mediaModel.MediaId);
+                                return View("SuccessfullCreation");
+                            case "freevideo":
+                                doc = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
+                                if (doc != null)
+                                {
+                                    var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
+                                    if (delFileInfo.Exists)
+                                    {
+                                        delFileInfo.Delete();
+                                    }
+
+                                }
+                                _repositoryServices.DeleteFreeVideoById(mediaModel.MediaId);
+                                return View("SuccessfullCreation");
+                        }
                         return View("UploadMedia", mediaModel);
                     }
 
+                }
+                return View("UploadMedia", mediaModel);
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("UploadMedia", mediaModel);
+            }
+        }
 
-                    switch (mediaType.ToLower())
+        [HttpPost]
+        public ActionResult UploadMediaCreate(UploadMediaCreateViewModel mediaModel)
+        {
+            try
+            {
+                GetUIDropdownLists();
+
+                ViewBag.RoleList = GetRolesSelectList();
+
+
+                var mediaType = mediaModel.MediaType;
+                var virtualPath = string.Empty;
+                if (ModelState.IsValid)
+                {
+                    //Save file to relevant fileSystem:
+                    switch (mediaModel.RoleName.ToLower())
+                    {
+                        case "collegeandpostgraduate":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/CollegeAndPostGraduate/PaidDocuments";
+                            else virtualPath = "~/Documents/CollegeAndPostGraduate/FreeDocuments";
+                            break;
+                        case "secondaryschool":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/SecondarySchool/PaidDocuments";
+                            else virtualPath = "~/Documents/SecondarySchool/FreeDocuments";
+                            break;
+                        case "grammar11plus":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/Grammar11Plus/PaidDocuments";
+                            else virtualPath = "~/Documents/Grammar11Plus/FreeDocuments";
+                            break;
+                        case "stateprimary":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/StatePrimary/PaidDocuments";
+                            else virtualPath = "~/Documents/StatePrimary/FreeDocuments";
+                            break;
+                        case "statejunior":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/StateJunior/PaidDocuments";
+                            else virtualPath = "~/Documents/StateJunior/FreeDocuments";
+                            break;
+                        default:
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/Administration/PaidDouments";
+                            else virtualPath = "~/Documents/Administration/FreeDouments";
+                            break;
+                    }
+
+
+                    HttpPostedFileBase file = mediaModel.MediaContent;
+                    var fileName = file.FileName;
+                    var fileBuffer = new byte[file.ContentLength];
+                    var fileContent = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length);
+                    file.InputStream.Flush();
+                    file.InputStream.Close();
+
+                    var physicalPath = Server.MapPath(virtualPath);
+                    var dirInfo = new DirectoryInfo(physicalPath);
+                    if (!dirInfo.Exists) dirInfo.Create();
+
+                    FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                    if (fileInfo1.Exists)
+                    {
+                        fileInfo1.Delete();
+                    }
+                    FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+                    using (var fileStream = fileInfo.Create())
+                    {
+                        fileStream.Write(fileBuffer, 0, fileBuffer.Length);
+                        fileStream.Flush();
+                        fileStream.Close();
+                    }
+
+                    var paidDocument = new PaidDocument
+                    {
+                        FilePath = "~" + Url.Content(virtualPath) + "/" + file.FileName,
+                        SubjectId = mediaModel.SubjectId,
+                        RoleName = mediaModel.RoleName
+                    };
+                    //Save file Path To DB: 
+                    switch (mediaModel.MediaType.ToLower())
                     {
                         case "paiddocument":
-                            dynamic doc = _repositoryServices.GetPaidDocumentById(mediaModel.MediaId);
-                            if (doc != null)
-                            {
-                                var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
-                                if (delFileInfo.Exists)
-                                {
-                                    delFileInfo.Delete();
-                                }
-
-                            }
-                            _repositoryServices.DeletePaidDocumentById(mediaModel.MediaId);
-                            return View("SuccessfullCreation");
+                            _repositoryServices.SaveOrUpdatePaidDocument(paidDocument);
+                            break;
                         case "freedocument":
-                            doc = _repositoryServices.GetFreeDocumentById(mediaModel.MediaId);
-                            if (doc != null)
-                            {
-                                var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
-                                if (delFileInfo.Exists)
-                                {
-                                    delFileInfo.Delete();
-                                }
-
-                            }
-                            _repositoryServices.DeleteFreeDocumentById(mediaModel.MediaId);
-                            return View("SuccessfullCreation");
+                            var freeDocument = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
+                                typeof(FreeDocument));
+                            _repositoryServices.SaveOrUpdateFreeDocument(freeDocument as FreeDocument);
+                            break;
                         case "paidvideo":
-                            doc = _repositoryServices.GetPaidVideoById(mediaModel.MediaId);
-                            if (doc != null)
-                            {
-                                var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
-                                if (delFileInfo.Exists)
-                                {
-                                    delFileInfo.Delete();
-                                }
-
-                            }
-                            _repositoryServices.DeletePaidVideoById(mediaModel.MediaId);
-                            return View("SuccessfullCreation");
+                            var paidVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
+                                typeof(PaidVideo));
+                            _repositoryServices.SaveOrUpdatePaidVideo(paidVideo as PaidVideo);
+                            break;
                         case "freevideo":
-                            doc = _repositoryServices.GetFreeVideoById(mediaModel.MediaId);
-                            if (doc != null)
-                            {
-                                var delFileInfo = new FileInfo(Server.MapPath(doc.FilePath));
-                                if (delFileInfo.Exists)
-                                {
-                                    delFileInfo.Delete();
-                                }
-
-                            }
-                            _repositoryServices.DeleteFreeVideoById(mediaModel.MediaId);
-                            return View("SuccessfullCreation");
+                            var freeVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
+                                typeof(FreeVideo));
+                            _repositoryServices.SaveOrUpdateFreeVideo(freeVideo as FreeVideo);
+                            break;
                     }
-                    return View("UploadMedia", mediaModel);
+                    return View("SuccessfullCreation");
                 }
-                else
+                return View("UploadMedia", mediaModel);
+            }
+            catch (Exception e)
+            {
+                ModelState.Clear();
+                ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
+                return View("UploadMedia", mediaModel);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UploadMediaUpdate(UploadMediaUpdateViewModel mediaModel)
+        {
+            try
+            {
+                GetUIDropdownLists();
+
+                ViewBag.RoleList = GetRolesSelectList();
+
+
+                var mediaType = mediaModel.MediaType;
+                var virtualPath = string.Empty;
+                if (ModelState.IsValid)
                 {
-                    if (ModelState.IsValid)
+                    //Save file to relevant fileSystem:
+                    switch (mediaModel.RoleName.ToLower())
                     {
-                        HttpPostedFileBase file = mediaModel.MediaContent;
-                        var fileName = file.FileName;
-                        var fileBuffer = new byte[file.ContentLength];
-                        var fileContent = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length);
-                        file.InputStream.Flush();
-                        file.InputStream.Close();
-
-                        var physicalPath = Server.MapPath(virtualPath);
-                        var dirInfo = new DirectoryInfo(physicalPath);
-                        if (!dirInfo.Exists) dirInfo.Create();
-
-                        FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
-                        if (fileInfo1.Exists)
-                        {
-                            fileInfo1.Delete();
-                        }
-                        FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
-                        using (var fileStream = fileInfo.Create())
-                        {
-                            fileStream.Write(fileBuffer, 0, fileBuffer.Length);
-                            fileStream.Flush();
-                            fileStream.Close();
-                        }
-
-                        var paidDocument = new PaidDocument
-                        {
-                            FilePath = "~" + Url.Content(virtualPath) + "/" + file.FileName,
-                            SubjectId = mediaModel.SubjectId,
-                            RoleName = mediaModel.RoleName
-                        };
-                        //Save file Path To DB: 
-                        switch (mediaModel.MediaType.ToLower())
-                        {
-                            case "paiddocument":
-                                _repositoryServices.SaveOrUpdatePaidDocument(paidDocument);
-                                break;
-                            case "freedocument":
-                                var freeDocument = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
-                                    typeof(FreeDocument));
-                                _repositoryServices.SaveOrUpdateFreeDocument(freeDocument as FreeDocument);
-                                break;
-                            case "paidvideo":
-                                var paidVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
-                                    typeof(PaidVideo));
-                                _repositoryServices.SaveOrUpdatePaidVideo(paidVideo as PaidVideo);
-                                break;
-                            case "freevideo":
-                                var freeVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
-                                    typeof(FreeVideo));
-                                _repositoryServices.SaveOrUpdateFreeVideo(freeVideo as FreeVideo);
-                                break;
-                        }
-                        return View("SuccessfullCreation");
+                        case "collegeandpostgraduate":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/CollegeAndPostGraduate/PaidDocuments";
+                            else virtualPath = "~/Documents/CollegeAndPostGraduate/FreeDocuments";
+                            break;
+                        case "secondaryschool":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/SecondarySchool/PaidDocuments";
+                            else virtualPath = "~/Documents/SecondarySchool/FreeDocuments";
+                            break;
+                        case "grammar11plus":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/Grammar11Plus/PaidDocuments";
+                            else virtualPath = "~/Documents/Grammar11Plus/FreeDocuments";
+                            break;
+                        case "stateprimary":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/StatePrimary/PaidDocuments";
+                            else virtualPath = "~/Documents/StatePrimary/FreeDocuments";
+                            break;
+                        case "statejunior":
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/StateJunior/PaidDocuments";
+                            else virtualPath = "~/Documents/StateJunior/FreeDocuments";
+                            break;
+                        default:
+                            if (mediaType.ToLower().StartsWith("paid"))
+                                virtualPath = "~/Documents/Administration/PaidDouments";
+                            else virtualPath = "~/Documents/Administration/FreeDouments";
+                            break;
                     }
 
-                    return View("UploadMedia", mediaModel);
-                }
 
+                    HttpPostedFileBase file = mediaModel.MediaContent;
+                    var fileName = file.FileName;
+                    var fileBuffer = new byte[file.ContentLength];
+                    var fileContent = file.InputStream.Read(fileBuffer, 0, fileBuffer.Length);
+                    file.InputStream.Flush();
+                    file.InputStream.Close();
+
+                    var physicalPath = Server.MapPath(virtualPath);
+                    var dirInfo = new DirectoryInfo(physicalPath);
+                    if (!dirInfo.Exists) dirInfo.Create();
+
+                    FileInfo fileInfo1 = new FileInfo(physicalPath + "\\" + file.FileName);
+                    if (fileInfo1.Exists)
+                    {
+                        fileInfo1.Delete();
+                    }
+                    FileInfo fileInfo = new FileInfo(physicalPath + "\\" + file.FileName);
+                    using (var fileStream = fileInfo.Create())
+                    {
+                        fileStream.Write(fileBuffer, 0, fileBuffer.Length);
+                        fileStream.Flush();
+                        fileStream.Close();
+                    }
+
+                    var paidDocument = new PaidDocument
+                    {
+                        FilePath = "~" + Url.Content(virtualPath) + "/" + file.FileName,
+                        SubjectId = mediaModel.SubjectId,
+                        RoleName = mediaModel.RoleName
+                    };
+                    //Save file Path To DB: 
+                    switch (mediaModel.MediaType.ToLower())
+                    {
+                        case "paiddocument":
+                            _repositoryServices.SaveOrUpdatePaidDocument(paidDocument);
+                            break;
+                        case "freedocument":
+                            var freeDocument = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
+                                typeof(FreeDocument));
+                            _repositoryServices.SaveOrUpdateFreeDocument(freeDocument as FreeDocument);
+                            break;
+                        case "paidvideo":
+                            var paidVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
+                                typeof(PaidVideo));
+                            _repositoryServices.SaveOrUpdatePaidVideo(paidVideo as PaidVideo);
+                            break;
+                        case "freevideo":
+                            var freeVideo = AutoMapper.Mapper.Map(paidDocument, typeof(PaidDocument),
+                                typeof(FreeVideo));
+                            _repositoryServices.SaveOrUpdateFreeVideo(freeVideo as FreeVideo);
+                            break;
+                    }
+                    return View("SuccessfullCreation");
+                }
+                return View("UploadMedia", mediaModel);
             }
             catch (Exception e)
             {
@@ -1022,7 +1447,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
             return View("ManageTeacherCalendar");
         }
-        private void GetTeacherBookingTimes(TeacherCalendarViewModel bookTeacherTime)
+        private void GetTeacherBookingTimes(TeacherCalendarSelectOrDeleteViewModel bookTeacherTime)
         {
             var teacherCalendar = _repositoryServices.GetTeacherCalendarByBookingId(bookTeacherTime.CalendarBookingId);
             Student student = _repositoryServices.GetStudentById(teacherCalendar.StudentId);
@@ -1069,65 +1494,95 @@ namespace TeacherAssistant.Controllers
             ModelState.Clear();
         }
         [HttpPost]
-        public ActionResult ManageTeachersCalendar(TeacherCalendarViewModel bookingTimeViewModel)
+        public ActionResult ManageTeachersCalendarSelectOrDelete(TeacherCalendarSelectOrDeleteViewModel bookingTimeViewModel)
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
+            var teacherCalendar =
+                _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+
             if (ModelState.IsValid)
             {
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
-            }
-
-            if (!string.IsNullOrEmpty(bookingTimeViewModel.Create) && (bookingTimeViewModel.StudentId < 1 || bookingTimeViewModel.SubjectId < 1 || bookingTimeViewModel.TeacherId < 1 || string.IsNullOrEmpty(bookingTimeViewModel.Description)))
-            {
-                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
-                return View("ManageTeacherCalendar", bookingTimeViewModel);
-            }
-
-            if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
-            {
-                if (bookingTimeViewModel.CalendarBookingId < 1)
+                if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
                 {
-                    ModelState.AddModelError("Select", "Calendar BookingId required");
-                    return View("ManageTeacherCalendar", bookingTimeViewModel);
+                    ModelState.Clear();
+                    return View("ManageTeacherCalendar", new TeacherCalendarSelectOrDeleteViewModel
+                    {
+                        CalendarBookingId = teacherCalendar.CalendarBookingId,
+                        ClassId = teacherCalendar.ClassId,
+                        Description = teacherCalendar.Description,
+                        StudentFullName = teacherCalendar.StudentFullName,
+                        StudentId = teacherCalendar.StudentId,
+                        TeacherId = teacherCalendar.TeacherId,
+                        TeacherFullName = teacherCalendar.TeacherFullName,
+                        SubjectId = teacherCalendar.SubjectId,
+                        BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = teacherCalendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = teacherCalendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
+
+                    });
                 }
-            }
-
-            if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
-            {
-                var teacherCalendar =
-                    _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
-                ModelState.Clear();
-                return View("ManageTeacherCalendar", new TeacherCalendarViewModel { CalendarBookingId = teacherCalendar.CalendarBookingId, ClassId = teacherCalendar.ClassId,
-                    Description = teacherCalendar.Description, StudentFullName = teacherCalendar.StudentFullName, StudentId = teacherCalendar.StudentId,
-                    TeacherId = teacherCalendar.TeacherId, TeacherFullName = teacherCalendar.TeacherFullName, SubjectId = teacherCalendar.SubjectId,
-                    BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = teacherCalendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = teacherCalendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
-
-                });
-            }
-            if (bookingTimeViewModel.Delete != null)
-            {
-                ModelState.Clear();
-                if (bookingTimeViewModel.CalendarBookingId < 1)
+                if (bookingTimeViewModel.Delete != null)
                 {
-                    ModelState.AddModelError("CalendarBookingId", "Calendar BookingId required");
-                }
-                if (ModelState.IsValid)
-                {
-                    var teacherCalendar =
+                    teacherCalendar =
                         _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                     _repositoryServices.DeleteTeacherCalendarByBooking(teacherCalendar);
                     return View("SuccessfullCreation");
                 }
-                return View("ManageTeacherCalendar", bookingTimeViewModel);
             }
-            if (bookingTimeViewModel.SubjectId < 1)
-            {
-                ModelState.AddModelError("SubjectId", "Subject Id is required");
-                return View("ManageTeacherCalendar", bookingTimeViewModel);
-            }
+            return View("ManageTeacherCalendar", bookingTimeViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageTeachersCalendarCreate(TeacherCalendarCreateViewModel bookingTimeViewModel)
+        {
+            ViewBag.Message = "Book Teacher Time.";
+            GetUIDropdownLists();
+
             if (ModelState.IsValid)
             {
+                ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
+                var teacherCalendar =
+                    _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+                Teacher teacher = _repositoryServices.GetTeacherById(bookingTimeViewModel.TeacherId);
+                Student student = _repositoryServices.GetStudentById(bookingTimeViewModel.StudentId);
+                Subject subject = _repositoryServices.GetSubjectById(bookingTimeViewModel.SubjectId);
+                var bookingTimeId = teacherCalendar.BookingTime.BookingTimeId;
+                foreach (var bookingTime in bookingTimeViewModel.BookingTimes)
+                {
+                    _repositoryServices.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
+                        bookingTimeViewModel.Description);
+                }
+
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"], ConfigurationManager.AppSettings["smtpServerUser"], ConfigurationManager.AppSettings["smtpServerPassword"]);
+
+                var emailMessage = new System.Net.Mail.MailMessage();
+
+                var fileInfo = new FileInfo(Server.MapPath("~/Infrastructure/MailTemplates/TeacherBookingTime.html"));
+                var html = fileInfo.OpenText().ReadToEnd();
+                html.Replace("{TeacherName}", teacher.EmailAddress);
+                html.Replace("{StudentName}", student.EmailAddress);
+                html.Replace("{SubjectName}", subject.SubjectName);
+                html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
+                html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
+                emailService.EmailType = EmailType.Html;
+                ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = new List<string> {student.EmailAddress}, Subject = "Teacher Assistant's Booking Time Schedule"});
+
+                var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = new List<string> { student.EmailAddress }, Subject = "Teacher Assistant's Booking Time Schedule", EmailMessage = html };
+                emailService.SendEmail(message);
+                return View("SuccessfullCreation");
+            }
+            return View("ManageTeacherCalendar", bookingTimeViewModel);
+        }
+        [HttpPost]
+        public ActionResult ManageTeachersCalendarUpdate(TeacherCalendarUpdateViewModel bookingTimeViewModel)
+        {
+
+            ViewBag.Message = "Book Teacher Time.";
+            GetUIDropdownLists();
+
+            if (ModelState.IsValid)
+            {
+                ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
                 var teacherCalendar =
                     _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
                 Teacher teacher = _repositoryServices.GetTeacherById(bookingTimeViewModel.TeacherId);
@@ -1166,19 +1621,20 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
-                var submissions = _repositoryServices.GetCurrentAssignmentsSubmissions().Select(p=> {
-                    return new AssignmentSubmissionViewModel
+                var submissions = _repositoryServices.GetCurrentAssignmentsSubmissions().Select(p =>
+                {
+                    return new AssignmentSubmissionSelectOrDeleteViewModel
                     {
                         AssignmentId = p.AssignmentId,
                         AssignmentSubmissionId = p.AssignmentSubmissionId,
-                         DateSubmitted = p.DateSubmitted,
+                        DateSubmitted = p.DateSubmitted,
                         AssignmentName = p.AssignmentName,
                         Notes = p.Notes,
                         DateDue = p.DateDue,
                         Grade = p.Grade,
                         FilePath = p.FilePath,
                         StudentId = p.StudentId,
-                        SubjectId =p.SubjectId,
+                        SubjectId = p.SubjectId,
                         TeacherId = p.TeacherId,
                         StudentRole = p.StudentRole,
                         IsSubmitted = p.IsSubmitted,
@@ -1190,10 +1646,10 @@ namespace TeacherAssistant.Controllers
             }
             catch
             {
-                return View("AssignmentAndSubmissions", new AssignmentSubmissionViewModel[] { });
+                return View("AssignmentAndSubmissions", new AssignmentSubmissionSelectOrDeleteViewModel[] { });
             }
         }
-        private CalendarBookingViewModel[] GetCalendarListData(TeacherCalendarViewModel bookingTimeViewModel)
+        private CalendarBookingViewModel[] GetCalendarListData(ITeacherCalendarViewModel bookingTimeViewModel)
         {
 
             var calendarBookingViewModels = new List<CalendarBookingViewModel>();
@@ -1259,7 +1715,7 @@ namespace TeacherAssistant.Controllers
         {
             GetUIDropdownLists();
             ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
-       
+
             return View();
         }
 
@@ -1270,19 +1726,26 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ModelState.Clear();
             ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
-            if (qaHelpRequestViewModel.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequestViewModel.StudentRole) || qaHelpRequestViewModel.SubjectId==0 || qaHelpRequestViewModel.TeacherId == 0)
+            if (qaHelpRequestViewModel.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequestViewModel.StudentRole) || qaHelpRequestViewModel.SubjectId == 0 || qaHelpRequestViewModel.TeacherId == 0)
             {
                 ModelState.AddModelError("requiredFields", "Student, Role, Subject, and Teacher Required");
                 return View("ManageQAHelpRequest", qaHelpRequestViewModel);
             }
             if (ModelState.IsValid)
             {
-                _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest {QAHelpRequestId = qaHelpRequestViewModel.QAHelpRequestId, Description = qaHelpRequestViewModel.Description,
-                    EndTime = qaHelpRequestViewModel .EndTime, StartTime = qaHelpRequestViewModel.StartTime,
-                    IsScheduled = qaHelpRequestViewModel.IsScheduled, StudentId = qaHelpRequestViewModel.StudentId,
-                    StudentRole = qaHelpRequestViewModel.StudentRole, SubjectId= qaHelpRequestViewModel.SubjectId,
-                    TeacherId = qaHelpRequestViewModel .TeacherId});
-                
+                _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest
+                {
+                    QAHelpRequestId = qaHelpRequestViewModel.QAHelpRequestId,
+                    Description = qaHelpRequestViewModel.Description,
+                    EndTime = qaHelpRequestViewModel.EndTime,
+                    StartTime = qaHelpRequestViewModel.StartTime,
+                    IsScheduled = qaHelpRequestViewModel.IsScheduled,
+                    StudentId = qaHelpRequestViewModel.StudentId,
+                    StudentRole = qaHelpRequestViewModel.StudentRole,
+                    SubjectId = qaHelpRequestViewModel.SubjectId,
+                    TeacherId = qaHelpRequestViewModel.TeacherId
+                });
+
                 //Add to Calendar
 
                 _repositoryServices.SaveOrUpdateBooking(_repositoryServices.GetTeacherById(qaHelpRequestViewModel.TeacherId),
@@ -1303,26 +1766,10 @@ namespace TeacherAssistant.Controllers
             return View("ManageProducts");
         }
         [HttpPost]
-        public ViewResult ManageProducts(ProductViewModel productModel)
+        public ViewResult ManageProductsSelectOrDelete(ProductSelectOrDeleteViewModel productModel)
         {
             var products = _repositoryServices.GetProductsList();
             ViewBag.ProductIdsList = GetProductList();
-
-            if (productModel.Select != null)
-            {
-                if (productModel.ProductId < 1)
-                {
-                    ModelState.AddModelError("ProductId", "Product Id Required");
-                    return View("ManageProducts", productModel);
-                }
-                ModelState.Clear();
-                var prod = _repositoryServices.GetProductById(productModel.ProductId);
-                var actProd = Mapper.Map(prod, typeof(SHOP_PRODS), typeof(ProductViewModel)) as ProductViewModel;
-                actProd.DocumentType = prod.IsPaidDocument ? 0 : prod.IsPaidVideo ? 1 : -1;
-                ModelState.Clear();
-                return View("ManageProducts", actProd);
-            }
-
             if (ModelState.IsValid)
             {
                 var shopProd = new SHOP_PRODS
@@ -1334,11 +1781,65 @@ namespace TeacherAssistant.Controllers
                     DocumentId = productModel.DocumentId
                 };
 
+                if (productModel.Select != null)
+                {
+                    var prod = _repositoryServices.GetProductById(productModel.ProductId);
+                    var actProd = Mapper.Map(prod, typeof(SHOP_PRODS), typeof(ProductSelectOrDeleteViewModel)) as ProductSelectOrDeleteViewModel;
+                    actProd.DocumentType = prod.IsPaidDocument ? 0 : prod.IsPaidVideo ? 1 : -1;
+                    ModelState.Clear();
+                    return View("ManageProducts", actProd);
+                }
                 if (productModel.Delete != null)
                 {
                     _repositoryServices.DeleteProduct(shopProd);
                     return View("SuccessfullCreation");
                 }
+            }
+            return View("ManageProducts", productModel);
+        }
+        [HttpPost]
+        public ViewResult ManageProductsCreate(ProductCreateViewModel productModel)
+        {
+            var products = _repositoryServices.GetProductsList();
+            ViewBag.ProductIdsList = GetProductList();
+            if (ModelState.IsValid)
+            {
+                var shopProd = new SHOP_PRODS
+                {
+                    prodName = productModel.ProductName,
+                    prodDesc = productModel.ProductDescription,
+                    prodPrice = productModel.ProductPrice,
+                    prodId = productModel.ProductId,
+                    DocumentId = productModel.DocumentId
+                };
+
+                if (shopProd != null && productModel.DocumentType != -1)
+                {
+                    shopProd.IsPaidDocument = productModel.DocumentType == 0;
+                    shopProd.IsPaidVideo = productModel.DocumentType == 1;
+                }
+                _repositoryServices.SaveOrUpdate(shopProd);
+                return View("SuccessfullCreation");
+            }
+            return View("ManageProducts", productModel);
+        }
+        [HttpPost]
+        public ViewResult ManageProductsUpdate(ProductUpdateViewModel productModel)
+        {
+
+            var products = _repositoryServices.GetProductsList();
+            ViewBag.ProductIdsList = GetProductList();
+            if (ModelState.IsValid)
+            {
+                var shopProd = new SHOP_PRODS
+                {
+                    prodName = productModel.ProductName,
+                    prodDesc = productModel.ProductDescription,
+                    prodPrice = productModel.ProductPrice,
+                    prodId = productModel.ProductId,
+                    DocumentId = productModel.DocumentId
+                };
+
                 if (shopProd != null && productModel.DocumentType != -1)
                 {
                     shopProd.IsPaidDocument = productModel.DocumentType == 0;
@@ -1403,8 +1904,8 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
-                if(!Roles.IsUserInRole(user,role))
-                Roles.AddUserToRole(user, role);
+                if (!Roles.IsUserInRole(user, role))
+                    Roles.AddUserToRole(user, role);
                 return true;
             }
             catch (Exception ex)
@@ -1495,7 +1996,7 @@ namespace TeacherAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddGradesToSubmissions(AssignmentSubmissionViewModel assignmentSubmissions)
+        public ActionResult AddGradesToSubmissionsSelectOrDelete(AssignmentSubmissionSelectOrDeleteViewModel assignmentSubmissions)
         {
             ViewBag.DateSubmittedString = DateTime.Now;
             ViewBag.DateDueString = DateTime.Now;
@@ -1513,41 +2014,114 @@ namespace TeacherAssistant.Controllers
             {
                 ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
             }
-            if ((assignmentSubmissions.CourseId < 1 || assignmentSubmissions.AssignmentId < 1 || assignmentSubmissions.AssignmentSubmissionId < 1) &&(!string.IsNullOrEmpty(assignmentSubmissions.Select) || !string.IsNullOrEmpty(assignmentSubmissions.Delete) || !string.IsNullOrEmpty(assignmentSubmissions.Update)))
+            if (ModelState.IsValid)
             {
-                ModelState.Clear();
-                ModelState.AddModelError("AssignmentSubmissionId", "AssignmentSubmission Is required");
-                ModelState.AddModelError("AssignmentId", "Assignment Is required");
-                ModelState.AddModelError("CourseId", "Course Is required");
-                return View("AddGradesToSubmissions", assignmentSubmissions);
-            }
-            if (!string.IsNullOrEmpty(assignmentSubmissions.Create) && (assignmentSubmissions.StudentId < 1 || assignmentSubmissions.CourseId < 1 || assignmentSubmissions.StudentId < 1 || assignmentSubmissions.TeacherId < 1 || string.IsNullOrEmpty(assignmentSubmissions.StudentRole)))
-            {
-                ModelState.AddModelError("assignWorkError", "Course, Student, Subject, Teacher and StudentRole are required");
-                return View("AddGradesToSubmissions", assignmentSubmissions);
-            }
-            Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
-            AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
-            if (assignmentSubmissions.Select != null)
-            {
-                var assSub = new AssignmentSubmissionViewModel { AssignmentSubmissionId = submission.AssignmentSubmissionId, AssignmentId = submission.AssignmentId,
-                    AssignmentName = assignment.AssignmentName, DateDue = submission.DateDue, DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath, Grade = submission.Grade, GradeNumeric = submission.GradeNumeric, StudentId = submission.StudentId, TeacherId= submission.TeacherId,
-                    SubjectId = assignment.SubjectId, IsSubmitted = submission.IsSubmitted, StudentRole = submission.StudentRole, Notes = submission.Notes };
-                ViewBag.DateSubmittedString = assSub.DateSubmitted;
-                ViewBag.DateDueString = assSub.DateDue;
-                ModelState.Clear();
-                return View("AddGradesToSubmissions", assSub);
-            }
-            else if (assignmentSubmissions.Delete != null)
-            {
-                _repositoryServices.DeleteAssignmentSubmissiongById(assignmentSubmissions.AssignmentSubmissionId);
+                Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
+                AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
+                if (assignmentSubmissions.Select != null)
+                {
+                    var assSub = new AssignmentSubmissionSelectOrDeleteViewModel
+                    {
+                        AssignmentSubmissionId = submission.AssignmentSubmissionId,
+                        AssignmentId = submission.AssignmentId,
+                        AssignmentName = assignment.AssignmentName,
+                        DateDue = submission.DateDue,
+                        DateSubmitted = submission.DateSubmitted,
+                        FilePath = submission.FilePath,
+                        Grade = submission.Grade,
+                        GradeNumeric = submission.GradeNumeric,
+                        StudentId = submission.StudentId,
+                        TeacherId = submission.TeacherId,
+                        SubjectId = assignment.SubjectId,
+                        IsSubmitted = submission.IsSubmitted,
+                        StudentRole = submission.StudentRole,
+                        Notes = submission.Notes
+                    };
+                    ViewBag.DateSubmittedString = assSub.DateSubmitted;
+                    ViewBag.DateDueString = assSub.DateDue;
+                    ModelState.Clear();
+                    return View("AddGradesToSubmissions", assSub);
+                }
+                else if (assignmentSubmissions.Delete != null)
+                {
+                    _repositoryServices.DeleteAssignmentSubmissiongById(assignmentSubmissions.AssignmentSubmissionId);
 
+                    return View("SuccessfullCreation");
+                }
+            }
+            return View(assignmentSubmissions);
+        }
+        [HttpPost]
+        public ActionResult AddGradesToSubmissionsCreate(AssignmentSubmissionCreateViewModel assignmentSubmissions)
+        {
+            ViewBag.DateSubmittedString = DateTime.Now;
+            ViewBag.DateDueString = DateTime.Now;
+            GetUIDropdownLists();
+            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
+            }
+            else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            }
+            else
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+            }
+
+            Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
+
+            if (ModelState.IsValid)
+            {
+                _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission
+                {
+                    AssignmentId = assignmentSubmissions.AssignmentId,
+                    DateDue = assignmentSubmissions.DateDue,
+                    DateSubmitted = assignmentSubmissions.DateSubmitted,
+                    FilePath = assignmentSubmissions.FilePath,
+                    Grade = assignmentSubmissions.Grade,
+                    GradeNumeric = assignmentSubmissions.GradeNumeric,
+                    AssignmentName = assignment.AssignmentName,
+                    IsSubmitted = assignmentSubmissions.IsSubmitted,
+                    StudentId = assignmentSubmissions.StudentId,
+                    TeacherId = assignmentSubmissions.TeacherId,
+                    SubjectId = assignmentSubmissions.SubjectId,
+                    StudentRole = assignment.StudentRole,
+                    Notes = assignmentSubmissions.Notes
+                });
                 return View("SuccessfullCreation");
             }
-            else if (ModelState.IsValid)
+            return View(assignmentSubmissions);
+        }
+        [HttpPost]
+        public ActionResult AddGradesToSubmissionsUpdate(AssignmentSubmissionUpdateViewModel assignmentSubmissions)
+        {
+            ViewBag.DateSubmittedString = DateTime.Now;
+            ViewBag.DateDueString = DateTime.Now;
+            GetUIDropdownLists();
+            ViewBag.AssignmentList = GetCurrentAssignmentList();
+            if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
             {
-                _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission {
+                ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
+            }
+            else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+            }
+            else
+            {
+                ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+            }
+
+            Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
+            AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
+
+            if (ModelState.IsValid)
+            {
+                _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission
+                {
                     AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
                     AssignmentId = assignmentSubmissions.AssignmentId,
                     DateDue = submission.DateDue,
@@ -1577,8 +2151,8 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
-                if(Roles.IsUserInRole(roleName))
-                Roles.RemoveUserFromRole(username, roleName);
+                if (Roles.IsUserInRole(roleName))
+                    Roles.RemoveUserFromRole(username, roleName);
                 return true;
             }
             catch (Exception ex)
@@ -1591,7 +2165,7 @@ namespace TeacherAssistant.Controllers
         {
             var listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem { Text = "Pick an Assignment Submission", Value = 0.ToString() });
-            listItems.AddRange(submissions.Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString()}).ToList());
+            listItems.AddRange(submissions.Select(p => new SelectListItem { Text = p.AssignmentName, Value = p.AssignmentSubmissionId.ToString() }).ToList());
             return listItems;
         }
 
@@ -1617,7 +2191,7 @@ namespace TeacherAssistant.Controllers
 
             return studentList;
         }
-        
+
         private List<SelectListItem> GetSubjectList()
         {
             var subjects = _repositoryServices.GetSubjectList();
@@ -1713,7 +2287,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.GetAllAssignmentsList = GetAllAssignmentsList();
             ViewBag.CourseList = GetAllCourses();
         }
-        
+
         private List<SelectListItem> GetAllAssignmentsList()
         {
             var assingnmentList = new List<SelectListItem>();
@@ -1730,7 +2304,7 @@ namespace TeacherAssistant.Controllers
             courseList.AddRange(_repositoryServices.GetAllCourses().Select(p => new SelectListItem { Text = p.CourseName, Value = p.CourseId.ToString() }).ToList());
             return courseList;
         }
-        
+
         private List<SelectListItem> GetCurrentAssignmentList()
         {
             var assingnmentList = new List<SelectListItem>();
@@ -1773,7 +2347,7 @@ namespace TeacherAssistant.Controllers
                     var list = _repositoryServices.GetPaidDocuments(role)
                    .Select(p => new SelectListItem { Text = p.PaidDocumentId.ToString() + " " + p.FilePath.Substring(p.FilePath.LastIndexOf("/") + 1), Value = p.PaidDocumentId.ToString() }).ToList();
                     list.Add(new SelectListItem { Text = "Pick DocumentId", Value = "-1" });
-                    return Json(list.OrderBy(p=> p.Value),JsonRequestBehavior.AllowGet);
+                    return Json(list.OrderBy(p => p.Value), JsonRequestBehavior.AllowGet);
 
                 case "freedocument":
                     list = _repositoryServices.GetFreeDocuments(role)

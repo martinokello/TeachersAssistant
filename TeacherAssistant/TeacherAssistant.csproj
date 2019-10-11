@@ -327,7 +327,7 @@
     <Compile Include="Controllers\ShoppingController.cs" />
     <Compile Include="Infrastructure\CachingStatic.cs" />
     <Compile Include="Infrastructure\Client.cs" />
-    <Compile Include="Infrastructure\DateTimeFormatAttribute.cs" />
+    <Compile Include="Infrastructure\Validation\DateTimeFormatAttribute.cs" />
     <Compile Include="Infrastructure\FluentValidation\UploadMediaViewModelValidator.cs" />
     <Compile Include="Infrastructure\FTPDownLoadUtility.cs" />
     <Compile Include="Infrastructure\ExtensionMethods\Page.cs" />
@@ -336,6 +336,7 @@
     <Compile Include="Infrastructure\Interfaces\IChartService.cs" />
     <Compile Include="Infrastructure\MartinLayooIncChat.cs" />
     <Compile Include="Infrastructure\ReportingFacilities.cs" />
+    <Compile Include="Infrastructure\Validation\StudentIdOrRoleValidationAttribute.cs" />
     <Compile Include="Models\AssignmentSubmissionViewModel.cs" />
     <Compile Include="Models\AssignmentViewModel.cs" />
     <Compile Include="Models\BookingTimeViewModel.cs" />
@@ -746,7 +747,9 @@
     <Content Include="WebDev.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

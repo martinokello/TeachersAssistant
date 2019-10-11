@@ -7,7 +7,7 @@ using TeacherAssistant.Models;
 
 namespace TeacherAssistant.Infrastructure.FluentValidation
 {
-    public class UploadMediaViewModelValidator:AbstractValidator<UploadMediaViewModel>
+    public class UploadMediaViewModelValidator:AbstractValidator<IUploadMediaViewModel>
     {
         public UploadMediaViewModelValidator()
         {

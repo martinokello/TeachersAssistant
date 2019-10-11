@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.StudentResourcesViewModel
+﻿@model TeacherAssistant.Models.IStudentResourcesViewModel
 
 @{
     ViewBag.Title = "ManageResources";
@@ -7,7 +7,7 @@
 
 <h2>ManageResources</h2>
 
-    <form method="post" action="@Url.Content("~/Administration/ManageStudentResources")" enctype="multipart/form-data">
+    <form method="post" action="" id="ManageResourcesForm" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal" style="background-color: #DADADA;">
@@ -73,3 +73,25 @@
             </div>
         </div>
     </form>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var $form = $('form#ManageResourcesForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Action("ManageStudentResourcesSelectOrDelete", "Administration")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Action("ManageStudentResourcesUpdate", "Administration")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Action("ManageStudentResourcesCreate", "Administration")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Action("ManageStudentResourcesSelectOrDelete", "Administration")');
+                    break;
+            }
+            return;
+        });
+    });
+    </script>
