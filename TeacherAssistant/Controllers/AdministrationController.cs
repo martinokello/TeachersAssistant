@@ -703,14 +703,8 @@ namespace TeacherAssistant.Controllers
                 ModelState.Clear();
                 return View("ManageTeacher", teacherViewModel);
             }
-            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherSelectOrDeleteViewModel), typeof(Teacher));
             if (ModelState.IsValid && teacherViewModel.Delete != null)
             {
-                if (teacherViewModel.TeacherId < 1)
-                {
-                    ModelState.AddModelError("TeacherId", "Teacher Id is required");
-                    return View("ManageTeacher", teacherViewModel);
-                }
                 var teacher = _repositoryServices.GetTeacherByName(teacherViewModel.EmailAddress);
                 _repositoryServices.DeleteTeacher(teacher);
                 return View("SuccessfullCreation");
@@ -721,9 +715,9 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageTeacherCreate(TeacherCreateViewModel teacherViewModel)
         {
             GetUIDropdownLists();
-            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherCreateViewModel), typeof(Teacher));
             if (ModelState.IsValid)
             {
+                var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherCreateViewModel), typeof(Teacher));
                 _repositoryServices.ManageTeachers(teacherModel);
                 return View("SuccessfullCreation");
             }
@@ -733,9 +727,9 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageTeacherUpdate(TeacherUpdateViewModel teacherViewModel)
         {
             GetUIDropdownLists();
-            var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherUpdateViewModel), typeof(Teacher));
             if (ModelState.IsValid)
             {
+                var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherCreateViewModel), typeof(Teacher));
                 _repositoryServices.ManageTeachers(teacherModel);
                 return View("SuccessfullCreation");
             }
