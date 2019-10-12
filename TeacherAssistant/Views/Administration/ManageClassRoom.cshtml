@@ -73,16 +73,16 @@
         $('input[type="submit"]').click(function (e) {
             switch ($(this).attr('name')) {
                 case 'Select':
-                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsSelectOrDelete", "Administration")');
+                    $form.attr('action', '@Url.Action("ManageClassRoomSelectOrDelete", "Administration")');
                     break;
                 case 'Update':
-                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsUpdate", "Administration")');
+                    $form.attr('action', '@Url.Action("ManageClassRoomUpdate", "Administration")');
                     break;
                 case 'Create':
-                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsCreate", "Administration")');
+                    $form.attr('action', '@Url.Action("ManageClassRoomCreate", "Administration")');
                     break;
                 case 'Delete':
-                    $form.attr('action', '@Url.Action("AddGradesToSubmissionsSelectOrDelete", "Administration")');
+                    $form.attr('action', '@Url.Action("ManageClassRoomSelectOrDelete", "Administration")');
                     break;
             }
             return;

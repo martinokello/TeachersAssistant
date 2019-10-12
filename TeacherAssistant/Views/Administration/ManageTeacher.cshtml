@@ -1,4 +1,4 @@
-﻿@model TeacherAssistant.Models.TeacherViewModel
+﻿@model TeacherAssistant.Models.ITeacherViewModel
 
 @{
     ViewBag.Title = "Manage Teacher";
@@ -71,10 +71,10 @@
                     $form.attr('action', '@Url.Action("ManageTeacherSelectOrDelete", "Administration")');
                     break;
                 case 'Update':
-                    $form.attr('action', '@Url.Action("ManageTeacherSelectOrUpdate", "Administration")');
+                    $form.attr('action', '@Url.Action("ManageTeacherUpdate", "Administration")');
                     break;
                 case 'Create':
-                    $form.attr('action', '@Url.Action("ManageTeacherSelectOrCreate", "Administration")');
+                    $form.attr('action', '@Url.Action("ManageTeacherCreate", "Administration")');
                     break;
                 case 'Delete':
                     $form.attr('action', '@Url.Action("ManageTeacherSelectOrDelete", "Administration")');

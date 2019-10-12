@@ -64,7 +64,7 @@ namespace TeacherAssistant.Models
         public string Update { set; get; }
         public string Delete { set; get; }
     }
-    public class StudentCreateViewModel
+    public class StudentCreateViewModel : IStudentViewModel
     {
         public int? StudentId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
