@@ -1997,6 +1997,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
+            ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
             if (ModelState.IsValid)
             {
 				if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
@@ -2054,7 +2055,8 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-			if (ModelState.IsValid)
+            ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+            if (ModelState.IsValid)
             {
 				if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
 				{
@@ -2099,7 +2101,8 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-			if (ModelState.IsValid)
+            ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+            if (ModelState.IsValid)
             {
 				if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
 				{
