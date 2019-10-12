@@ -9,10 +9,10 @@ namespace TeacherAssistant.Models
 {
     public class BookingTimeViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Teacher Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Subject Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; }
         public BookingTime BookingTime{ get;set;}
