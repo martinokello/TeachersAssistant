@@ -89,7 +89,7 @@
         });
         jQuery('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
         jQuery('#dateDue').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
-        $('#dateSubmitted').val('@ViewBag.DateSubmittedString.ToString("yyyy-MM-dd HH:mm")');
-        $('#dateDue').val('@ViewBag.DateDueString.ToString("yyyy-MM-dd HH:mm")');
+        $('#dateSubmitted').val('@(ViewBag.DateSubmittedString as string)');
+        $('#dateDue').val('@(ViewBag.DateDueString as string)');
     });
     </script>
