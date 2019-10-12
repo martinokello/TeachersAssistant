@@ -55,7 +55,7 @@ namespace TeacherAssistant.Models
 
     }
     [Validator(typeof(UploadMediaViewModelValidator))]
-    public class UploadMediaUpdateViewModel
+    public class UploadMediaUpdateViewModel : IUploadMediaViewModel
     {
         [Required(ErrorMessage = "Media Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Media Id Required!")]

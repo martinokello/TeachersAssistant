@@ -18,7 +18,7 @@ namespace TeacherAssistant.Models
         string Delete { set; get; }
     }
 
-    public class StudentSelectOrDeleteViewModel
+    public class StudentSelectOrDeleteViewModel : IStudentViewModel
     {
         [Required(ErrorMessage = "Student Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Student Id Required!")]

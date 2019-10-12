@@ -27,7 +27,7 @@ namespace TeacherAssistant.Models
         public string Update { set; get; }
         public string Delete { set; get; }
     }
-    public class TeacherCreateViewModel
+    public class TeacherCreateViewModel : ITeacherViewModel
     {
         public int? TeacherId { get; set; }
         [Required(ErrorMessage = "FirstName Required!")]
@@ -41,7 +41,7 @@ namespace TeacherAssistant.Models
         public string Update { set; get; }
         public string Delete { set; get; }
     }
-    public class TeacherUpdateViewModel
+    public class TeacherUpdateViewModel : ITeacherViewModel
     {
         [Required(ErrorMessage = "Teacher Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Calendar Boopking Id Required!")]

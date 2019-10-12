@@ -57,7 +57,7 @@ namespace TeacherAssistant.Models
         public string Update { set; get; }
         public string Delete { set; get; }
     }
-    public class StudentResourcesUpdateViewModel
+    public class StudentResourcesUpdateViewModel : IStudentResourcesViewModel
     {
         [Required(ErrorMessage = "Student Resource Id Required")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Student Resource Id Required!")]
