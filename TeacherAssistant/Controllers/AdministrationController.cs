@@ -874,7 +874,7 @@ namespace TeacherAssistant.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ManageStudentResourcesCreate(StudentResourcesUpdateViewModel resourceModel)
+        public ActionResult ManageStudentResourcesCreate(StudentResourcesCreateViewModel resourceModel)
         {
             try
             {
