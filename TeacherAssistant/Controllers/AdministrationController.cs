@@ -96,12 +96,7 @@ namespace TeacherAssistant.Controllers
             unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
         }
-        [HttpGet]
-        public ActionResult ManageClassRoom()
-        {
-            GetUIDropdownLists();
-            return View("ManageClassRoom");
-        }
+
         [HttpGet]
         public ActionResult AssignWork()
         {
@@ -378,6 +373,12 @@ namespace TeacherAssistant.Controllers
                 ModelState.AddModelError("FileAccess", string.Format("{0}", e.Message));
                 return View("AssignWork", assignmentViewModel);
             }
+        }        
+		[HttpGet]
+        public ActionResult ManageClassRoom()
+        {
+            GetUIDropdownLists();
+            return View();
         }
         [HttpPost]
         public ActionResult ManageClassRoomSelectOrDelete(ClassroomSelectOrDeleteViewModel classRoomViewModel)
@@ -1996,20 +1997,21 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
-            }
-            else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
-            }
-            else
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
-            }
             if (ModelState.IsValid)
             {
+				if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
+				}
+				else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+				}
+				else
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+				}
+            
                 Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
                 AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
                 if (assignmentSubmissions.Select != null)
@@ -2052,23 +2054,24 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
+			if (ModelState.IsValid)
             {
-                ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
-            }
-            else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
-            }
-            else
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
-            }
+				if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
+				}
+				else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+				}
+				else
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+				}
 
-            Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
+				Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
 
-            if (ModelState.IsValid)
-            {
+            
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission
                 {
                     AssignmentId = assignmentSubmissions.AssignmentId,
@@ -2096,36 +2099,35 @@ namespace TeacherAssistant.Controllers
             ViewBag.DateDueString = DateTime.Now;
             GetUIDropdownLists();
             ViewBag.AssignmentList = GetCurrentAssignmentList();
-            if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
+			if (ModelState.IsValid)
             {
-                ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
-            }
-            else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
-            }
-            else
-            {
-                ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
-            }
+				if (!string.IsNullOrEmpty(assignmentSubmissions.Graded))
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetGradedAssignmentSubmissionsList();
+				}
+				else if (!string.IsNullOrEmpty(assignmentSubmissions.UnGraded))
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetSubmittedUngradedAssignmentSubmissionsList();
+				}
+				else
+				{
+					ViewBag.UngragedAssignmentSubmissionList = GetAllAssignmentSubmissionsList();
+				}
 
-            Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
-            AssignmentSubmission submission = _repositoryServices.GetAssignmentSubmissionsById(assignmentSubmissions.AssignmentSubmissionId);
+				Assignment assignment = _repositoryServices.GetAssignmentById(assignmentSubmissions.AssignmentId);
 
-            if (ModelState.IsValid)
-            {
+            
                 _repositoryServices.SaveOrUpdateAssignmentSubmissions(new AssignmentSubmission
                 {
-                    AssignmentSubmissionId = assignmentSubmissions.AssignmentSubmissionId,
                     AssignmentId = assignmentSubmissions.AssignmentId,
-                    DateDue = submission.DateDue,
-                    DateSubmitted = submission.DateSubmitted,
-                    FilePath = submission.FilePath,
+                    DateDue = assignmentSubmissions.DateDue,
+                    DateSubmitted = assignmentSubmissions.DateSubmitted,
+                    FilePath = assignmentSubmissions.FilePath,
                     Grade = assignmentSubmissions.Grade,
                     GradeNumeric = assignmentSubmissions.GradeNumeric,
                     AssignmentName = assignment.AssignmentName,
-                    IsSubmitted = submission.IsSubmitted,
-                    StudentId = submission.StudentId,
+                    IsSubmitted = assignmentSubmissions.IsSubmitted,
+                    StudentId = assignmentSubmissions.StudentId,
                     TeacherId = assignmentSubmissions.TeacherId,
                     SubjectId = assignmentSubmissions.SubjectId,
                     StudentRole = assignment.StudentRole,
