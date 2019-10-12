@@ -377,6 +377,8 @@ namespace TeacherAssistant.Controllers
 		[HttpGet]
         public ActionResult ManageClassRoom()
         {
+            ViewBag.DateSubmittedString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            ViewBag.DateDueString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             GetUIDropdownLists();
             return View();
         }
@@ -428,6 +430,8 @@ namespace TeacherAssistant.Controllers
                     return View("SuccessfullCreation");
                 }
             }
+            ViewBag.DateSubmittedString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            ViewBag.DateDueString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             return View("ManageClassRoom", classRoomViewModel);
         }
         public ActionResult ManageClassRoomCreate(ClassroomCreateViewModel classRoomViewModel)
@@ -444,6 +448,8 @@ namespace TeacherAssistant.Controllers
                 _repositoryServices.SaveOrUpdateCalendar(calendar);
                 return View("SuccessfullCreation");
             }
+            ViewBag.DateSubmittedString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            ViewBag.DateDueString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             return View("ManageClassRoom", classRoomViewModel);
         }
         public ActionResult ManageClassRoomUpdate(ClassroomUpdateViewModel classRoomViewModel)
@@ -465,6 +471,8 @@ namespace TeacherAssistant.Controllers
                 _repositoryServices.SaveOrUpdateCalendar(calendar);
                 return View("SuccessfullCreation");
             }
+            ViewBag.DateSubmittedString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            ViewBag.DateDueString = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             return View("ManageClassRoom", classRoomViewModel);
         }
         [HttpGet]
