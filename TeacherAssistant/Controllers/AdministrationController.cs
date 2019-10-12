@@ -2045,7 +2045,7 @@ namespace TeacherAssistant.Controllers
                     return View("SuccessfullCreation");
                 }
             }
-            return View(assignmentSubmissions);
+            return View("AddGradesToSubmissions", assignmentSubmissions);
         }
         [HttpPost]
         public ActionResult AddGradesToSubmissionsCreate(AssignmentSubmissionCreateViewModel assignmentSubmissions)
@@ -2090,7 +2090,7 @@ namespace TeacherAssistant.Controllers
                 });
                 return View("SuccessfullCreation");
             }
-            return View(assignmentSubmissions);
+            return View("AddGradesToSubmissions", assignmentSubmissions);
         }
         [HttpPost]
         public ActionResult AddGradesToSubmissionsUpdate(AssignmentSubmissionUpdateViewModel assignmentSubmissions)
@@ -2135,7 +2135,7 @@ namespace TeacherAssistant.Controllers
                 });
                 return View("SuccessfullCreation");
             }
-            return View(assignmentSubmissions);
+            return View("AddGradesToSubmissions", assignmentSubmissions);
         }
         [HttpGet]
         public ViewResult ViewGraphsAndReports()
