@@ -729,7 +729,7 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             if (ModelState.IsValid)
             {
-                var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherCreateViewModel), typeof(Teacher));
+                var teacherModel = (Teacher)Mapper.Map(teacherViewModel, typeof(TeacherUpdateViewModel), typeof(Teacher));
                 _repositoryServices.ManageTeachers(teacherModel);
                 return View("SuccessfullCreation");
             }
