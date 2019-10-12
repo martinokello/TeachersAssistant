@@ -45,8 +45,10 @@ namespace TeacherAssistant.Models
         public HttpPostedFileBase MediaContent { get; set; }
         public string FilePath { get; set; }
         [Required(ErrorMessage = "Subject Id Required")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Course Id Required")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Role Name Required")]
         public string RoleName { get; set; }
@@ -66,8 +68,10 @@ namespace TeacherAssistant.Models
         public HttpPostedFileBase MediaContent { get; set; }
         public string FilePath { get; set; }
         [Required(ErrorMessage = "Subject Id Required")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Course Id Required")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Role Name Required")]
         public string RoleName { get; set; }

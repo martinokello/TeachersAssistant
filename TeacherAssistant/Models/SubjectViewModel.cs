@@ -34,10 +34,12 @@ namespace TeacherAssistant.Models
     {
         public int? SubjectId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Subject Name Required!")]
         public string SubjectName { get; set; }
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; } = -1;
         public Teacher Teacher { get; set; }
         public string Select { set; get; }
@@ -51,10 +53,12 @@ namespace TeacherAssistant.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int? SubjectId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Subject Name Required!")]
         public string SubjectName { get; set; }
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; } = -1;
         public Teacher Teacher { get; set; }
         public string Select { set; get; }

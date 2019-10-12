@@ -23,14 +23,18 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Student Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Student Id Required!")]
         public int? StudentId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Student First Name Required!")]
         public string StudentFirsName { get; set; } = "Student FirstName";
-        [Required]
+
+        [Required(ErrorMessage = "Student Last NameRequired!")]
         public string StudentLastName { get; set; } = "Student LastName";
         public StudentTypes StudentType { get; set; } = StudentTypes.StatePrimary;
-        [Required]
+
+        [Required(ErrorMessage = "Email Address Required!")]
         public string EmailAddress { get; set; } = "student@martinlayooinc.co.uk";
         public string Select { set; get; }
         public string Create { set; get; }
@@ -42,14 +46,18 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Student Id Required!")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Student Id Required!")]
         public int? StudentId { get; set; }
-        [Required(ErrorMessage ="Course Id Required!")]
+        [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
+
         [Required(ErrorMessage = "Student First Name Required!")]
         public string StudentFirsName { get; set; } = "Student FirstName";
-        [Required(ErrorMessage = "Student Last Name Required!")]
+
+        [Required(ErrorMessage = "Student Last NameRequired!")]
         public string StudentLastName { get; set; } = "Student LastName";
         public StudentTypes StudentType { get; set; } = StudentTypes.StatePrimary;
-        [Required(ErrorMessage = "Student Email Address Required!")]
+
+        [Required(ErrorMessage = "Email Address Required!")]
         public string EmailAddress { get; set; } = "student@martinlayooinc.co.uk";
         public string Select { set; get; }
         public string Create { set; get; }
@@ -60,13 +68,17 @@ namespace TeacherAssistant.Models
     {
         public int? StudentId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
+
         [Required(ErrorMessage = "Student First Name Required!")]
         public string StudentFirsName { get; set; } = "Student FirstName";
-        [Required(ErrorMessage = "Student Last Name Required!")]
+
+        [Required(ErrorMessage = "Student Last NameRequired!")]
         public string StudentLastName { get; set; } = "Student LastName";
         public StudentTypes StudentType { get; set; } = StudentTypes.StatePrimary;
-        [Required(ErrorMessage = "Student Email Address Required!")]
+
+        [Required(ErrorMessage = "Email Address Required!")]
         public string EmailAddress { get; set; } = "student@martinlayooinc.co.uk";
         public string Select { set; get; }
         public string Create { set; get; }

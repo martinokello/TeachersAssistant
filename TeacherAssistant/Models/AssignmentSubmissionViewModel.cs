@@ -66,16 +66,21 @@ namespace TeacherAssistant.Models
     {
         public int AssignmentSubmissionId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id  Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Assignment Name Required!")]
         public string AssignmentName { get; set; }
         [Required(ErrorMessage = "Assignment Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Assignment Id  Required!")]
         public int AssignmentId { get; set; }
         [Required(ErrorMessage = "Student Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Id  Required!")]
         public int StudentId { get; set; }
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id  Required!")]
         public int TeacherId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id  Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Due Date Required!")]
         [DateTimeFormat(ErrorMessage = "DateDue format wrong and Time should be in 24 Hr Clock")]
@@ -110,16 +115,21 @@ namespace TeacherAssistant.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "AssignmentSubmission Id Required!")]
         public int AssignmentSubmissionId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id  Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Assignment Name Required!")]
         public string AssignmentName { get; set; }
         [Required(ErrorMessage = "Assignment Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Assignment Id  Required!")]
         public int AssignmentId { get; set; }
         [Required(ErrorMessage = "Student Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Id  Required!")]
         public int StudentId { get; set; }
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id  Required!")]
         public int TeacherId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id  Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Due Date Required!")]
         [DateTimeFormat(ErrorMessage = "DateDue format wrong and Time should be in 24 Hr Clock")]

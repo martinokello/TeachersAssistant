@@ -58,10 +58,13 @@ namespace TeacherAssistant.Models
     {
         public int? CalendarBookingId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; } = -1;
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; } = -1;
         [Required(ErrorMessage = "Student Type Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Type Id Required!")]
         public int StudentTypeId { get; set; }
         [Required(ErrorMessage = "StudentId Id Required!")]
         public int StudentId { get; set; } = -1;
@@ -73,6 +76,7 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; } = "Teacher Calendar Description Default";
         [Required(ErrorMessage = "Class Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Class Id Required!")]
         public int ClassId { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }
@@ -85,10 +89,13 @@ namespace TeacherAssistant.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "Calendar Boopking Id Required!")]
         public int? CalendarBookingId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; } = -1;
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; } = -1;
         [Required(ErrorMessage = "Student Type Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Student Type Id Required!")]
         public int StudentTypeId { get; set; }
         [Required(ErrorMessage = "StudentId Id Required!")]
         public int StudentId { get; set; } = -1;
@@ -100,6 +107,7 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; } = "Teacher Calendar Description Default";
         [Required(ErrorMessage = "Class Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Class Id Required!")]
         public int ClassId { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }

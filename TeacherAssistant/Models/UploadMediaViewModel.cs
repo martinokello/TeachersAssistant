@@ -46,6 +46,7 @@ namespace TeacherAssistant.Models
         public string Name { get; set; }
         public HttpPostedFileBase MediaContent { get; set; }
         public string RoleName { get; set; }
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }
@@ -63,6 +64,7 @@ namespace TeacherAssistant.Models
         public string Name { get; set; }
         public HttpPostedFileBase MediaContent { get; set; }
         public string RoleName { get; set; }
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; }
         public string Select { set; get; }
         public string Create { set; get; }

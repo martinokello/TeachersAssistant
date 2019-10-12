@@ -60,12 +60,15 @@ namespace TeacherAssistant.Models
         [StudentIdOrRoleValidation(ErrorMessage = "Either Student Role or Student Id Required!")]
         public int StudentId { get; set; }
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
-        [Required(ErrorMessage = "Subject Id Required!")]
+        [Required(ErrorMessage = "Course Id Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Assignment Name Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public string AssignmentName { get; set; }
         [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; }
@@ -93,10 +96,13 @@ namespace TeacherAssistant.Models
         [StudentIdOrRoleValidation(ErrorMessage = "Either Student Role or Student Id Required!")]
         public int StudentId { get; set; }
         [Required(ErrorMessage = "Teacher Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Teacher Id Required!")]
         public int TeacherId { get; set; }
         [Required(ErrorMessage = "Course Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Course Id Required!")]
         public int CourseId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Assignment Name Required!")]
         public string AssignmentName { get; set; }

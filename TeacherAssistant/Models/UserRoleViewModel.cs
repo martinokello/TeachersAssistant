@@ -9,9 +9,9 @@ namespace  TeacherAssistant.Models
     public class UserRoleViewModel
     {
         public string UserId { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Username Required!")]
         public string Username { get; set; } = "Username Default";
-        [Required]
+        [Required(ErrorMessage = "Role Name Required!")]
         public string RoleName { get; set; } = "StatePrimary";
         [Required]
         public int CourseId { get; set; }
