@@ -1693,7 +1693,7 @@ namespace TeacherAssistant.Controllers
 
             var productList = new List<SelectListItem>();
             productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
-            if (qaItems.Any())
+            if (qaItems!=null && qaItems.Any())
             {
                 productList.AddRange(qaItems.Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
             }
@@ -1704,7 +1704,7 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageQAHelpRequest()
         {
             GetUIDropdownLists();
-            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
+            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == (_repositoryServices.GetTeacherByName(User.Identity.Name) != null ? _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId : _repositoryServices.GetTeacherList().First().TeacherId)));
 
             return View();
         }
@@ -1714,13 +1714,8 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageQAHelpRequest(QAHelpRequestViewModel qaHelpRequestViewModel)
         {
             GetUIDropdownLists();
-            ModelState.Clear();
-            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId));
-            if (qaHelpRequestViewModel.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequestViewModel.StudentRole) || qaHelpRequestViewModel.SubjectId == 0 || qaHelpRequestViewModel.TeacherId == 0)
-            {
-                ModelState.AddModelError("requiredFields", "Student, Role, Subject, and Teacher Required");
-                return View("ManageQAHelpRequest", qaHelpRequestViewModel);
-            }
+            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == (_repositoryServices.GetTeacherByName(User.Identity.Name) != null? _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId: _repositoryServices.GetTeacherList().First().TeacherId)));
+
             if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest
