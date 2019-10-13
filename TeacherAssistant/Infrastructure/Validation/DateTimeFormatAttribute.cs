@@ -10,7 +10,8 @@ namespace TeacherAssistant.Infrastructure.Validation
         {
            try
             {
-                DateTime.ParseExact(value.ToString(),"yyyy-MM-dd HH:mm", new DateTimeFormatInfo { FullDateTimePattern= "yyyy-MM-dd HH:mm" });
+                CultureInfo provider = CultureInfo.InvariantCulture;
+                DateTime.ParseExact(value.ToString(),"yyyy-MM-dd HH:mm", provider);
                 return ValidationResult.Success;
             }
             catch

@@ -19,7 +19,7 @@ namespace TeacherAssistant.Models
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Subject Id Required!")]
         public string StudentRole { get; set; }
-        [Required(ErrorMessage = "RStart Date equired!")]
+        [Required(ErrorMessage = "Start Date Required!")]
         [DateTimeFormat(ErrorMessage = "Start Date format wrong and Time should be in 24 Hr Clock")]
         public DateTime StartTime { get; set; }
         [Required(ErrorMessage = "End Date Required!")]
