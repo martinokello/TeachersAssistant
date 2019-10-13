@@ -20,10 +20,10 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Subject Id Required!")]
         public string StudentRole { get; set; }
         [Required(ErrorMessage = "Start Date Required!")]
-        [DateTimeFormat(ErrorMessage = "Start Date format wrong and Time should be in 24 Hr Clock")]
+        [DataType( DataType.DateTime, ErrorMessage = "Start Date format wrong and Time should be in 24 Hr Clock")]
         public DateTime StartTime { get; set; }
         [Required(ErrorMessage = "End Date Required!")]
-        [DateTimeFormat(ErrorMessage = "End Date format wrong and Time should be in 24 Hr Clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "End Date format wrong and Time should be in 24 Hr Clock")]
         public DateTime EndTime { get; set; }
         [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; }

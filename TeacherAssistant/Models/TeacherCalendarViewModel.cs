@@ -10,10 +10,9 @@ namespace TeacherAssistant.Models
 {
     public class BookingTimeString
     {
-        [DateTimeFormat()]
+        
         public string StartTime { get; set; }
-
-        [DateTimeFormat()]
+        
         public string EndTime { get; set; }
 
         public int? BookingTimeId { get; set; }

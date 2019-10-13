@@ -73,10 +73,10 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Assigned Date Required!")]
-        [DateTimeFormat(ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
         public DateTime DateAssigned { get; set; }
         [Required(ErrorMessage = "Due Back Date Required!")]
-        [DateTimeFormat(ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
         public DateTime DateDue { get; set; }
         public string FilePath { get; set; }
         [Required(ErrorMessage = "Assignment File Required!")]
@@ -109,10 +109,10 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Assigned Date Required!")]
-        [DateTimeFormat(ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
         public DateTime DateAssigned { get; set; }
         [Required(ErrorMessage = "Due Back Date Required!")]
-        [DateTimeFormat(ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "Date Format is wrong and Time should be in 24 Hr clock")]
         public DateTime DateDue { get; set; }
         public string FilePath { get; set; }
         [Required(ErrorMessage = "Assignment File Required!")]

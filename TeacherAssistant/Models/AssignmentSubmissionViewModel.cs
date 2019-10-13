@@ -83,10 +83,10 @@ namespace TeacherAssistant.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id  Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Due Date Required!")]
-        [DateTimeFormat(ErrorMessage = "DateDue format wrong and Time should be in 24 Hr Clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "DateDue format wrong and Time should be in 24 Hr Clock")]
         public DateTime DateDue { get; set; }
         [Required(ErrorMessage = "Submission Date Required!")]
-        [DateTimeFormat(ErrorMessage = "DateSubmitted format wrong and Time should be in 24 Hr Clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "DateSubmitted format wrong and Time should be in 24 Hr Clock")]
         public DateTime DateSubmitted { get; set; }
         public string FilePath { get; set; }
         [Required(ErrorMessage = "Media Content Attachment Required!")]
@@ -132,10 +132,10 @@ namespace TeacherAssistant.Models
         [Range(1, Int32.MaxValue, ErrorMessage = "Subject Id  Required!")]
         public int SubjectId { get; set; }
         [Required(ErrorMessage = "Due Date Required!")]
-        [DateTimeFormat(ErrorMessage = "DateDue format wrong and Time should be in 24 Hr Clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "DateDue format wrong and Time should be in 24 Hr Clock")]
         public DateTime DateDue { get; set; }
         [Required(ErrorMessage = "Submission Date Required!")]
-        [DateTimeFormat(ErrorMessage = "DateSubmitted format wrong and Time should be in 24 Hr Clock")]
+        [DataType(DataType.DateTime, ErrorMessage = "DateSubmitted format wrong and Time should be in 24 Hr Clock")]
         public DateTime DateSubmitted { get; set; }
         public string FilePath { get; set; }
         [Required(ErrorMessage = "Media Content Attachment Required!")]
