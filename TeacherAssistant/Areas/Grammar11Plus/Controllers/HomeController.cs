@@ -119,11 +119,7 @@ namespace TeacherAssistant.Areas.Grammar11Plus.Controllers
         {
             ViewBag.Message = "Request QA Help From Tutor";
             GetUIDropdownLists();
-            if (qaHelpRequest.StudentId == 0 || string.IsNullOrEmpty(qaHelpRequest.StudentRole) || qaHelpRequest.SubjectId == 0 || qaHelpRequest.TeacherId == 0 || string.IsNullOrEmpty(qaHelpRequest.Description))
-            {
-                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
-                return View("RequestQAHelp", qaHelpRequest);
-            }
+
             if (ModelState.IsValid)
             {
                 _teacherRepository.RequestQATime(new QAHelpRequest
