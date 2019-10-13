@@ -20,7 +20,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.QAHelpRequestId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("QAHelpRequestId", (List<SelectListItem>)ViewBag.QAHelpRequestList, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownList("QAHelpRequestId", (List<SelectListItem>)ViewBag.QAHelpRequestList, new { htmlAttributes = new { @class = "form-control", @id= "QAHelpRequestId" } })
                         @Html.ValidationMessageFor(model => model.QAHelpRequestId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -94,5 +94,26 @@
     $(document).ready(function () {
         jQuery('#StartTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
         jQuery('#EndTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+
+        $('select#QAHelpRequestId').change(function () {
+            let qaRequestId = $(this).val();
+
+            $.ajax({
+                url: '@Url.Content("~/Administration/QAHelpRequest")?qAHelpRequestId=' + qaRequestId,
+                method: 'GET',
+                success: function (data) {
+                    let qAHelpRequest = data;
+                    $('input[name="Description"]').val(data.Description);
+                    $('select[name="TeacherId"]').val(data.TeacherId);
+                    $('select[name="StudentId"]').val(data.StudentId);
+                    $('select[name="SubjectId"]').val(data.SubjectId);
+                    $('select[name="StudentRole"]').val(data.StudentRole);
+                    $('input[name="IsScheduled"]').attr('checked', data.IsScheduled);
+                },
+                error: function (xHReq, error, errorMethod) {
+                    alert("An Error Occured " + xHReq.responseText);
+                }
+            })
+        });
     });
 </script>

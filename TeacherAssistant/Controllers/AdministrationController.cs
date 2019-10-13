@@ -1718,7 +1718,7 @@ namespace TeacherAssistant.Controllers
         {
             GetUIDropdownLists();
             ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == (_repositoryServices.GetTeacherByName(User.Identity.Name) != null? _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId: _repositoryServices.GetTeacherList().First().TeacherId)));
-
+            
             if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest
@@ -1747,6 +1747,13 @@ namespace TeacherAssistant.Controllers
                 return View("_SuccessfullCreation", qaHelpRequestViewModel);
             }
             return View(qaHelpRequestViewModel);
+        }
+
+        [HttpGet]
+        public JsonResult QAHelpRequest(int qAHelpRequestId)
+        {
+            var payLoad = _repositoryServices.GetQARequestId(qAHelpRequestId);
+            return Json(payLoad, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public ActionResult ManageProducts()

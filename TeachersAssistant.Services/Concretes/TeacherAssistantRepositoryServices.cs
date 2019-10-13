@@ -95,7 +95,14 @@ namespace TeachersAssistant.Services.Concretes
                 return _unitOfWork._qAHelpRequestRepository.GetAll();
             }
         }
-
+        public QAHelpRequest GetQARequestId(int qaHelpRequestId)
+        {
+            using (var dbContext = new DataAccess.TeachersAssistantDbContext())
+            {
+                _unitOfWork.InitializeDbContext(dbContext);
+                return _unitOfWork._qAHelpRequestRepository.GetById(qaHelpRequestId);
+            }
+        }
         public void RequestQATime(QAHelpRequest qaHelpRequest)
         {
             using (var dbContext = new DataAccess.TeachersAssistantDbContext())
