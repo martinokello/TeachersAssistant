@@ -327,7 +327,6 @@
     <Compile Include="Controllers\ShoppingController.cs" />
     <Compile Include="Infrastructure\CachingStatic.cs" />
     <Compile Include="Infrastructure\Client.cs" />
-    <Compile Include="Infrastructure\Validation\DateTimeFormatAttribute.cs" />
     <Compile Include="Infrastructure\FluentValidation\UploadMediaViewModelValidator.cs" />
     <Compile Include="Infrastructure\FTPDownLoadUtility.cs" />
     <Compile Include="Infrastructure\ExtensionMethods\Page.cs" />
