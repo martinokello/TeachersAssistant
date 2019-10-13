@@ -25,7 +25,7 @@ namespace TeacherAssistant.Models
         [Required(ErrorMessage = "End Date Required!")]
         [DateTimeFormat(ErrorMessage = "End Date format wrong and Time should be in 24 Hr Clock")]
         public DateTime EndTime { get; set; }
-        [Required(ErrorMessage = "Required!")]
+        [Required(ErrorMessage = "Description Required!")]
         public string Description { get; set; }
         public bool IsScheduled { get; set; }
     }
