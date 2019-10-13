@@ -22,6 +22,7 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
     public class HomeController : Controller
     {
         private TeachersAssistantRepositoryServices _teacherRepository;
+        private IEmailService _emailService;
         /*public HomeController()
         {
 
@@ -45,7 +46,8 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
             IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
-            ICourseRepositoryMarker courseRepositoryMarker)
+            ICourseRepositoryMarker courseRepositoryMarker,
+            IEmailService mailService)
         {
             var unitOfWork = new TeachersAssistantUnitOfWork(calendarRepositoryMarker,
              classroomRepositoryMarker,
@@ -68,6 +70,7 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
              assignmentSubmissionRepositoryMarker,
              courseRepositoryMarker);
             unitOfWork.InitializeDbContext(new TeachersAssistantDbContext());
+            _emailService = mailService;
             _teacherRepository = new TeachersAssistantRepositoryServices(unitOfWork);
         }
         private List<SelectListItem> GetCurrentAssignmentList(string roleName)
@@ -125,7 +128,10 @@ namespace TeacherAssistant.Areas.StateJunior.Controllers
                     StudentRole = qaHelpRequest.StudentRole,
                     SubjectId = qaHelpRequest.SubjectId,
                     DateCreated = DateTime.Now
-                });
+                }); var student = _teacherRepository.GetStudentById(qaHelpRequest.StudentId);
+                var teacher = _teacherRepository.GetTeacherById(qaHelpRequest.TeacherId);
+                var subject = _teacherRepository.GetSubjectById(qaHelpRequest.SubjectId);
+                _emailService.SendEmail(new TicketMasterEmailMessage { EmailFrom = student.EmailAddress, Subject = $"Request Help from {student.StudentLastName } in subject: { subject.SubjectName } and Role {qaHelpRequest.StudentRole}", EmailTo = new List<string> { teacher.EmailAddress, student.EmailAddress }, EmailMessage = $"Request Help from {student.StudentLastName } in subject: { subject.SubjectName } and Role {qaHelpRequest.StudentRole} with the suggested Student request Help times with Start Time at: {qaHelpRequest.StartTime.ToString("dd-MM-yyyy HH:mm")} and End Time {qaHelpRequest.EndTime.ToString("dd-MM-yyyy HH:mm")}. Please await the teacher to confirm by email whether this will be a good time for them. \r\nKindest Regards\r\nMartinLayooInc Team." });
                 return View("_SuccessfullCreation", qaHelpRequest);
             }
             return View();

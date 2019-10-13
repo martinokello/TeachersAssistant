@@ -24,6 +24,7 @@ namespace TeacherAssistant.Controllers
     public class AdministrationController : Controller
     {
         private ApplicationUserManager _userManager;
+        private IEmailService _emailService;
 
         TeachersAssistantRepositoryServices _repositoryServices;
         /*public AdministrationController()
@@ -50,8 +51,9 @@ namespace TeacherAssistant.Controllers
             IQAHelpRequestRepositoryMarker qAHelpRequestRepositoryMarker,
             IAssignmentRepositoryMarker assignmentRepositoryMarker,
             IAssignmentSubmissionRepositoryMarker assignmentSubmissionRepositoryMarker,
-            ICourseRepositoryMarker courseRepositoryMarker)
-        {
+            ICourseRepositoryMarker courseRepositoryMarker,
+            IEmailService mailService)
+            {
             Condition.Requires<ICalendarBookingRepositoryMarker>(calendarRepositoryMarker, "calendarRepositoryMarker").IsNotNull();
             Condition.Requires<IClassroomRepositoryMarker>(classroomRepositoryMarker, "classroomRepositoryMarker").IsNotNull();
             Condition.Requires<IFreeDocumentRepositoryMarker>(freeDocumentRepositoryMarker, "freeDocumentRepositoryMarker").IsNotNull();
@@ -94,6 +96,7 @@ namespace TeacherAssistant.Controllers
              courseRepositoryMarker);
 
             unitOfWork.InitializeDbContext(new TeachersAssistant.DataAccess.TeachersAssistantDbContext());
+            _emailService = mailService;
             _repositoryServices = new TeachersAssistantRepositoryServices(unitOfWork);
         }
 
@@ -1737,9 +1740,11 @@ namespace TeacherAssistant.Controllers
                     _repositoryServices.GetStudentById(qaHelpRequestViewModel.StudentId),
                     _repositoryServices.GetSubjectById(qaHelpRequestViewModel.SubjectId),
                     new BookingTime { StartTime = qaHelpRequestViewModel.StartTime, EndTime = qaHelpRequestViewModel.EndTime }, qaHelpRequestViewModel.Description);
-
-                //Send emails to user about schedule:
-                return View("SuccessfullCreation");
+                var student = _repositoryServices.GetStudentById(qaHelpRequestViewModel.StudentId);
+                var teacher = _repositoryServices.GetTeacherById(qaHelpRequestViewModel.TeacherId);
+                var subject = _repositoryServices.GetSubjectById(qaHelpRequestViewModel.SubjectId);
+                _emailService.SendEmail(new TicketMasterEmailMessage { EmailFrom = student.EmailAddress, Subject = $"Teacher Confirmation of Help Time ({qaHelpRequestViewModel.StartTime.ToString("dd-MM-yyyy HH:mm")}), from teacher {teacher.FirsName} {teacher.LastName} in subject: { subject.SubjectName } and Role {qaHelpRequestViewModel.StudentRole}", EmailTo = new List<string> { teacher.EmailAddress, student.EmailAddress }, EmailMessage = $"Teacher confirming Help from {teacher.FirsName } in subject: { subject.SubjectName } for student: {student.StudentFirsName} {student.StudentLastName} in Role {qaHelpRequestViewModel.StudentRole} with the confirmed Help time here; Start Time at: {qaHelpRequestViewModel.StartTime.ToString("dd-MM-yyyy HH:mm")} and End Time {qaHelpRequestViewModel.EndTime.ToString("dd-MM-yyyy HH:mm")}. Please note this time has been booked in my calendar which you can view from your portal. \r\nKindest Regards\r\nMartinLayooInc Team." });
+                return View("_SuccessfullCreation", qaHelpRequestViewModel);
             }
             return View(qaHelpRequestViewModel);
         }
