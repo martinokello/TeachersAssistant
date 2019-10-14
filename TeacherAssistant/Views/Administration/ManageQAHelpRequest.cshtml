@@ -109,6 +109,10 @@
                     $('select[name="SubjectId"]').val(data.SubjectId);
                     $('select[name="StudentRole"]').val(data.StudentRole);
                     $('input[name="IsScheduled"]').attr('checked', data.IsScheduled);
+                    var startDate = new Date(parseInt(data.StartTime.substr(6)));
+                    var endDate = new Date(parseInt(data.EndTime.substr(6)));
+                    $('input[name="StartTime"]').val(startDate);
+                    $('input[name="EndTime"]').val(endDate);
                 },
                 error: function (xHReq, error, errorMethod) {
                     alert("An Error Occured " + xHReq.responseText);
