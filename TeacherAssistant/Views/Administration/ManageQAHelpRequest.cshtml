@@ -111,8 +111,8 @@
                     $('input[name="IsScheduled"]').attr('checked', data.IsScheduled);
                     var startDate = new Date(parseInt(data.StartTime.substr(6)));
                     var endDate = new Date(parseInt(data.EndTime.substr(6)));
-                    $('input[name="StartTime"]').val(startDate);
-                    $('input[name="EndTime"]').val(endDate);
+                    $('input[name="StartTime"]').val(startDate.toISOString());
+                    $('input[name="EndTime"]').val(endDate.toISOString());
                 },
                 error: function (xHReq, error, errorMethod) {
                     alert("An Error Occured " + xHReq.responseText);
