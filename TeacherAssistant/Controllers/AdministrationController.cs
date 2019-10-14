@@ -1690,7 +1690,15 @@ namespace TeacherAssistant.Controllers
             }
             return calendarBookingViewModels.ToArray();
         }
-
+        private List<SelectListItem> GetAllQAHelpRequestsForTeacher(string email)
+        {
+            var productList = new List<SelectListItem>();
+            productList.Add(new SelectListItem { Text = "Pick Product Item", Value = 0.ToString() });
+            var teacher = _repositoryServices.GetTeacherByName(email)?? _repositoryServices.GetTeacherList().First();
+            productList.AddRange(_repositoryServices.GetQARequestList().Where(p=> p.TeacherId == teacher.TeacherId).Select(p => new SelectListItem { Text = p.Description, Value = p.QAHelpRequestId.ToString() }).ToList());
+           
+            return productList;
+        }
         private List<SelectListItem> GetFilteredQASelectList(IEnumerable<QAHelpRequest> qaItems)
         {
 
@@ -1707,8 +1715,7 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageQAHelpRequest()
         {
             GetUIDropdownLists();
-            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == (_repositoryServices.GetTeacherByName(User.Identity.Name) != null ? _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId : _repositoryServices.GetTeacherList().First().TeacherId)));
-
+            ViewBag.QAHelpRequestList = GetAllQAHelpRequestsForTeacher(User.Identity.Name);
             return View();
         }
 
@@ -1717,8 +1724,8 @@ namespace TeacherAssistant.Controllers
         public ActionResult ManageQAHelpRequest(QAHelpRequestViewModel qaHelpRequestViewModel)
         {
             GetUIDropdownLists();
-            ViewBag.QAHelpRequestList = GetFilteredQASelectList(_repositoryServices.GetQARequestList().Where(p => !p.IsScheduled && p.TeacherId == (_repositoryServices.GetTeacherByName(User.Identity.Name) != null? _repositoryServices.GetTeacherByName(User.Identity.Name).TeacherId: _repositoryServices.GetTeacherList().First().TeacherId)));
-            
+            ViewBag.QAHelpRequestList = GetAllQAHelpRequestsForTeacher(User.Identity.Name);
+
             if (ModelState.IsValid)
             {
                 _repositoryServices.SaveOrUpdateQAHelpRequests(new QAHelpRequest
@@ -1743,7 +1750,7 @@ namespace TeacherAssistant.Controllers
                 var student = _repositoryServices.GetStudentById(qaHelpRequestViewModel.StudentId);
                 var teacher = _repositoryServices.GetTeacherById(qaHelpRequestViewModel.TeacherId);
                 var subject = _repositoryServices.GetSubjectById(qaHelpRequestViewModel.SubjectId);
-                _emailService.SendEmail(new TicketMasterEmailMessage { EmailFrom = student.EmailAddress, Subject = $"Teacher Confirmation of Help Time ({qaHelpRequestViewModel.StartTime.ToString("dd-MM-yyyy HH:mm")}), from teacher {teacher.FirsName} {teacher.LastName} in subject: { subject.SubjectName } and Role {qaHelpRequestViewModel.StudentRole}", EmailTo = new List<string> { teacher.EmailAddress, student.EmailAddress }, EmailMessage = $"Teacher confirming Help from {teacher.FirsName } in subject: { subject.SubjectName } for student: {student.StudentFirsName} {student.StudentLastName} in Role {qaHelpRequestViewModel.StudentRole} with the confirmed Help time here; Start Time at: {qaHelpRequestViewModel.StartTime.ToString("dd-MM-yyyy HH:mm")} and End Time {qaHelpRequestViewModel.EndTime.ToString("dd-MM-yyyy HH:mm")}. Please note this time has been booked in my calendar which you can view from your portal. \r\nKindest Regards\r\nMartinLayooInc Team." });
+                _emailService.SendEmail(new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], Subject = $"Teacher Confirmation of Help Time ({qaHelpRequestViewModel.StartTime.ToString("dd-MM-yyyy HH:mm")}), from teacher {teacher.FirsName} {teacher.LastName} in subject: { subject.SubjectName } and Role {qaHelpRequestViewModel.StudentRole}", EmailTo = new List<string> { teacher.EmailAddress, student.EmailAddress }, EmailMessage = $"Teacher confirming Help from {teacher.FirsName } in subject: { subject.SubjectName } for student: {student.StudentFirsName} {student.StudentLastName} in Role {qaHelpRequestViewModel.StudentRole} with the confirmed Help time here; Start Time at: {qaHelpRequestViewModel.StartTime.ToString("dd-MM-yyyy HH:mm")} and End Time {qaHelpRequestViewModel.EndTime.ToString("dd-MM-yyyy HH:mm")}. Please note this time has been booked in my calendar which you can view from your portal. \r\nKindest Regards\r\nMartinLayooInc Team." });
                 return View("_SuccessfullCreation", qaHelpRequestViewModel);
             }
             return View(qaHelpRequestViewModel);
