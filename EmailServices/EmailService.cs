@@ -26,21 +26,28 @@ namespace EmailServices
         public EmailType EmailType { get; set; }
         public void SendEmail(TicketMasterEmailMessage message)
         {
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(message.EmailFrom);
-            foreach(var to in message.EmailTo)
+            try
             {
-                mailMessage.To.Add(new MailAddress(to));
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(message.EmailFrom);
+                foreach (var to in message.EmailTo)
+                {
+                    mailMessage.To.Add(new MailAddress(to));
+                }
+                if (!string.IsNullOrEmpty(message.AttachmentFilePath))
+                    mailMessage.Attachments.Add(new Attachment(message.AttachmentFilePath));
+
+                mailMessage.Subject = message.Subject;
+                mailMessage.IsBodyHtml = EmailType == EmailType.Html;
+                mailMessage.Body = message.EmailMessage;
+                _smtpServer.Credentials = new NetworkCredential(SmtpServerUsername, SmtpServerPassword);
+
+                _smtpServer.Send(mailMessage);
             }
-            if (!string.IsNullOrEmpty(message.AttachmentFilePath))
-                mailMessage.Attachments.Add(new Attachment(message.AttachmentFilePath));
+            catch(Exception e)
+            {
 
-            mailMessage.Subject = message.Subject;
-            mailMessage.IsBodyHtml = EmailType == EmailType.Html;
-            mailMessage.Body = message.EmailMessage;
-            _smtpServer.Credentials = new NetworkCredential(SmtpServerUsername, SmtpServerPassword);
-
-            _smtpServer.Send(mailMessage);
+            }
         }
     }
 }
