@@ -103,9 +103,9 @@
     <Compile Include="Concretes\SubjectRepository.cs" />
     <Compile Include="Concretes\TeacherRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Migrations\201906102026291_CreateDatabase.cs" />
-    <Compile Include="Migrations\201906102026291_CreateDatabase.Designer.cs">
-      <DependentUpon>201906102026291_CreateDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201910300859336_InitializeDb.cs" />
+    <Compile Include="Migrations\201910300859336_InitializeDb.Designer.cs">
+      <DependentUpon>201910300859336_InitializeDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,8 +124,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906102026291_CreateDatabase.resx">
-      <DependentUpon>201906102026291_CreateDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910300859336_InitializeDb.resx">
+      <DependentUpon>201910300859336_InitializeDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

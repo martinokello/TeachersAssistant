@@ -237,7 +237,7 @@ namespace  TeacherAssistant.Controllers
                 Roles.CreateRole("SecondarySchool");
                 Roles.CreateRole("CollegeAndPostGraduate");
             }
-            var defaultAdmin = "administrator@martinlayooinc.co.uk";
+            var defaultAdmin = "administrator@martinlayooinc.com";
             var defaultAdminPassword = "deltaX!505";
 
             var aspUser = UserManager.FindByEmail(defaultAdmin);

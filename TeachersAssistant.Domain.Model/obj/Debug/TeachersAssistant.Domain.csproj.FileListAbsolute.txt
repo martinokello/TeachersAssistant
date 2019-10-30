@@ -20,7 +20,7 @@ C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Domain.Model\obj\D
 C:\TeacherAssistantPhase2\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Debug\TeachersAssistant.Domain.csprojAssemblyReference.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Debug\TeachersAssistant.Domain.Model.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\bin\Debug\TeachersAssistant.Domain.Model.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Debug\TeachersAssistant.Domain.csprojAssemblyReference.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Debug\TeachersAssistant.Domain.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Debug\TeachersAssistant.Domain.Model.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Debug\TeachersAssistant.Domain.Model.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.Domain.Model\obj\Debug\TeachersAssistant.Domain.csprojAssemblyReference.cache

@@ -55,8 +55,8 @@ namespace UPAEventsPayPal
                     smtpClient.Credentials = new NetworkCredential { Password = emailPassword, UserName = smtpUsername };
 
                     MailMessage message = new MailMessage();
-                    message.From = new MailAddress("business-enterprise@martinlayooinc.co.uk");
-                    message.To.Add("martin.okello@martinlayooinc.co.uk");
+                    message.From = new MailAddress("business-enterprise@martinlayooinc.com");
+                    message.To.Add("martin.okello@martinlayooinc.com");
                     message.To.Add(clientEmail);
                     message.Subject = "Result of your Transaction with MartinLayooInc.";
 
