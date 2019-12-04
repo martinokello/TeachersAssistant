@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TeacherAssistant.Models;
+﻿using TeacherAssistant.Models;
 using TeachersAssistant.Domain.Model.Models;
 
 namespace TeachersAssistant.App_Start
@@ -14,12 +9,33 @@ namespace TeachersAssistant.App_Start
         {
             AutoMapper.Mapper.Initialize(cfg =>
             {
+                var assd = cfg.CreateMap<AssignmentSelectAndDeleteViewModel, Assignment>();
+                assd.ReverseMap();
+                var assu = cfg.CreateMap<AssignmentUpdateViewModel, Assignment>();
+                assu.ReverseMap();
+                var assc = cfg.CreateMap<AssignmentCreateViewModel, Assignment>();
+                assc.ReverseMap();
+                var asssub = cfg.CreateMap<AssignmentSubmissionSelectOrDeleteViewModel, Assignment>();
+                asssub.ReverseMap();
+                var asssubc = cfg.CreateMap<AssignmentSubmissionCreateViewModel, Assignment>();
+                asssubc.ReverseMap();
+                var asssu = cfg.CreateMap<AssignmentSubmissionUpdateViewModel, Assignment>();
+                asssu.ReverseMap();
                 var mtu = cfg.CreateMap<TeacherUpdateViewModel, Teacher>();
                 mtu.ReverseMap();
                 var mtsd = cfg.CreateMap < TeacherSelectOrDeleteViewModel, Teacher>();
                 mtsd.ReverseMap();
                 var mtcr = cfg.CreateMap<TeacherCreateViewModel, Teacher>();
                 mtcr.ReverseMap();
+
+
+                var mtcu = cfg.CreateMap<TeacherCalendarUpdateViewModel, CalendarBooking>();
+                mtcu.ReverseMap();
+                var mtcsd = cfg.CreateMap<TeacherCalendarSelectOrDeleteViewModel, CalendarBooking>();
+                mtcsd.ReverseMap();
+                var mtccr = cfg.CreateMap<TeacherCalendarCreateViewModel, CalendarBooking>();
+                mtccr.ReverseMap(); 
+
                 var mtc = cfg.CreateMap<ClassroomCreateViewModel, Classroom>();
                 mtc.ForMember(dest => dest.CalendarId, opt=> opt.MapFrom( src => src.CalendarBookingId));
                 mtc.ReverseMap();
@@ -35,10 +51,19 @@ namespace TeachersAssistant.App_Start
                 sut.ReverseMap();
                 var ssodt = cfg.CreateMap<StudentSelectOrDeleteViewModel, Student>();
                 ssodt.ReverseMap();
+
+                var strc = cfg.CreateMap<StudentResourcesCreateViewModel, StudentResource>();
+                strc.ReverseMap();
+                var sutu = cfg.CreateMap<StudentResourcesUpdateViewModel, StudentResource>();
+                sutu.ReverseMap();
+                var srsdt = cfg.CreateMap<StudentResourcesSelectOrDeleteViewModel, StudentResource>();
+                srsdt.ReverseMap();
                 var scb = cfg.CreateMap<SubjectCreateViewModel, Subject>();
                 scb.ReverseMap();
                 var sub = cfg.CreateMap<SubjectUpdateViewModel, Subject>();
                 sub.ReverseMap();
+                var subsd= cfg.CreateMap<SubjectSelectOrDeleteViewModel, Subject>();
+                subsd.ReverseMap();
                 var docsFdoc = cfg.CreateMap<PaidDocument, FreeDocument>();
                 docsFdoc.ReverseMap();
                 var docsFvid = cfg.CreateMap<PaidDocument, FreeVideo>();
@@ -52,6 +77,8 @@ namespace TeachersAssistant.App_Start
                 var courseMapu = cfg.CreateMap<CourseUpdateViewModel, Course>();
                 courseMapu.ReverseMap();
                 var mp = cfg.CreateMap<ProductSelectOrDeleteViewModel, SHOP_PRODS>();
+                var mpc = cfg.CreateMap<ProductCreateViewModel, SHOP_PRODS>();
+                var mpu = cfg.CreateMap<ProductUpdateViewModel, SHOP_PRODS>();
                 //map.ForAllMembers(opt => opt.Ignore());
                 mp.ForMember(dest => dest.prodName, opt => opt.MapFrom(src => src.ProductName));
                 mp.ForMember(dest => dest.prodId, opt => opt.MapFrom(src => src.ProductId));
@@ -61,6 +88,24 @@ namespace TeachersAssistant.App_Start
                 mp.ForMember(dest => dest.IsPaidDocument, opt => opt.MapFrom(src => src.IsPaidDocument));
                 mp.ForMember(dest => dest.IsPaidVideo, opt => opt.MapFrom(src => src.IsPaidVideo));
                 mp.ReverseMap();
+
+                mpc.ForMember(dest => dest.prodName, opt => opt.MapFrom(src => src.ProductName));
+                mpc.ForMember(dest => dest.prodId, opt => opt.MapFrom(src => src.ProductId));
+                mpc.ForMember(dest => dest.prodPrice, opt => opt.MapFrom(src => src.ProductPrice));
+                mpc.ForMember(dest => dest.prodDesc, opt => opt.MapFrom(src => src.ProductDescription));
+                mpc.ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentId));
+                mpc.ForMember(dest => dest.IsPaidDocument, opt => opt.MapFrom(src => src.IsPaidDocument));
+                mpc.ForMember(dest => dest.IsPaidVideo, opt => opt.MapFrom(src => src.IsPaidVideo));
+                mpc.ReverseMap();
+
+                mpu.ForMember(dest => dest.prodName, opt => opt.MapFrom(src => src.ProductName));
+                mpu.ForMember(dest => dest.prodId, opt => opt.MapFrom(src => src.ProductId));
+                mpu.ForMember(dest => dest.prodPrice, opt => opt.MapFrom(src => src.ProductPrice));
+                mpu.ForMember(dest => dest.prodDesc, opt => opt.MapFrom(src => src.ProductDescription));
+                mpu.ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentId));
+                mpu.ForMember(dest => dest.IsPaidDocument, opt => opt.MapFrom(src => src.IsPaidDocument));
+                mpu.ForMember(dest => dest.IsPaidVideo, opt => opt.MapFrom(src => src.IsPaidVideo));
+                mpu.ReverseMap();
             });
         }
     }

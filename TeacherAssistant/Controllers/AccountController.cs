@@ -89,11 +89,21 @@ namespace  TeacherAssistant.Controllers
             }
             else if (model.Role.ToLower().Equals("administrator") && User.IsInRole("Administrator"))
             {
-                return RedirectToLocal("~/Administration/AssignUserRole");
+                return RedirectToLocal("~/Administration/ManageTeachersCalendar");
             }
             else if(User.Identity.IsAuthenticated)
             {
-                return RedirectToLocal("~/Home/Index");
+                var userIsRoles = Roles.GetRolesForUser();
+                if(userIsRoles.Contains("Administrator") && userIsRoles.Length > 1)
+                {
+                    var userRole = userIsRoles.Where(p => (!p.ToLower().Equals("administrator"))).FirstOrDefault();
+                    if (userRole != null)
+                    {
+                        return RedirectToLocal("~/" + userRole + "/Home/Index");
+                    }
+                    else return RedirectToLocal("~/Administration/ManageTeachersCalendar");
+                }
+                else  return RedirectToLocal("~/" + userIsRoles[0] + "/Home/Index");
             }
             ViewBag.ReturnUrl = returnUrl; 
 
@@ -114,8 +124,14 @@ namespace  TeacherAssistant.Controllers
                 case "stateprimary":
                     returnUrl = "~/StatePrimary/Home/Index";
                     break;
+                case "SecondarySchool":
+                    returnUrl = "~/SecondarySchool/Home/Index";
+                    break;
+                case "CollegeAndPostGraduate":
+                    returnUrl = "~/CollegeAndPostGraduate/Home/Index";
+                    break;
                 case "administrator":
-                    returnUrl = "~/Administration/AssignUserRole";
+                    returnUrl = "~/Administration/ManageTeachersCalendar";
                     break;
                 default:
                     returnUrl = "~/Home/Index";
@@ -159,7 +175,6 @@ namespace  TeacherAssistant.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                   
                     returnUrl = DoSwitch(model.Role);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:

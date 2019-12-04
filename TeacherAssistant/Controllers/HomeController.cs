@@ -125,13 +125,13 @@ namespace  TeacherAssistant.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles="Administrator,Grammar11Plus,StatePrimary,StateJunior")]
+        [Authorize(Roles="Administrator,Grammar11Plus,StatePrimary,StateJunior,SecondarySchool,CollegeAndPostGraduate")]
         public ViewResult PublicClass()
         {
             return View("PublicClass");
         }
         [HttpGet]
-        [Authorize(Roles = "Administrator,Grammar11Plus,StatePrimary,StateJunior")]
+        [Authorize(Roles = "Administrator,Grammar11Plus,StatePrimary,StateJunior,SecondarySchool,CollegeAndPostGraduate")]
         public ViewResult PrivateClass()
         {
             return View("PrivateClass");
