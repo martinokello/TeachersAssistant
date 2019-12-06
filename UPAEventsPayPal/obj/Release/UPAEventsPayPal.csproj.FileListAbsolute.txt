@@ -30,6 +30,6 @@ C:\C#Projects\TeachersAssistant\UPAEventsPayPal\obj\Release\UPAEventsPayPal.pdb
 C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\bin\UPAEventsPayPal.dll.config
 C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\bin\UPAEventsPayPal.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\bin\UPAEventsPayPal.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\obj\Release\UPAEventsPayPal.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\obj\Release\UPAEventsPayPal.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\obj\Release\UPAEventsPayPal.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\UPAEventsPayPal\obj\Release\UPAEventsPayPal.csproj.CoreCompileInputs.cache

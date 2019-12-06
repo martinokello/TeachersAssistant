@@ -19,10 +19,10 @@ C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Re
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\TeachersAssistant.Domain.Model.pdb
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.xml
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\bin\Release\EntityFramework.SqlServer.xml
-C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csproj.GenerateResource.cache
-C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.dll
-C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.Migrations.CreateDatabase.resources
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csprojAssemblyReference.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csproj.CopyComplete
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.pdb
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.Migrations.InitializeDb.resources
+C:\TeachersAssistantPhase3\TeachersAssistant\TeachersAssistant.DataAccess\obj\Release\TeachersAssistant.DataAccess.csproj.GenerateResource.cache

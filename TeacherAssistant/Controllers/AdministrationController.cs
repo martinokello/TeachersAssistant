@@ -125,12 +125,11 @@ namespace TeacherAssistant.Controllers
         {
             try
             {
+                ViewBag.DateAssignedString = DateTime.Now;
+                ViewBag.DateDueString = DateTime.Now;
+                GetUIDropdownLists();
                 if (ModelState.IsValid)
                 {
-                    ViewBag.DateAssignedString = DateTime.Now;
-                    ViewBag.DateDueString = DateTime.Now;
-                    ViewBag.AssignmentList = GetAllAssignmentsList();
-                    GetUIDropdownLists();
 
                     var virtualPath = string.Empty;
 

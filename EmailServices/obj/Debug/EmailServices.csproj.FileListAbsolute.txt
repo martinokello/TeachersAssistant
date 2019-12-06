@@ -42,8 +42,8 @@ C:\TeacherAssistantPhase2\TeachersAssistant\EmailServices\obj\Debug\EmailService
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\bin\Debug\EmailServices.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\bin\Debug\EmailServices.pdb
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\bin\Debug\Newtonsoft.Json.dll
+C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csprojAssemblyReference.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csproj.CoreCompileInputs.cache
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csproj.CopyComplete
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Debug\EmailServices.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Debug\EmailServices.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Debug\EmailServices.csprojAssemblyReference.cache

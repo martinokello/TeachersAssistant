@@ -18,13 +18,13 @@
                         @Html.ValidationMessage("TeacherId", "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div>
-                    @{Html.RenderPartial("_TeachersCalendarEditable"); }
-                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="View Calendar" class="btn btn-default" />
                     </div>
+                </div>
+                <div>
+                    @{Html.RenderPartial("_TeachersCalendarEditable"); }
                 </div>
             </div>
         </div>

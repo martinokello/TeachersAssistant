@@ -1,8 +1,9 @@
-﻿@model TeacherAssistant.Models.TeacherCalendarViewModel
+﻿@model TeacherAssistant.Models.ITeacherCalendarViewModel
 @{
     ViewBag.Title = "Book Teacher Help Time";
     Layout = "~/Areas/Grammar11Plus/Views/Shared/_NewLayoutGrammar11Plus.cshtml";
 }
+
 @using (Html.BeginForm())
 {
     <div class="form-horizontal">
@@ -13,6 +14,8 @@
         </div>
         <div style="background-color: #DADADA;">
             <div style="padding:5px;">
+                <hr />
+                @Html.ValidationSummary("", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.CalendarBookingId, htmlAttributes: new { @class = "control-label col-md-2", @readonly = true })
                     <div class="col-md-10">
@@ -23,8 +26,15 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.TeacherId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>,  new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                        @Html.DropDownList("TeacherId", ViewBag.TeacherList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                         @Html.ValidationMessageFor(model => model.TeacherId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("StudentId", ViewBag.StudentList as List<SelectListItem>, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                        @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -37,14 +47,14 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.BookingTimes[0].StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
+                        @Html.EditorFor(model => model.BookingTimes[0].StartTime, new { htmlAttributes = new { @class = "form-control", @id = "startTime", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
                         @Html.ValidationMessageFor(model => model.BookingTimes[0].StartTime, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.BookingTimes[0].EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
+                        @Html.EditorFor(model => model.BookingTimes[0].EndTime, new { htmlAttributes = new { @class = "form-control", @id = "endTime", @type = "text", @placeholder = "yyyy-MM-dd hh:mm" } })
                         @Html.ValidationMessageFor(model => model.BookingTimes[0].EndTime, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -59,14 +69,16 @@
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" name="Select" value="Select" class="btn btn-default" />
                         <input type="submit" name="Create" value="Create" class="btn btn-default" />
-                        <input type="submit" name="Update" value="Update" class="btn btn-default" />
                         <input type="submit" name="Delete" value="Delete" class="btn btn-default" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
-                }
+    <script type="text/javascript">
+        jQuery('#startTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+        jQuery('#endTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+    </script>}
 <script type="text/javascript">
     var events = [];
     $(document).ready(function(){
@@ -100,7 +112,6 @@
                 eventLimit: true, // allow "more" link when too many events
                 events: events
             });
-            //$('h4#title').text('Calendar for: Teacher: '+teacher + ', with Student: '+student);
 
 
             $('a#previousMonth').click(function () {

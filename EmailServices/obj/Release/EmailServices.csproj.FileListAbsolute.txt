@@ -9,4 +9,3 @@ C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Release\EmailServ
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Release\EmailServices.csproj.CopyComplete
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Release\EmailServices.dll
 C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Release\EmailServices.pdb
-C:\TeachersAssistantPhase3\TeachersAssistant\EmailServices\obj\Release\EmailServices.csprojAssemblyReference.cache
