@@ -1490,6 +1490,7 @@ namespace TeacherAssistant.Controllers
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
+            ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
             var teacherCalendar =
                 _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
 
@@ -1528,6 +1529,7 @@ namespace TeacherAssistant.Controllers
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
+            ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
 
             if (ModelState.IsValid)
             {
@@ -1572,6 +1574,7 @@ namespace TeacherAssistant.Controllers
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
 
+            ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
             if (ModelState.IsValid)
             {
                 ViewBag.CalendarUiList = GetCalendarListData(bookingTimeViewModel);
