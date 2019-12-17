@@ -156,11 +156,10 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
             GetUIDropdownLists();
 
             var calendars = _teacherRepository.GetTeacherCalendar();
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<ICalendarBookingViewModel>();
+            var classRooms = _teacherRepository.GetClassrooms();
             if (calendars != null)
             {
-                var classRooms = _teacherRepository.GetClassrooms();
-
                 var calendarsLeftJoin = from cal in calendars
                                         join cls in classRooms on
                                         cal.CalendarBookingId equals cls.CalendarId into res
@@ -173,6 +172,8 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                                             StudentId = cal.StudentId,
                                             BookingTimeId = cal.BookingTimeId
                                         };
+
+
                 foreach (var cal in calendarsLeftJoin)
                 {
                     var student = _teacherRepository.GetStudentById(cal.StudentId);
@@ -181,8 +182,9 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                     var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
 
                     if (bookingTime == null) continue;
-                    calendarBookingViewModels.Add(new CalendarBookingViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassroomId = cal.ClassroomId });
+                    calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel { ClassId = cal.ClassroomId, Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime });
                 }
+
             }
             ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
 
@@ -190,46 +192,11 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
             return View("BookTeacherHelpTime");
         }
         [HttpPost]
-        public ActionResult BookTeacherHelpTime(TeacherCalendarUpdateViewModel bookingTimeViewModel)
+        public ActionResult BookTeacherHelpTimeCreate(TeacherCalendarCreateViewModel bookingTimeViewModel)
         {
             ViewBag.Message = "Book Teacher Time.";
             GetUIDropdownLists();
 
-            if (!string.IsNullOrEmpty(bookingTimeViewModel.Create) && (bookingTimeViewModel.StudentId < 1 || bookingTimeViewModel.SubjectId < 1 || bookingTimeViewModel.TeacherId < 1 || string.IsNullOrEmpty(bookingTimeViewModel.Description)))
-            {
-                ModelState.AddModelError("requiredFields", "Student, Subject, Teacher, Student Role and Description Required");
-                return SetCalendarValues(bookingTimeViewModel);
-            }
-
-            if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
-            {
-                if (bookingTimeViewModel.CalendarBookingId < 1)
-                {
-                    ModelState.AddModelError("CalendarBookingId", "Calendar Booking Id Required!!");
-                }
-                return SetCalendarValues(bookingTimeViewModel);
-
-            }
-            if (bookingTimeViewModel.Delete != null)
-            {
-                if (bookingTimeViewModel.CalendarBookingId < 1)
-                {
-                    ModelState.AddModelError("CalendarBookingId", "Calendar Booking Id Required!!");
-                }
-                var viewResult1 = SetCalendarValues(bookingTimeViewModel);
-                if (ModelState.IsValid)
-                {
-                    var teacherCalendar =
-                        _teacherRepository.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
-                    _teacherRepository.DeleteTeacherCalendarByBooking(teacherCalendar);
-                    return View("SuccessfullCreation");
-                }
-                return viewResult1;
-            }
-            if (bookingTimeViewModel.SubjectId < 1)
-            {
-                ModelState.AddModelError("Subject", "Subject Id is required");
-            }
             var viewResult = SetCalendarValues(bookingTimeViewModel);
             if (ModelState.IsValid)
             {
@@ -253,16 +220,84 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                 html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
                 html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
                 emailService.EmailType = EmailType.Html;
-                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddr
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = , Subject = "Teacher Assistant's Booking Time Schedule"});
                 var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = new List<string> { student.EmailAddress }, Subject = "Teacher Assistant's Booking Time Schedule", EmailMessage = html };
                 emailService.SendEmail(message);
                 return View("SuccessfullCreation");
             }
             return viewResult;
         }
+        [HttpPost]
+        public ActionResult BookTeacherHelpTimeUpdate(TeacherCalendarUpdateViewModel bookingTimeViewModel)
+        {
+            ViewBag.Message = "Book Teacher Time.";
+            GetUIDropdownLists();
+
+            var viewResult = SetCalendarValues(bookingTimeViewModel);
+            if (ModelState.IsValid)
+            {
+                Teacher teacher = _teacherRepository.GetTeacherById(bookingTimeViewModel.TeacherId);
+                Student student = _teacherRepository.GetStudentByName(User.Identity.Name);
+                Subject subject = _teacherRepository.GetSubjectById(bookingTimeViewModel.SubjectId);
+                foreach (var bookingTime in bookingTimeViewModel.BookingTimes)
+                {
+                    _teacherRepository.SaveOrUpdateBooking(teacher, student, subject, new BookingTime { BookingTimeId = bookingTime.BookingTimeId, StartTime = DateTime.Parse(bookingTime.StartTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }), EndTime = DateTime.Parse(bookingTime.EndTime, new DateTimeFormatInfo { FullDateTimePattern = "yyyy-MM-dd HH:mm" }) },
+                        bookingTimeViewModel.Description);
+                }
+                var emailService = new EmailServices.EmailService(ConfigurationManager.AppSettings["smtpServer"], ConfigurationManager.AppSettings["smtpServerUser"], ConfigurationManager.AppSettings["smtpServerPassword"]);
+
+                var emailMessage = new System.Net.Mail.MailMessage();
+
+                var fileInfo = new FileInfo(Server.MapPath("~/Infrastructure/MailTemplates/TeacherBookingTime.html"));
+                var html = fileInfo.OpenText().ReadToEnd();
+                html.Replace("{TeacherName}", teacher.EmailAddress);
+                html.Replace("{StudentName}", student.EmailAddress);
+                html.Replace("{SubjectName}", subject.SubjectName);
+                html.Replace("{StartTime}", bookingTimeViewModel.BookingTimes[0].StartTime);
+                html.Replace("{EndTime}", bookingTimeViewModel.BookingTimes[0].EndTime);
+                emailService.EmailType = EmailType.Html;
+                //emailService.SendEmail(new TicketMasterEmailMessage {EmailFrom= student.EmailAddress, EmailMessage = html,EmailTo = , Subject = "Teacher Assistant's Booking Time Schedule"});
+                var message = new TicketMasterEmailMessage { EmailFrom = ConfigurationManager.AppSettings["BusinessEmail"], EmailTo = new List<string> { student.EmailAddress }, Subject = "Teacher Assistant's Booking Time Schedule", EmailMessage = html };
+                emailService.SendEmail(message);
+                return View("SuccessfullCreation");
+            }
+            return viewResult;
+        }
+        [HttpPost]
+        public ActionResult BookTeacherHelpTimeSelectOrDelete(TeacherCalendarSelectOrDeleteViewModel bookingTimeViewModel)
+        {
+            ViewBag.Message = "Book Teacher Time.";
+            GetUIDropdownLists();
+
+            var viewResult = SetCalendarValues(bookingTimeViewModel);
+
+            if (ModelState.IsValid)
+            {
+                var setModel = bookingTimeViewModel as TeacherCalendarSelectOrDeleteViewModel;
+                if (!string.IsNullOrEmpty(bookingTimeViewModel.Select))
+                {
+                    return SetCalendarValues(setModel);
+                }
+                else if (!string.IsNullOrEmpty(bookingTimeViewModel.Delete))
+                {
+                    var viewResult1 = SetCalendarValues(setModel);
+
+                    if (ModelState.IsValid)
+                    {
+                        var teacherCalendar =
+                            _teacherRepository.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
+                        _teacherRepository.DeleteTeacherCalendarByBooking(teacherCalendar);
+                        return View("SuccessfullCreation");
+                    }
+                    return viewResult1;
+                }
+            }
+            return viewResult;
+        }
+
         private ViewResult SetCalendarValues(ITeacherCalendarViewModel bookingTimeViewModel)
         {
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<ICalendarBookingViewModel>();
             var calendar =
                 _teacherRepository.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
             if (calendar != null)
@@ -299,30 +334,59 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                         var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
 
                         if (bookingTime == null) continue;
-                        calendarBookingViewModels.Add(new CalendarBookingViewModel
+                        calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel
                         {
                             Teacher = teacher,
                             Subject = subject,
                             Student = student,
                             BookingTime = bookingTime,
-                            ClassroomId = cal.ClassroomId
+                            ClassId = cal.ClassroomId
                         });
                     }
                 ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
-                ModelState.Clear();
-
-                return View("BookTeacherHelpTime", new TeacherCalendarCreateViewModel
+                if (bookingTimeViewModel.GetType().IsAssignableFrom(typeof(TeacherCalendarSelectOrDeleteViewModel)))
                 {
-                    TeacherId = calendar.TeacherId,
-                    SubjectId = calendar.SubjectId,
-                    CalendarBookingId = calendar.CalendarBookingId,
-                    Description = calendar.Description,
-                    ClassId = calendar.ClassId,
-                    StudentId = calendar.StudentId,
-                    StudentFullName = calendar.StudentFullName,
-                    TeacherFullName = calendar.TeacherFullName,
-                    BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = calendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = calendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
-                });
+                    ModelState.Clear();
+                    return View("BookTeacherHelpTime", new TeacherCalendarSelectOrDeleteViewModel
+                    {
+                        TeacherId = calendar.TeacherId,
+                        SubjectId = calendar.SubjectId,
+                        CalendarBookingId = calendar.CalendarBookingId,
+                        Description = calendar.Description,
+                        ClassId = calendar.ClassId,
+                        StudentId = calendar.StudentId,
+                        StudentFullName = calendar.StudentFullName,
+                        TeacherFullName = calendar.TeacherFullName,
+                        BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = calendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = calendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
+                    });
+                }
+                else if (bookingTimeViewModel.GetType().IsAssignableFrom(typeof(TeacherCalendarUpdateViewModel)))
+                    return View("BookTeacherHelpTime", new TeacherCalendarUpdateViewModel
+                    {
+                        TeacherId = calendar.TeacherId,
+                        SubjectId = calendar.SubjectId,
+                        CalendarBookingId = calendar.CalendarBookingId,
+                        Description = calendar.Description,
+                        ClassId = calendar.ClassId,
+                        StudentId = calendar.StudentId,
+                        StudentFullName = calendar.StudentFullName,
+                        TeacherFullName = calendar.TeacherFullName,
+                        BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = calendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = calendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
+                    });
+                else if (bookingTimeViewModel.GetType().IsAssignableFrom(typeof(TeacherCalendarCreateViewModel)))
+                    return View("BookTeacherHelpTime", new TeacherCalendarCreateViewModel
+                    {
+                        TeacherId = calendar.TeacherId,
+                        SubjectId = calendar.SubjectId,
+                        CalendarBookingId = calendar.CalendarBookingId,
+                        Description = calendar.Description,
+                        ClassId = calendar.ClassId,
+                        StudentId = calendar.StudentId,
+                        StudentFullName = calendar.StudentFullName,
+                        TeacherFullName = calendar.TeacherFullName,
+                        BookingTimes = new BookingTimeString[] { new BookingTimeString { StartTime = calendar.BookingTime.StartTime.ToString("yyyy-MM-dd HH:mm"), EndTime = calendar.BookingTime.EndTime.ToString("yyyy-MM-dd HH:mm") } }
+                    });
+                else return View("BookTeacherHelpTime", bookingTimeViewModel);
             }
             else
             {
@@ -336,7 +400,7 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
             ViewBag.CalendarUiList = null;
             ViewBag.Message = "Teachers Calendar.";
             var calendars = _teacherRepository.GetTeacherCalendar();
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<CalendarBookingSelectOrDeleteViewModel>();
             var classRooms = _teacherRepository.GetClassrooms();
 
             var calendarsLeftJoin = from cal in calendars
@@ -362,19 +426,14 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                     var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
 
                     if (bookingTime == null) continue;
-                    calendarBookingViewModels.Add(new CalendarBookingViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassroomId = cal.ClassroomId });
+                    calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassId = cal.ClassroomId });
                 }
             }
             ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
             return View("TeachersCalendar");
 
         }
-        [HttpGet]
-        public ActionResult GetStudentResources()
-        {
-            var StudentResources = _teacherRepository.GetGroupedResourcesByRoleThenSubject("SecondarySchool");
-            return View("StudentResources", StudentResources);
-        }
+
         [HttpPost]
         public ActionResult TeachersCalendar(int teacherId)
         {
@@ -391,7 +450,7 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
 
                 ModelState.AddModelError("NoTeacherCalendar", "Teacher hasn't a calendar booking");
             }
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<CalendarBookingSelectOrDeleteViewModel>();
             var classRooms = _teacherRepository.GetClassrooms();
 
             var calendarsLeftJoin = from cal in calendars
@@ -417,13 +476,13 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                     var bookingTime = _teacherRepository.GetBookingById(cal.BookingTimeId);
 
                     if (bookingTime == null) continue;
-                    calendarBookingViewModels.Add(new CalendarBookingViewModel
+                    calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel
                     {
                         Teacher = teacher,
                         Subject = subject,
                         Student = student,
                         BookingTime = bookingTime,
-                        ClassroomId = cal.ClassroomId
+                        ClassId = cal.ClassroomId
                     });
                 }
 
@@ -434,6 +493,13 @@ namespace TeacherAssistant.Areas.SecondarySchool.Controllers
                 calendarBookingViewModels.Count() > 0
                     ? calendarBookingViewModels.ToArray()[calendarBookingViewModels.Count() - 1]
                     : null);
+        }
+
+        [HttpGet]
+        public ActionResult GetStudentResources()
+        {
+            var StudentResources = _teacherRepository.GetGroupedResourcesByRoleThenSubject("SecondarySchool");
+            return View("StudentResources", StudentResources);
         }
         public ActionResult DownloadFreeDocuments()
         {

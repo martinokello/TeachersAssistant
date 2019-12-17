@@ -5,8 +5,9 @@
     Layout = "~/Areas/CollegeAndPostGraduate/Views/Shared/_NewLayoutCollegeAndPostGraduate.cshtml";
 }
 
-@using (Html.BeginForm())
-{
+
+<form method="post" id="ManageTeacherForm" action="">
+    @Html.AntiForgeryToken() 
     <div class="form-horizontal">
         <h2>Book Teacher Help Time</h2>
         <div>
@@ -76,11 +77,10 @@
             </div>
         </div>
     </div>
+</form>
     <script type="text/javascript">
-        jQuery('#startTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
-        jQuery('#endTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
-    </script>}
-<script type="text/javascript">
+    jQuery('#startTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
+    jQuery('#endTime').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
     var events = [];
     $(document).ready(function(){
         var calendarJsonString = @Html.Raw(Json.Encode(ViewBag.CalendarUiList));
@@ -94,7 +94,7 @@
                 teacher = calendarItem.Teacher.FirsName + ' ' + calendarItem.Teacher.LastName;
                 student = calendarItem.Student.StudentFirsName + ' ' + calendarItem.Student.StudentLastName;
                 var subject = calendarItem.Subject.SubjectName;
-                var classRoomId = calendarItem.ClassroomId;
+                var classRoomId = calendarItem.ClassId;
                 var startDate = new Date(parseInt(calendarItem.BookingTime.StartTime.substr(6)));
                 var endDate = new Date(parseInt(calendarItem.BookingTime.EndTime.substr(6)));
                 var classRoom = classRoomId ? 'Classroom:' + classRoomId + ', ' : '';
@@ -133,6 +133,25 @@
                 return false;
             });
         }
+
+         var $form = $('form#ManageTeacherForm');
+        $('input[type="submit"]').click(function (e) {
+            switch ($(this).attr('name')) {
+                case 'Select':
+                    $form.attr('action', '@Url.Content("~/CollegeAndPostGraduate/Home/BookTeacherHelpTimeSelectOrDelete")');
+                    break;
+                case 'Update':
+                    $form.attr('action', '@Url.Content("~/CollegeAndPostGraduate/Home/BookTeacherHelpTimeUpdate")');
+                    break;
+                case 'Create':
+                    $form.attr('action', '@Url.Content("~/CollegeAndPostGraduate/Home/BookTeacherHelpTimeCreate")');
+                    break;
+                case 'Delete':
+                    $form.attr('action', '@Url.Content("~/CollegeAndPostGraduate/Home/BookTeacherHelpTimeSelectOrDelete")');
+                    break;
+            }
+            return;
+        });
     });
 
-</script>
+    </script>

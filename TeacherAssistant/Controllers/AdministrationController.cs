@@ -1368,7 +1368,7 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.Message = "Teachers Calendar.";
             var calendars = _repositoryServices.GetTeacherCalendar();
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<ICalendarBookingViewModel>();
             var classRooms = _repositoryServices.GetClassrooms();
             if (calendars != null)
             {
@@ -1394,7 +1394,7 @@ namespace TeacherAssistant.Controllers
                     var bookingTime = _repositoryServices.GetBookingById(cal.BookingTimeId);
 
                     if (bookingTime == null) continue;
-                    calendarBookingViewModels.Add(new CalendarBookingViewModel { ClassroomId = cal.ClassroomId, Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime });
+                    calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel { ClassId = cal.ClassroomId, Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime });
                 }
 
             }
@@ -1408,7 +1408,7 @@ namespace TeacherAssistant.Controllers
             GetUIDropdownLists();
             ViewBag.Message = "Manage Teachers Calendar";
             var calendars = _repositoryServices.GetTeacherCalendar();
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<ICalendarBookingViewModel>();
             var classRooms = _repositoryServices.GetClassrooms();
             if (calendars != null)
             {
@@ -1433,28 +1433,28 @@ namespace TeacherAssistant.Controllers
                     var bookingTime = _repositoryServices.GetBookingById(cal.BookingTimeId);
 
                     if (bookingTime == null) continue;
-                    calendarBookingViewModels.Add(new CalendarBookingViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassroomId = cal.ClassroomId });
+                    calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassId = cal.ClassroomId });
                 }
             }
             ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
             return View("ManageTeacherCalendar");
         }
-        private void GetTeacherBookingTimes(TeacherCalendarSelectOrDeleteViewModel bookTeacherTime)
+        private void GetTeacherBookingTimes(CalendarBookingSelectOrDeleteViewModel bookTeacherTime)
         {
             var teacherCalendar = _repositoryServices.GetTeacherCalendarByBookingId(bookTeacherTime.CalendarBookingId);
             Student student = _repositoryServices.GetStudentById(teacherCalendar.StudentId);
             Subject subject = _repositoryServices.GetSubjectById(teacherCalendar.SubjectId);
             bookTeacherTime.StudentId = (int)student.StudentId;
             bookTeacherTime.SubjectId = (int)subject.SubjectId;
-            bookTeacherTime.CalendarBookingId = teacherCalendar.CalendarBookingId;
+            bookTeacherTime.CalendarBookingId = (int)teacherCalendar.CalendarBookingId;
 
 
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<CalendarBookingSelectOrDeleteViewModel>();
             student = _repositoryServices.GetStudentById(teacherCalendar.StudentId);
             subject = _repositoryServices.GetSubjectById(teacherCalendar.SubjectId);
             bookTeacherTime.StudentId = (int)student.StudentId;
             bookTeacherTime.SubjectId = (int)subject.SubjectId;
-            bookTeacherTime.CalendarBookingId = teacherCalendar.CalendarBookingId;
+            bookTeacherTime.CalendarBookingId = (int)teacherCalendar.CalendarBookingId;
 
             var classRooms = _repositoryServices.GetClassrooms();
             var calendars = _repositoryServices.GetTeacherCalendar();
@@ -1480,7 +1480,7 @@ namespace TeacherAssistant.Controllers
                 var bookingTime = _repositoryServices.GetBookingById(cal.BookingTimeId);
 
                 if (bookingTime == null || teacher.TeacherId != bookTeacherTime.TeacherId) continue;
-                calendarBookingViewModels.Add(new CalendarBookingViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassroomId = cal.ClassroomId });
+                calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel { Teacher = teacher, Subject = subject, Student = student, BookingTime = bookingTime, ClassId = cal.ClassroomId });
             }
             ViewBag.CalendarUiList = calendarBookingViewModels.ToArray();
             ModelState.Clear();
@@ -1641,10 +1641,10 @@ namespace TeacherAssistant.Controllers
                 return View("AssignmentAndSubmissions", new AssignmentSubmissionSelectOrDeleteViewModel[] { });
             }
         }
-        private CalendarBookingViewModel[] GetCalendarListData(ITeacherCalendarViewModel bookingTimeViewModel)
+        private CalendarBookingSelectOrDeleteViewModel[] GetCalendarListData(ITeacherCalendarViewModel bookingTimeViewModel)
         {
 
-            var calendarBookingViewModels = new List<CalendarBookingViewModel>();
+            var calendarBookingViewModels = new List<CalendarBookingSelectOrDeleteViewModel>();
             var calendar = _repositoryServices.GetTeacherCalendarByBookingId(bookingTimeViewModel.CalendarBookingId);
             Student student = _repositoryServices.GetStudentById(calendar.StudentId);
             Subject subject = _repositoryServices.GetSubjectById(calendar.SubjectId);
@@ -1678,13 +1678,13 @@ namespace TeacherAssistant.Controllers
                 var bookingTime = _repositoryServices.GetBookingById(cal.BookingTimeId);
 
                 if (bookingTime == null) continue;
-                calendarBookingViewModels.Add(new CalendarBookingViewModel
+                calendarBookingViewModels.Add(new CalendarBookingSelectOrDeleteViewModel
                 {
                     Teacher = teacher,
                     Subject = subject,
                     Student = student,
                     BookingTime = bookingTime,
-                    ClassroomId = cal.ClassroomId
+                    ClassId = cal.ClassroomId
                 });
             }
             return calendarBookingViewModels.ToArray();
